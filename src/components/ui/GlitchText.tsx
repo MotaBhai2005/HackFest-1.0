@@ -14,14 +14,14 @@ interface GlitchTextProps {
 export default function GlitchText({
   children,
   as: Tag = 'span',
-  className,
+  className = '',
   style,
 }: GlitchTextProps) {
   const MotionTag = motion[Tag as keyof typeof motion] as typeof motion.span;
 
   return (
     <MotionTag
-      className={className}
+      className={`cursor-pointer ${className}`}
       style={style}
       initial="rest"
       whileHover="hover"

@@ -1,3 +1,4 @@
+import { motion } from 'framer-motion';
 import './styles/globals.css';
 import Navbar from './components/layout/Navbar';
 import Footer from './components/layout/Footer';
@@ -10,10 +11,17 @@ import GuestSpeaker from './components/sections/GuestSpeaker';
 import Events from './components/sections/Events';
 import Sponsors from './components/sections/Sponsors';
 import FAQs from './components/sections/FAQs';
+import ScanlineOverlay from './components/ui/ScanlineOverlay';
+import { crtFlicker } from './lib/animations';
 
 export default function App() {
   return (
-    <>
+    <motion.div
+      variants={crtFlicker}
+      initial="initial"
+      animate="animate"
+    >
+      <ScanlineOverlay />
       <Navbar />
       <main>
         <Hero />
@@ -27,6 +35,6 @@ export default function App() {
         <FAQs />
       </main>
       <Footer />
-    </>
+    </motion.div>
   );
 }

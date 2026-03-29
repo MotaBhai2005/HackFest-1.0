@@ -28,37 +28,15 @@ export default function SectionDivider() {
   const repeated = Array(8).fill(TICKER_TEXT).join('');
 
   return (
-    <div
-      style={{
-        background: '#000',
-        height: 96,
-        overflow: 'hidden',
-        display: 'flex',
-        alignItems: 'center',
-        position: 'relative',
-      }}
-    >
+    <div className="bg-hack-black h-16 md:h-24 overflow-hidden flex items-center relative">
       <div
         ref={trackRef}
-        style={{
-          display: 'flex',
-          alignItems: 'center',
-          whiteSpace: 'nowrap',
-          willChange: 'transform',
-        }}
+        className="flex items-center whitespace-nowrap will-change-transform"
       >
         {[repeated, repeated].map((text, i) => (
           <span
             key={i}
-            style={{
-              fontFamily: "'Inter', sans-serif",
-              fontWeight: 900,
-              fontSize: '1.5rem',
-              color: '#fde403',
-              letterSpacing: '0.02em',
-              textTransform: 'uppercase',
-              paddingRight: '4rem',
-            }}
+            className="font-body font-black text-base md:text-2xl text-hack-yellow tracking-wide uppercase pr-8 md:pr-16"
           >
             {text}
           </span>

@@ -5,7 +5,6 @@ interface HUDBracketProps {
   weight?: number;
   color?: string;
   children: React.ReactNode;
-  style?: React.CSSProperties;
   className?: string;
   offset?: number;
 }
@@ -15,57 +14,57 @@ export default function HUDBracket({
   weight = 4,
   color = '#c00100',
   children,
-  style,
-  className,
+  className = '',
   offset = -8,
 }: HUDBracketProps) {
-  const bracketStyle: React.CSSProperties = {
-    position: 'absolute',
-    width: size,
-    height: size,
-    borderColor: color,
-    borderStyle: 'solid',
-    borderWidth: 0,
-  };
+  const bracketBase = `absolute border-solid`;
 
   return (
-    <div style={{ position: 'relative', ...style }} className={className}>
+    <div className={`relative ${className}`}>
       {/* Top-left */}
       <span
+        className={bracketBase}
         style={{
-          ...bracketStyle,
-          top: offset,
-          left: offset,
+          width: size, height: size,
+          top: offset, left: offset,
+          borderColor: color,
+          borderWidth: 0,
           borderTopWidth: weight,
           borderLeftWidth: weight,
         }}
       />
       {/* Top-right */}
       <span
+        className={bracketBase}
         style={{
-          ...bracketStyle,
-          top: offset,
-          right: offset,
+          width: size, height: size,
+          top: offset, right: offset,
+          borderColor: color,
+          borderWidth: 0,
           borderTopWidth: weight,
           borderRightWidth: weight,
         }}
       />
       {/* Bottom-left */}
       <span
+        className={bracketBase}
         style={{
-          ...bracketStyle,
-          bottom: offset,
-          left: offset,
+          width: size, height: size,
+          bottom: offset, left: offset,
+          borderColor: color,
+          borderWidth: 0,
           borderBottomWidth: weight,
           borderLeftWidth: weight,
         }}
       />
       {/* Bottom-right */}
       <span
+        className={bracketBase}
         style={{
-          ...bracketStyle,
-          bottom: offset,
-          right: offset,
+          width: size, height: size,
+          bottom: offset, right: offset,
+          borderColor: color,
+          borderWidth: 0,
           borderBottomWidth: weight,
           borderRightWidth: weight,
         }}

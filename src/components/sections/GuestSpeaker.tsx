@@ -1,10 +1,6 @@
 import { useRef } from 'react';
 import { motion, useInView } from 'framer-motion';
-import { slideFromLeft, slideFromRight } from '../../lib/animations';
-
-const imgEntity01 = 'https://www.figma.com/api/mcp/asset/f2dfc946-8100-4064-8135-5290f1fce0f9';
-const imgEntity02 = 'https://www.figma.com/api/mcp/asset/9e8140b8-2817-4c94-9903-28b16655f6ca';
-const imgPlaceholder = 'https://www.figma.com/api/mcp/asset/e12141f0-b0ed-4c3a-b7bb-ae9e200b18ab';
+import { slideFromLeft, slideFromRight, staggeredSlideUp } from '../../lib/animations';
 
 const speakers = [
   {
@@ -13,7 +9,7 @@ const speakers = [
     role: 'SECURITY ARCHITECT',
     rank: 'LEGENDARY',
     cpu: '99%',
-    image: imgEntity01,
+    image: '/images/speaker-1.png',
   },
   {
     id: 'ID_002_CORE_SYNC',
@@ -21,7 +17,7 @@ const speakers = [
     role: 'DATA WHISPERER',
     rank: 'ELITE',
     cpu: '84%',
-    image: imgEntity02,
+    image: '/images/speaker-2.png',
   },
 ];
 
@@ -35,34 +31,15 @@ function SpeakerCard({ speaker, index }: { speaker: typeof speakers[0]; index: n
       variants={index % 2 === 0 ? slideFromLeft : slideFromRight}
       initial="hidden"
       animate={inView ? 'visible' : 'hidden'}
-      style={{
-        background: '#000',
-        border: '4px solid #000',
-        display: 'flex',
-        flexDirection: 'column',
-        position: 'relative',
-      }}
+      whileHover={{ y: -6, transition: { duration: 0.2 } }}
+      className="bg-hack-black border-4 border-hack-black flex flex-col relative group"
     >
       {/* Image area */}
-      <div
-        style={{
-          position: 'relative',
-          width: '100%',
-          aspectRatio: '1/1',
-          overflow: 'hidden',
-          border: '16px solid #000',
-          marginBottom: '-32px',
-        }}
-      >
+      <div className="relative w-full aspect-square overflow-hidden border-[8px] md:border-[16px] border-hack-black -mb-4 md:-mb-8">
         <img
           src={speaker.image}
           alt={speaker.name}
-          style={{
-            width: '100%',
-            height: '100%',
-            objectFit: 'cover',
-            display: 'block',
-          }}
+          className="w-full h-full object-cover block group-hover:scale-105 transition-transform duration-300"
           onError={(e) => {
             const el = e.target as HTMLImageElement;
             el.style.background = '#333';
@@ -70,101 +47,34 @@ function SpeakerCard({ speaker, index }: { speaker: typeof speakers[0]; index: n
           }}
         />
         {/* Desaturate overlay */}
-        <div
-          style={{
-            position: 'absolute',
-            inset: 0,
-            background: '#fff',
-            mixBlendMode: 'saturation',
-          }}
-        />
+        <div className="absolute inset-0 bg-white mix-blend-saturation group-hover:opacity-0 transition-opacity duration-500" />
       </div>
 
       {/* Info panel */}
-      <div
-        style={{
-          background: '#fff',
-          border: '4px solid #000',
-          boxShadow: '12px 12px 0px #000',
-          padding: '24px',
-          position: 'relative',
-          zIndex: 1,
-        }}
-      >
+      <div className="bg-white border-4 border-hack-black shadow-[8px_8px_0px_#000] md:shadow-[12px_12px_0px_#000] p-4 md:p-6 relative z-[1]">
         {/* ID */}
-        <div
-          style={{
-            fontFamily: "'JetBrains Mono', monospace",
-            fontWeight: 700,
-            fontSize: '12px',
-            color: '#c00100',
-            marginBottom: '8px',
-            textTransform: 'uppercase',
-          }}
-        >
+        <div className="font-mono font-bold text-[10px] md:text-xs text-hack-red mb-1 md:mb-2 uppercase">
           {speaker.id}
         </div>
 
         {/* Name */}
-        <div
-          style={{
-            fontFamily: "'Inter', sans-serif",
-            fontWeight: 900,
-            fontSize: 'clamp(22px, 2.5vw, 36px)',
-            color: '#000',
-            textTransform: 'uppercase',
-            letterSpacing: '-0.02em',
-            lineHeight: 1,
-            marginBottom: '8px',
-          }}
-        >
+        <div className="font-body font-black text-lg sm:text-xl md:text-2xl lg:text-3xl text-hack-black uppercase tracking-tight leading-none mb-1 md:mb-2">
           {speaker.name}
         </div>
 
         {/* Role */}
-        <div
-          style={{
-            fontFamily: "'Inter', sans-serif",
-            fontWeight: 900,
-            fontSize: '14px',
-            color: '#c00100',
-            textTransform: 'uppercase',
-            marginBottom: '16px',
-          }}
-        >
+        <div className="font-body font-black text-xs md:text-sm text-hack-red uppercase mb-3 md:mb-4">
           {speaker.role}
         </div>
 
         {/* Divider + meta */}
-        <div
-          style={{
-            borderTop: '2px solid #000',
-            paddingTop: '18px',
-            display: 'flex',
-            justifyContent: 'space-between',
-            alignItems: 'center',
-          }}
-        >
-          <div style={{ background: '#000', padding: '2px 8px' }}>
-            <span
-              style={{
-                fontFamily: "'JetBrains Mono', monospace",
-                fontSize: '10px',
-                color: '#fff',
-                textTransform: 'uppercase',
-              }}
-            >
+        <div className="border-t-2 border-hack-black pt-3 md:pt-[18px] flex justify-between items-center">
+          <div className="bg-hack-black px-2 py-0.5">
+            <span className="font-mono text-[8px] md:text-[10px] text-white uppercase">
               RANK: {speaker.rank}
             </span>
           </div>
-          <span
-            style={{
-              fontFamily: "'JetBrains Mono', monospace",
-              fontSize: '10px',
-              color: '#000',
-              textTransform: 'uppercase',
-            }}
-          >
+          <span className="font-mono text-[8px] md:text-[10px] text-hack-black uppercase">
             CPU_LOAD: {speaker.cpu}
           </span>
         </div>
@@ -181,76 +91,42 @@ export default function GuestSpeaker() {
     <section
       ref={ref}
       id="speakers"
-      style={{
-        background: '#fde403',
-        padding: '96px 24px',
-      }}
+      className="bg-hack-yellow py-16 md:py-24 px-4 md:px-6"
     >
-      <div style={{ maxWidth: 1280, width: '100%', margin: '0 auto' }}>
+      <div className="max-w-7xl w-full mx-auto">
         {/* Heading */}
         <motion.h2
           initial={{ opacity: 0, y: 24 }}
           animate={inView ? { opacity: 1, y: 0 } : {}}
           transition={{ duration: 0.12 }}
-          style={{
-            fontFamily: "'Space Grotesk', sans-serif",
-            fontWeight: 700,
-            fontSize: 'clamp(48px, 9vw, 128px)',
-            lineHeight: 0.85,
-            letterSpacing: '-0.05em',
-            textTransform: 'uppercase',
-            color: '#000',
-            marginBottom: '5rem',
-          }}
+          className="font-display font-bold text-[36px] sm:text-[48px] md:text-[7vw] lg:text-[100px] xl:text-[128px]
+            leading-[0.85] tracking-tighter uppercase text-hack-black mb-10 md:mb-20"
         >
           GUEST ENTITIES
         </motion.h2>
 
         {/* Cards grid */}
-        <div
-          style={{
-            display: 'grid',
-            gridTemplateColumns: 'repeat(3, 1fr)',
-            gap: '3rem',
-            alignItems: 'start',
-          }}
-        >
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 md:gap-12 items-start">
           {speakers.map((speaker, i) => (
             <SpeakerCard key={speaker.id} speaker={speaker} index={i} />
           ))}
 
           {/* Placeholder card */}
           <motion.div
-            initial={{ opacity: 0 }}
-            animate={inView ? { opacity: 1 } : {}}
-            transition={{ delay: 0.2, duration: 0.12 }}
-            style={{
-              border: '6px dashed rgba(0,0,0,0.2)',
-              display: 'flex',
-              flexDirection: 'column',
-              alignItems: 'center',
-              justifyContent: 'center',
-              padding: '54px',
-              minHeight: 400,
-            }}
+            custom={2}
+            variants={staggeredSlideUp}
+            initial="hidden"
+            animate={inView ? 'visible' : 'hidden'}
+            className="border-4 md:border-[6px] border-dashed border-black/20 flex flex-col items-center justify-center
+              p-10 md:p-14 min-h-[300px] md:min-h-[400px]"
           >
             <img
-              src={imgPlaceholder}
+              src="/images/placeholder-speaker.png"
               alt=""
-              style={{ width: 88, height: 'auto', marginBottom: '1rem', opacity: 0.4 }}
+              className="w-16 md:w-22 h-auto mb-4 opacity-40"
               onError={(e) => ((e.target as HTMLImageElement).style.display = 'none')}
             />
-            <div
-              style={{
-                fontFamily: "'Inter', sans-serif",
-                fontWeight: 900,
-                fontSize: '16px',
-                color: 'rgba(0,0,0,0.3)',
-                textTransform: 'uppercase',
-                textAlign: 'center',
-                letterSpacing: '0.05em',
-              }}
-            >
+            <div className="font-body font-black text-sm md:text-base text-black/30 uppercase text-center tracking-wider">
               Next_Signal_Pending...
             </div>
           </motion.div>

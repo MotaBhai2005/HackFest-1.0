@@ -37,31 +37,16 @@ export default function Events() {
     <section
       ref={ref}
       id="events"
-      style={{
-        background: '#000',
-        borderTop: '8px solid #c00100',
-        borderBottom: '8px solid #c00100',
-        padding: '104px 0',
-      }}
+      className="bg-hack-black border-t-4 md:border-t-8 border-b-4 md:border-b-8 border-hack-red py-16 md:py-26"
     >
-      <div style={{ maxWidth: 1280, width: '100%', margin: '0 auto', padding: '0 24px' }}>
-
+      <div className="max-w-7xl w-full mx-auto px-4 md:px-6">
         {/* Heading */}
         <motion.h2
           initial={{ opacity: 0, x: -40 }}
           animate={inView ? { opacity: 1, x: 0 } : {}}
           transition={{ duration: 0.12 }}
-          style={{
-            fontFamily: "'Space Grotesk', sans-serif",
-            fontWeight: 700,
-            fontSize: 'clamp(36px, 6vw, 72px)',
-            lineHeight: 1,
-            letterSpacing: '-0.04em',
-            textTransform: 'uppercase',
-            color: '#fde403',
-            textShadow: '-3px 0px 0px #0ff, 3px 0px 0px #ba1a1a',
-            marginBottom: '4rem',
-          }}
+          className="font-display font-bold text-3xl sm:text-4xl md:text-[6vw] lg:text-7xl
+            leading-none tracking-tight uppercase text-hack-yellow text-shadow-glitch mb-8 md:mb-16"
         >
           EXECUTION_CYCLE
         </motion.h2>
@@ -71,63 +56,39 @@ export default function Events() {
           initial="hidden"
           animate={inView ? 'visible' : 'hidden'}
           variants={{ visible: { transition: { staggerChildren: 0.07 } } }}
-          style={{
-            border: '8px solid #c00100',
-            overflow: 'hidden',
-          }}
+          className="border-4 md:border-8 border-hack-red overflow-hidden"
         >
           {schedule.map((item, i) => (
             <motion.div
               key={item.time}
               custom={i}
               variants={brutalistEntrance}
-              style={{
-                background: item.highlight ? '#c00100' : '#fff',
-                borderBottom: i < schedule.length - 1 ? '8px solid #c00100' : 'none',
-                padding: '32px',
-                display: 'grid',
-                gridTemplateColumns: '1fr 1fr 2fr',
-                alignItems: 'center',
-                gap: '1rem',
-              }}
+              whileHover={{ x: 4, transition: { duration: 0.1 } }}
+              className={`
+                ${item.highlight ? 'bg-hack-red' : 'bg-white'}
+                ${i < schedule.length - 1 ? 'border-b-4 md:border-b-8 border-hack-red' : ''}
+                p-4 sm:p-6 md:p-8
+                grid grid-cols-2 sm:grid-cols-[1fr_1fr_2fr] items-center gap-2 sm:gap-4
+                cursor-default
+              `}
             >
               {/* Time */}
-              <div
-                style={{
-                  fontFamily: "'Inter', sans-serif",
-                  fontWeight: 900,
-                  fontSize: 'clamp(28px, 4vw, 48px)',
-                  color: item.highlight ? '#fff' : '#000',
-                  lineHeight: 1,
-                }}
-              >
+              <div className={`font-body font-black text-2xl sm:text-3xl md:text-4xl lg:text-5xl leading-none
+                ${item.highlight ? 'text-white' : 'text-hack-black'}`}>
                 {item.time}
               </div>
 
               {/* Code */}
-              <div
-                style={{
-                  fontFamily: "'Inter', sans-serif",
-                  fontWeight: 700,
-                  fontSize: 'clamp(10px, 1.2vw, 16px)',
-                  letterSpacing: '0.2em',
-                  textTransform: 'uppercase',
-                  color: item.highlight ? '#000' : '#c00100',
-                }}
-              >
+              <div className={`font-body font-bold text-[8px] sm:text-[10px] md:text-xs lg:text-sm tracking-[0.15em] md:tracking-[0.2em] uppercase
+                ${item.highlight ? 'text-hack-black' : 'text-hack-red'}
+                hidden sm:block`}>
                 {item.code}
               </div>
 
               {/* Event name */}
-              <div
-                style={{
-                  fontFamily: "'Inter', sans-serif",
-                  fontWeight: 900,
-                  fontSize: 'clamp(16px, 2.2vw, 30px)',
-                  color: item.highlight ? '#fff' : '#000',
-                  lineHeight: 1.1,
-                }}
-              >
+              <div className={`font-body font-black text-sm sm:text-base md:text-xl lg:text-[30px] leading-tight
+                ${item.highlight ? 'text-white' : 'text-hack-black'}
+                col-span-2 sm:col-span-1`}>
                 {item.event}
               </div>
             </motion.div>

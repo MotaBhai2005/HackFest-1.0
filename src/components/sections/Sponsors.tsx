@@ -17,75 +17,29 @@ export default function Sponsors() {
     <section
       ref={ref}
       id="sponsors"
-      style={{
-        background: '#fde403',
-        padding: '96px 0',
-        position: 'relative',
-      }}
+      className="bg-hack-yellow py-16 md:py-24 relative"
     >
       {/* Red tape separator at top */}
-      <div
-        style={{
-          position: 'absolute',
-          top: 0,
-          left: 0,
-          right: 0,
-          height: 4,
-          background: '#c00100',
-        }}
-      />
+      <div className="absolute top-0 left-0 right-0 h-1 bg-hack-red" />
 
-      <div
-        style={{
-          maxWidth: 1280,
-          width: '100%',
-          margin: '0 auto',
-          padding: '0 24px',
-          display: 'flex',
-          flexDirection: 'column',
-          gap: '4rem',
-        }}
-      >
+      <div className="max-w-7xl w-full mx-auto px-4 md:px-6 flex flex-col gap-10 md:gap-16">
         {/* Header */}
         <motion.div
           initial="hidden"
           animate={inView ? 'visible' : 'hidden'}
           variants={{ visible: { transition: { staggerChildren: 0.06 } } }}
-          style={{
-            display: 'flex',
-            flexDirection: 'column',
-            alignItems: 'center',
-            gap: '1rem',
-          }}
+          className="flex flex-col items-center gap-3 md:gap-4"
         >
           {/* Hazard stripe accent */}
           <motion.div
             custom={0}
             variants={brutalistEntrance}
-            style={{
-              width: 96,
-              height: 16,
-              background: `repeating-linear-gradient(
-                45deg,
-                #fde403 0px,
-                #fde403 9px,
-                #000 9px,
-                #000 18px
-              )`,
-            }}
+            className="w-16 md:w-24 h-3 md:h-4 hazard-stripe-sm"
           />
           <motion.div
             custom={1}
             variants={brutalistEntrance}
-            style={{
-              fontFamily: "'Inter', sans-serif",
-              fontWeight: 900,
-              fontSize: 'clamp(14px, 1.6vw, 20px)',
-              letterSpacing: '0.5em',
-              textTransform: 'uppercase',
-              color: '#000',
-              textAlign: 'center',
-            }}
+            className="font-body font-black text-xs sm:text-sm md:text-base lg:text-xl tracking-[0.3em] md:tracking-[0.5em] uppercase text-hack-black text-center"
           >
             Transmission_Supported_By
           </motion.div>
@@ -96,39 +50,27 @@ export default function Sponsors() {
           initial="hidden"
           animate={inView ? 'visible' : 'hidden'}
           variants={{ visible: { transition: { staggerChildren: 0.08 } } }}
-          style={{
-            border: '4px solid #000',
-            display: 'grid',
-            gridTemplateColumns: 'repeat(4, 1fr)',
-          }}
+          className="border-4 border-hack-black grid grid-cols-2 lg:grid-cols-4"
         >
           {sponsors.map((sponsor, i) => (
             <motion.div
               key={sponsor.name}
               custom={i}
               variants={brutalistEntrance}
-              style={{
-                borderRight: i < sponsors.length - 1 ? '4px solid #000' : 'none',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                padding: '48px 32px',
-                height: 132,
-                cursor: 'pointer',
-                transition: 'background 0.05s',
-              }}
-              whileHover={{ backgroundColor: '#fff' }}
+              className={`
+                ${i < sponsors.length - 1 ? 'border-b-4 lg:border-b-0 border-hack-black' : ''}
+                ${i % 2 === 0 ? 'border-r-4 border-hack-black' : ''}
+                ${i < 2 ? 'lg:border-r-4 lg:border-hack-black' : ''}
+                ${i === sponsors.length - 1 ? 'lg:border-r-0' : ''}
+                flex items-center justify-center
+                p-6 sm:p-8 md:p-12
+                h-24 sm:h-28 md:h-[132px]
+                cursor-pointer
+                hover:bg-white transition-colors duration-100
+              `}
+              whileHover={{ scale: 1.02 }}
             >
-              <span
-                style={{
-                  fontFamily: "'Space Grotesk', sans-serif",
-                  fontWeight: 700,
-                  fontSize: 'clamp(16px, 2.2vw, 30px)',
-                  letterSpacing: '-0.05em',
-                  color: '#000',
-                  textAlign: 'center',
-                }}
-              >
+              <span className="font-display font-bold text-base sm:text-lg md:text-xl lg:text-2xl xl:text-[30px] tracking-tighter text-hack-black text-center">
                 {sponsor.name}
               </span>
             </motion.div>

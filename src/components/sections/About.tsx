@@ -1,21 +1,18 @@
 import { useRef } from 'react';
 import { motion, useInView } from 'framer-motion';
-import { brutalistEntrance } from '../../lib/animations';
+import { brutalistEntrance, staggeredSlideUp } from '../../lib/animations';
 import HUDBracket from '../ui/HUDBracket';
-
-const imgContainer = 'https://www.figma.com/api/mcp/asset/dbfbc5df-ad31-484f-92b3-dbcaaaae1678';
-const imgContainer1 = 'https://www.figma.com/api/mcp/asset/bfe48a2c-274a-4ef2-8292-074b53526c01';
 
 const stats = [
   {
     value: '48H',
     label: 'UPTIME_REQUIRED',
-    icon: imgContainer,
+    icon: '/images/icon-clock.png',
   },
   {
     value: '2048',
     label: 'CONNECTED_NODES',
-    icon: imgContainer1,
+    icon: '/images/icon-nodes.png',
   },
 ];
 
@@ -27,44 +24,15 @@ export default function About() {
     <section
       ref={ref}
       id="about"
-      style={{
-        background: '#000',
-        display: 'grid',
-        gridTemplateColumns: '1fr 1fr',
-        minHeight: '960px',
-        borderBottom: '8px solid #000',
-      }}
+      className="bg-hack-black grid grid-cols-1 md:grid-cols-2 min-h-[600px] lg:min-h-[960px] border-b-8 border-hack-black"
     >
       {/* Left col — red bg */}
-      <div
-        style={{
-          background: '#c00100',
-          borderRight: '8px solid #000',
-          display: 'flex',
-          flexDirection: 'column',
-          justifyContent: 'center',
-          padding: '80px 96px',
-          overflow: 'hidden',
-          position: 'relative',
-        }}
-      >
+      <div className="bg-hack-red md:border-r-8 border-hack-black flex flex-col justify-center p-10 sm:p-16 md:p-20 lg:p-24 overflow-hidden relative">
         {/* Ghost number */}
         <div
-          style={{
-            position: 'absolute',
-            left: '-80px',
-            top: '50%',
-            transform: 'translateY(-60%)',
-            fontFamily: "'Inter', sans-serif",
-            fontWeight: 900,
-            fontSize: 'clamp(160px, 22vw, 320px)',
-            color: 'rgba(0,0,0,0.2)',
-            letterSpacing: '-0.05em',
-            lineHeight: 0.85,
-            userSelect: 'none',
-            pointerEvents: 'none',
-            zIndex: 0,
-          }}
+          className="absolute -left-10 md:-left-20 top-1/2 -translate-y-[60%]
+            font-body font-black text-[100px] sm:text-[140px] md:text-[22vw] xl:text-[320px]
+            text-black/20 tracking-tighter leading-[0.85] select-none pointer-events-none z-0"
         >
           01
         </div>
@@ -73,22 +41,15 @@ export default function About() {
           initial="hidden"
           animate={inView ? 'visible' : 'hidden'}
           variants={{ visible: { transition: { staggerChildren: 0.07 } } }}
-          style={{ position: 'relative', zIndex: 1 }}
+          className="relative z-[1]"
         >
           {['ANALOG', 'HEART', 'DIGITAL', 'MIND'].map((word, i) => (
             <motion.div
               key={word}
               custom={i}
               variants={brutalistEntrance}
-              style={{
-                fontFamily: "'Space Grotesk', sans-serif",
-                fontWeight: 700,
-                fontSize: 'clamp(56px, 9vw, 128px)',
-                lineHeight: 1,
-                letterSpacing: '-0.04em',
-                textTransform: 'uppercase',
-                color: '#fff',
-              }}
+              className="font-display font-bold text-[40px] sm:text-[56px] md:text-[7vw] xl:text-[128px]
+                leading-none tracking-tight uppercase text-white"
             >
               {word}
             </motion.div>
@@ -96,75 +57,44 @@ export default function About() {
         </motion.div>
 
         {/* Black bar accent */}
-        <div
-          style={{
-            marginTop: '2rem',
-            height: 24,
-            width: 192,
-            background: '#000',
-            position: 'relative',
-            zIndex: 1,
-          }}
+        <motion.div
+          initial={{ scaleX: 0 }}
+          animate={inView ? { scaleX: 1 } : {}}
+          transition={{ delay: 0.4, duration: 0.3, ease: [0.25, 0, 0.25, 1] }}
+          className="mt-6 md:mt-8 h-4 md:h-6 w-32 md:w-48 bg-hack-black relative z-[1] origin-left"
         />
       </div>
 
       {/* Right col — black bg */}
-      <div
-        style={{
-          display: 'flex',
-          flexDirection: 'column',
-          justifyContent: 'center',
-          padding: '80px 96px',
-          position: 'relative',
-        }}
-      >
+      <div className="flex flex-col justify-center p-10 sm:p-16 md:p-20 lg:p-24 relative">
         {/* HUD bracket corners */}
         <HUDBracket size={48} offset={-12} color="#c00100">
           <motion.div
             initial="hidden"
             animate={inView ? 'visible' : 'hidden'}
             variants={{ visible: { transition: { staggerChildren: 0.08 } } }}
-            style={{ display: 'flex', flexDirection: 'column', gap: '2rem' }}
+            className="flex flex-col gap-6 md:gap-8"
           >
             {/* Label */}
             <motion.div custom={0} variants={brutalistEntrance}>
-              <span
-                style={{
-                  fontFamily: "'JetBrains Mono', monospace",
-                  fontWeight: 700,
-                  fontSize: '1rem',
-                  letterSpacing: '0.4em',
-                  color: '#c00100',
-                  textTransform: 'uppercase',
-                }}
-              >
+              <span className="font-mono font-bold text-sm md:text-base tracking-[0.4em] text-hack-red uppercase">
                 {'> CORE_DIAGNOSTICS'}
               </span>
             </motion.div>
 
             {/* Body */}
             <motion.div custom={1} variants={brutalistEntrance}>
-              <p
-                style={{
-                  fontFamily: "'JetBrains Mono', monospace",
-                  fontWeight: 700,
-                  fontStyle: 'italic',
-                  fontSize: 'clamp(14px, 1.6vw, 24px)',
-                  color: '#fff',
-                  textTransform: 'uppercase',
-                  lineHeight: 1.4,
-                }}
-              >
+              <p className="font-mono font-bold italic text-sm sm:text-base md:text-lg lg:text-xl text-white uppercase leading-relaxed">
                 Welcome to the nexus.
                 <br />
                 HACK_FEST is not just an
-                <br />
+                <br className="hidden sm:block" />
                 event; it&apos;s a cognitive
-                <br />
+                <br className="hidden sm:block" />
                 rewrite. We merge raw brutalist
-                <br />
+                <br className="hidden sm:block" />
                 engineering with the precision
-                <br />
+                <br className="hidden sm:block" />
                 of dystopian UI.
               </p>
             </motion.div>
@@ -172,54 +102,33 @@ export default function About() {
             {/* Stats */}
             <motion.div
               custom={2}
-              variants={brutalistEntrance}
-              style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem', paddingTop: '2rem' }}
+              variants={staggeredSlideUp}
+              className="flex flex-col gap-4 md:gap-6 pt-4 md:pt-8"
             >
-              {stats.map((stat) => (
-                <div
+              {stats.map((stat, i) => (
+                <motion.div
                   key={stat.value}
-                  style={{
-                    background: 'rgba(255,255,255,0.05)',
-                    border: '4px solid #c00100',
-                    padding: '28px',
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'space-between',
-                    height: 112,
-                  }}
+                  custom={i}
+                  variants={staggeredSlideUp}
+                  initial="hidden"
+                  animate={inView ? 'visible' : 'hidden'}
+                  className="bg-white/5 border-4 border-hack-red p-5 md:p-7 flex items-center justify-between h-20 md:h-28"
                 >
                   <div>
-                    <div
-                      style={{
-                        fontFamily: "'JetBrains Mono', monospace",
-                        fontWeight: 700,
-                        fontSize: 'clamp(24px, 3vw, 36px)',
-                        color: '#c00100',
-                        lineHeight: 1,
-                      }}
-                    >
+                    <div className="font-mono font-bold text-xl sm:text-2xl md:text-3xl text-hack-red leading-none">
                       {stat.value}
                     </div>
-                    <div
-                      style={{
-                        fontFamily: "'JetBrains Mono', monospace",
-                        fontSize: '12px',
-                        color: 'rgba(255,255,255,0.6)',
-                        letterSpacing: '0.1em',
-                        textTransform: 'uppercase',
-                        marginTop: 4,
-                      }}
-                    >
+                    <div className="font-mono text-[10px] md:text-xs text-white/60 tracking-widest uppercase mt-1">
                       {stat.label}
                     </div>
                   </div>
                   <img
                     src={stat.icon}
                     alt=""
-                    style={{ height: 36, width: 'auto', opacity: 0.8 }}
+                    className="h-7 md:h-9 w-auto opacity-80"
                     onError={(e) => ((e.target as HTMLImageElement).style.display = 'none')}
                   />
-                </div>
+                </motion.div>
               ))}
             </motion.div>
           </motion.div>

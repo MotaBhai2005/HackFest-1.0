@@ -1,66 +1,165 @@
-@import './tokens.css';
-@import './typography.css';
+@import "tailwindcss";
 
-/* ── Hard Reset ── */
-*,
-*::before,
-*::after {
-  box-sizing: border-box;
-  margin: 0;
-  padding: 0;
-  border-radius: 0 !important; /* NEVER round */
-}
+/* ══════════════════════════════════════
+   CUSTOM THEME — HackFest Design Tokens
+   ══════════════════════════════════════ */
+@theme {
+  /* ── Colors ── */
+  --color-surface: #fff9ea;
+  --color-surface-dim: #f4db00;
+  --color-surface-low: #fff4bf;
+  --color-surface-container: #ffef90;
+  --color-surface-high: #fde403;
+  --color-surface-variant: #fde403;
 
-html {
-  scroll-behavior: smooth;
-}
+  --color-on-surface: #201c00;
+  --color-on-surface-variant: #4b4732;
+  --color-outline: #7c775f;
 
-body {
-  background-color: var(--surface-container-highest);
-  color: var(--on-surface);
-  font-family: var(--font-body);
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  overflow-x: hidden;
-}
+  --color-primary: #c00100;
+  --color-on-primary: #ffffff;
+  --color-on-primary-container: #cb0100;
 
-/* ── No soft shadows anywhere ── */
-img {
-  display: block;
-  max-width: 100%;
-}
+  --color-secondary-fixed: #1a1c1c;
 
-button {
-  cursor: pointer;
-  border: none;
-  background: none;
-  font-family: inherit;
-}
+  --color-tertiary-container: #e1e1e1;
 
-a {
-  text-decoration: none;
-  color: inherit;
-}
+  --color-error: #ba1a1a;
 
-/* ── Scrollbar ── */
-::-webkit-scrollbar {
-  width: 4px;
-}
-::-webkit-scrollbar-track {
-  background: #000;
-}
-::-webkit-scrollbar-thumb {
-  background: var(--primary);
-}
+  --color-hack-yellow: #fde403;
+  --color-hack-red: #c00100;
+  --color-hack-black: #000000;
+  --color-hack-white: #ffffff;
 
-/* ── Selection ── */
-::selection {
-  background: var(--primary);
-  color: var(--on-primary);
+  /* ── Typography ── */
+  --font-display: 'Space Grotesk', sans-serif;
+  --font-body: 'Inter', sans-serif;
+  --font-mono: 'JetBrains Mono', 'Courier New', monospace;
+
+  /* ── Spacing ── */
+  --spacing-18: 4.5rem;
+  --spacing-22: 5.5rem;
+  --spacing-26: 6.5rem;
+  --spacing-28: 7rem;
+  --spacing-30: 7.5rem;
+  --spacing-34: 8.5rem;
+  --spacing-88: 22rem;
+
+  /* ── Design System Hard Rules ── */
+  --radius-none: 0px;
+  --divider-weight: 4px;
+  --shadow-offset: 6px;
+  --bracket-size: 20px;
+  --bracket-weight: 4px;
 }
 
-/* ── Section base ── */
-section {
-  position: relative;
-  width: 100%;
+/* ═══════════════════════════════════
+   BASE LAYER — Global resets
+   ═══════════════════════════════════ */
+@layer base {
+  *,
+  *::before,
+  *::after {
+    border-radius: 0 !important;
+  }
+
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    background-color: var(--color-surface-high);
+    color: var(--color-on-surface);
+    font-family: var(--font-body);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    overflow-x: hidden;
+  }
+
+  img {
+    display: block;
+    max-width: 100%;
+  }
+
+  button {
+    cursor: pointer;
+    border: none;
+    background: none;
+    font-family: inherit;
+  }
+
+  a {
+    text-decoration: none;
+    color: inherit;
+  }
+
+  section {
+    position: relative;
+    width: 100%;
+  }
+
+  /* ── Scrollbar ── */
+  ::-webkit-scrollbar {
+    width: 4px;
+  }
+  ::-webkit-scrollbar-track {
+    background: #000;
+  }
+  ::-webkit-scrollbar-thumb {
+    background: var(--color-primary);
+  }
+
+  /* ── Selection ── */
+  ::selection {
+    background: var(--color-primary);
+    color: var(--color-on-primary);
+  }
+}
+
+/* ═══════════════════════════════════
+   CUSTOM UTILITIES
+   ═══════════════════════════════════ */
+@utility text-shadow-glitch {
+  text-shadow: -3px 0px 0px #0ff, 3px 0px 0px #ba1a1a;
+}
+
+@utility text-shadow-none {
+  text-shadow: none;
+}
+
+@utility hazard-stripe {
+  background: repeating-linear-gradient(
+    45deg,
+    #fde403 0px,
+    #fde403 14px,
+    #000 14px,
+    #000 28px
+  );
+}
+
+@utility hazard-stripe-sm {
+  background: repeating-linear-gradient(
+    45deg,
+    #fde403 0px,
+    #fde403 9px,
+    #000 9px,
+    #000 18px
+  );
+}
+
+/* ── Scanline overlay ── */
+@utility scanlines {
+  background: repeating-linear-gradient(
+    0deg,
+    rgba(0, 0, 0, 0.06) 0px,
+    rgba(0, 0, 0, 0.06) 1px,
+    transparent 1px,
+    transparent 3px
+  );
+}
+
+/* ── CRT glow ── */
+@utility crt-glow {
+  box-shadow: inset 0 0 60px rgba(253, 228, 3, 0.05),
+    inset 0 0 120px rgba(192, 1, 0, 0.03);
 }

@@ -11,64 +11,23 @@ export default function Register() {
     <section
       ref={ref}
       id="register"
-      style={{
-        background: '#fde403',
-        padding: '128px 64px',
-        position: 'relative',
-      }}
+      className="bg-hack-yellow px-4 sm:px-8 md:px-16 py-16 md:py-32 relative"
     >
       {/* Hazard stripe border top */}
-      <div
-        style={{
-          position: 'absolute',
-          top: 0,
-          left: 0,
-          right: 0,
-          height: 16,
-          background: `repeating-linear-gradient(
-            45deg,
-            #fde403 0px,
-            #fde403 14px,
-            #000 14px,
-            #000 28px
-          )`,
-        }}
-      />
+      <div className="absolute top-0 left-0 right-0 h-3 md:h-4 hazard-stripe" />
 
       <motion.div
         initial="hidden"
         animate={inView ? 'visible' : 'hidden'}
         variants={{ visible: { transition: { staggerChildren: 0.06 } } }}
-        style={{
-          background: '#000',
-          border: '12px solid #c00100',
-          padding: 'clamp(60px, 8vw, 140px)',
-          maxWidth: 1152,
-          width: '100%',
-          position: 'relative',
-          overflow: 'hidden',
-        }}
+        className="bg-hack-black border-4 md:border-[12px] border-hack-red p-8 sm:p-12 md:p-16 lg:p-24 xl:p-36
+          max-w-5xl w-full relative overflow-hidden mx-auto"
       >
         {/* Decorative QR icon bg */}
         <div
-          style={{
-            position: 'absolute',
-            top: '-28px',
-            right: '-28px',
-            width: 360,
-            height: 360,
-            opacity: 0.08,
-            transform: 'rotate(12deg)',
-            pointerEvents: 'none',
-            fontFamily: 'monospace',
-            fontSize: 240,
-            color: '#c00100',
-            lineHeight: 1,
-            overflow: 'hidden',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-          }}
+          className="absolute -top-7 -right-7 w-48 md:w-[360px] h-48 md:h-[360px] opacity-[0.08] rotate-12
+            pointer-events-none font-mono text-[140px] md:text-[240px] text-hack-red leading-none
+            overflow-hidden flex items-center justify-center"
         >
           ▣
         </div>
@@ -78,15 +37,8 @@ export default function Register() {
           {['YOUR', 'ONLINE', 'EXISTENCE', 'AWAITS'].map((word) => (
             <div
               key={word}
-              style={{
-                fontFamily: "'Inter', sans-serif",
-                fontWeight: 900,
-                fontSize: 'clamp(56px, 11vw, 160px)',
-                lineHeight: 0.82,
-                letterSpacing: '-0.05em',
-                textTransform: 'uppercase',
-                color: '#fde403',
-              }}
+              className="font-body font-black text-[40px] sm:text-[56px] md:text-[9vw] lg:text-[120px] xl:text-[160px]
+                leading-[0.82] tracking-tighter uppercase text-hack-yellow"
             >
               {word}
             </div>
@@ -97,27 +49,13 @@ export default function Register() {
         <motion.div
           custom={1}
           variants={brutalistEntrance}
-          style={{
-            marginTop: '3rem',
-            display: 'flex',
-            alignItems: 'center',
-            gap: '2.5rem',
-            flexWrap: 'wrap',
-          }}
+          className="mt-8 md:mt-12 flex flex-col sm:flex-row items-start sm:items-center gap-6 md:gap-10"
         >
-          <PrimaryButton size="lg" href="#register-form">
+          <PrimaryButton size="lg" href="#">
             SYNC_NOW
           </PrimaryButton>
 
-          <div
-            style={{
-              fontFamily: "'JetBrains Mono', monospace",
-              fontSize: '0.875rem',
-              color: '#c00100',
-              letterSpacing: '0.1em',
-              lineHeight: 1.6,
-            }}
-          >
+          <div className="font-mono text-xs md:text-sm text-hack-red tracking-widest leading-relaxed">
             <div>[ STATUS: WAITING_FOR_USER_INPUT ]</div>
             <div>[ UPLOAD_SPEED: UNRESTRICTED ]</div>
           </div>

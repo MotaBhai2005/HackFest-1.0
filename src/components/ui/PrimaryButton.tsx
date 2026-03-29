@@ -8,12 +8,13 @@ interface PrimaryButtonProps {
   href?: string;
   size?: 'sm' | 'md' | 'lg';
   variant?: 'primary' | 'dark';
+  className?: string;
 }
 
-const sizes = {
-  sm: { padding: '12px 28px', fontSize: '0.875rem' },
-  md: { padding: '20px 48px', fontSize: '1.125rem' },
-  lg: { padding: '36px 68px', fontSize: '2.25rem' },
+const sizeClasses = {
+  sm: 'px-7 py-3 text-sm',
+  md: 'px-12 py-5 text-lg',
+  lg: 'px-10 py-6 text-xl md:px-16 md:py-9 md:text-4xl',
 };
 
 export default function PrimaryButton({
@@ -22,32 +23,22 @@ export default function PrimaryButton({
   href,
   size = 'md',
   variant = 'primary',
+  className = '',
 }: PrimaryButtonProps) {
   const isPrimary = variant === 'primary';
-  const sizeStyle = sizes[size];
 
-  const baseStyle: React.CSSProperties = {
-    display: 'inline-flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-    padding: sizeStyle.padding,
-    background: isPrimary ? '#c00100' : '#000',
-    color: '#ffffff',
-    fontFamily: "'Inter', sans-serif",
-    fontWeight: 900,
-    fontSize: sizeStyle.fontSize,
-    letterSpacing: '0.1em',
-    textTransform: 'uppercase',
-    border: isPrimary ? '4px solid #ffffff' : 'none',
-    cursor: 'pointer',
-    userSelect: 'none',
-    position: 'relative',
-    whiteSpace: 'nowrap',
-  };
+  const baseClasses = `
+    inline-flex items-center justify-center
+    font-body font-black tracking-wider uppercase
+    select-none whitespace-nowrap relative cursor-pointer
+    ${isPrimary ? 'bg-hack-red text-white border-4 border-white' : 'bg-hack-black text-white border-0'}
+    ${sizeClasses[size]}
+    ${className}
+  `;
 
   const content = (
     <motion.div
-      style={baseStyle}
+      className={baseClasses}
       initial="rest"
       whileHover="hover"
       whileTap="tap"
@@ -58,11 +49,11 @@ export default function PrimaryButton({
   );
 
   if (href) {
-    return <a href={href} style={{ display: 'inline-block' }}>{content}</a>;
+    return <a href={href} className="inline-block">{content}</a>;
   }
 
   return (
-    <button onClick={onClick} style={{ background: 'none', border: 'none', padding: 0 }}>
+    <button onClick={onClick} className="bg-transparent border-0 p-0">
       {content}
     </button>
   );

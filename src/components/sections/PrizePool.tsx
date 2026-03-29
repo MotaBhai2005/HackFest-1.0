@@ -2,16 +2,12 @@ import { useRef, useEffect } from 'react';
 import { motion, useInView } from 'framer-motion';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
-import { boltOnReveal } from '../../lib/animations';
+import { boltOnReveal, popIn } from '../../lib/animations';
 import HUDBracket from '../ui/HUDBracket';
 
 gsap.registerPlugin(ScrollTrigger);
 
-const imgIcon = 'https://www.figma.com/api/mcp/asset/07b0974f-3911-4d5c-8991-92c97aac833f';
-const imgIcon1 = 'https://www.figma.com/api/mcp/asset/c4f306e7-f33b-4066-9265-f6eb6fe4d74c';
-const imgIcon2 = 'https://www.figma.com/api/mcp/asset/d6727e42-b139-40dc-887a-6a1540bf5fca';
-
-interface PrizeCard {
+interface PrizeCardData {
   amount: string;
   numericAmount: number;
   title: string;
@@ -21,35 +17,35 @@ interface PrizeCard {
   isGrand?: boolean;
 }
 
-const prizes: PrizeCard[] = [
+const prizes: PrizeCardData[] = [
   {
-    amount: '50K',
-    numericAmount: 50000,
+    amount: '3K',
+    numericAmount: 3000,
     title: 'MAIN_FRAME_CHAMP',
     fileId: '#FILE_001',
     accessLevel: 'ACCESS_LEVEL: ALPHA',
-    icon: imgIcon,
+    icon: '/images/prize-icon-1.png',
   },
   {
-    amount: '150K',
-    numericAmount: 150000,
+    amount: '5K',
+    numericAmount: 5000,
     title: 'GRAND_SYS_ADMIN',
     fileId: '#SYSTEM_ROOT',
     accessLevel: 'TOTAL_POOL_RESERVE',
-    icon: imgIcon1,
+    icon: '/images/prize-icon-2.png',
     isGrand: true,
   },
   {
-    amount: '30K',
-    numericAmount: 30000,
+    amount: '2K',
+    numericAmount: 2000,
     title: 'NEURAL_EXPLORER',
     fileId: '#FILE_003',
     accessLevel: 'ACCESS_LEVEL: BETA',
-    icon: imgIcon2,
+    icon: '/images/prize-icon-3.png',
   },
 ];
 
-function PrizeCard({ prize, index }: { prize: PrizeCard; index: number }) {
+function PrizeCard({ prize, index }: { prize: PrizeCardData; index: number }) {
   const amountRef = useRef<HTMLDivElement>(null);
   const cardRef = useRef<HTMLDivElement>(null);
   const inView = useInView(cardRef, { once: true, margin: '-80px' });
@@ -57,24 +53,19 @@ function PrizeCard({ prize, index }: { prize: PrizeCard; index: number }) {
   useEffect(() => {
     if (!inView || !amountRef.current) return;
     const el = amountRef.current;
-    const isMega = prize.amount.includes('150');
     const suffix = prize.amount.replace(/\d+/g, '');
     const target = { val: 0 };
 
     gsap.to(target, {
       val: prize.numericAmount / 1000,
-      duration: isMega ? 1.8 : 1.2,
+      duration: prize.isGrand ? 1.8 : 1.2,
       ease: 'power2.out',
       delay: index * 0.15,
       onUpdate: () => {
-        el.textContent = Math.round(target.val) + 'K';
+        el.textContent = Math.round(target.val) + suffix;
       },
     });
-  }, [inView, prize.numericAmount, prize.amount, index]);
-
-  const bg = prize.isGrand ? '#c00100' : '#fde403';
-  const textColor = prize.isGrand ? '#fff' : '#000';
-  const iconColor = prize.isGrand ? '#fff' : '#000';
+  }, [inView, prize.numericAmount, prize.amount, prize.isGrand, index]);
 
   return (
     <motion.div
@@ -83,172 +74,75 @@ function PrizeCard({ prize, index }: { prize: PrizeCard; index: number }) {
       variants={boltOnReveal}
       initial="hidden"
       animate={inView ? 'visible' : 'hidden'}
-      style={{
-        background: bg,
-        border: '4px solid #000',
-        height: 404,
-        position: 'relative',
-        boxShadow: prize.isGrand ? '15px 15px 0px #000' : 'none',
-      }}
+      whileHover={{ y: -8, transition: { duration: 0.2 } }}
+      className={`
+        border-4 border-hack-black h-80 md:h-[404px] relative
+        transition-transform
+        ${prize.isGrand
+          ? 'bg-hack-red shadow-[10px_10px_0px_#000] md:shadow-[15px_15px_0px_#000]'
+          : 'bg-hack-yellow'
+        }
+      `}
     >
       {/* HUD bracket — top left */}
-      <div
-        style={{
-          position: 'absolute',
-          top: -8,
-          left: -8,
-          width: 20,
-          height: 20,
-          borderTop: '4px solid #000',
-          borderLeft: '4px solid #000',
-        }}
-      />
+      <div className="absolute -top-2 -left-2 w-5 h-5 border-t-4 border-l-4 border-hack-black" />
       {/* HUD bracket — bottom right */}
-      <div
-        style={{
-          position: 'absolute',
-          bottom: -8,
-          right: -8,
-          width: 20,
-          height: 20,
-          borderBottom: '4px solid #000',
-          borderRight: '4px solid #000',
-        }}
-      />
+      <div className="absolute -bottom-2 -right-2 w-5 h-5 border-b-4 border-r-4 border-hack-black" />
 
       {/* Top row: icon + file ID */}
-      <div
-        style={{
-          position: 'absolute',
-          top: 40,
-          left: 40,
-          right: 40,
-          display: 'flex',
-          justifyContent: 'space-between',
-          alignItems: 'flex-start',
-        }}
-      >
-        <img
+      <div className="absolute top-6 md:top-10 left-6 md:left-10 right-6 md:right-10 flex justify-between items-start">
+        <motion.img
           src={prize.icon}
           alt=""
-          style={{ height: 50, width: 'auto', opacity: 0.9 }}
+          className="h-8 md:h-[50px] w-auto opacity-90"
+          variants={popIn}
+          initial="hidden"
+          animate={inView ? 'visible' : 'hidden'}
           onError={(e) => ((e.target as HTMLImageElement).style.display = 'none')}
         />
         {prize.isGrand ? (
-          <div style={{ background: '#fff', padding: '2px 8px' }}>
-            <span
-              style={{
-                fontFamily: "'JetBrains Mono', monospace",
-                fontWeight: 700,
-                fontSize: '12px',
-                color: '#000',
-              }}
-            >
+          <div className="bg-white px-2 py-0.5">
+            <span className="font-mono font-bold text-[10px] md:text-xs text-hack-black">
               {prize.fileId}
             </span>
           </div>
         ) : (
-          <span
-            style={{
-              fontFamily: "'JetBrains Mono', monospace",
-              fontSize: '12px',
-              color: 'rgba(0,0,0,0.4)',
-            }}
-          >
+          <span className="font-mono text-[10px] md:text-xs text-black/40">
             {prize.fileId}
           </span>
         )}
       </div>
 
       {/* Amount */}
-      <div
-        style={{
-          position: 'absolute',
-          top: 148,
-          left: 40,
-          right: 40,
-        }}
-      >
+      <div className="absolute top-28 md:top-[148px] left-6 md:left-10 right-6 md:right-10">
         <div
           ref={amountRef}
-          style={{
-            fontFamily: "'Space Grotesk', sans-serif",
-            fontWeight: 700,
-            fontSize: 'clamp(56px, 7vw, 96px)',
-            lineHeight: 1,
-            color: textColor,
-          }}
+          className={`font-display font-bold text-5xl sm:text-6xl md:text-[7vw] lg:text-8xl leading-none
+            ${prize.isGrand ? 'text-white' : 'text-hack-black'}`}
         >
           {prize.amount}
         </div>
       </div>
 
       {/* Title */}
-      <div
-        style={{
-          position: 'absolute',
-          top: 260,
-          left: 40,
-          right: 40,
-        }}
-      >
-        <div
-          style={{
-            fontFamily: "'Inter', sans-serif",
-            fontWeight: 900,
-            fontSize: 'clamp(12px, 1.4vw, 20px)',
-            letterSpacing: '0.1em',
-            textTransform: 'uppercase',
-            color: textColor,
-          }}
-        >
+      <div className="absolute top-48 md:top-[260px] left-6 md:left-10 right-6 md:right-10">
+        <div className={`font-body font-black text-[10px] sm:text-xs md:text-sm lg:text-base tracking-widest uppercase
+          ${prize.isGrand ? 'text-white' : 'text-hack-black'}`}>
           {prize.title}
         </div>
       </div>
 
       {/* Access level */}
-      <div
-        style={{
-          position: 'absolute',
-          top: 320,
-          left: 40,
-          right: 40,
-        }}
-      >
+      <div className="absolute top-60 md:top-[320px] left-6 md:left-10 right-6 md:right-10">
         {prize.isGrand ? (
-          <div
-            style={{
-              background: '#000',
-              display: 'inline-block',
-              padding: '8px 16px',
-            }}
-          >
-            <span
-              style={{
-                fontFamily: "'Inter', sans-serif",
-                fontWeight: 900,
-                fontSize: '14px',
-                color: '#fde403',
-                textTransform: 'uppercase',
-              }}
-            >
+          <div className="bg-hack-black inline-block px-3 md:px-4 py-1.5 md:py-2">
+            <span className="font-body font-black text-[10px] md:text-sm text-hack-yellow uppercase">
               {prize.accessLevel}
             </span>
           </div>
         ) : (
-          <div
-            style={{
-              borderTop: '2px solid rgba(0,0,0,0.2)',
-              paddingTop: '18px',
-            }}
-          >
-            <span
-              style={{
-                fontFamily: "'JetBrains Mono', monospace",
-                fontSize: '12px',
-                color: 'rgba(0,0,0,0.6)',
-              }}
-            >
+          <div className="border-t-2 border-black/20 pt-3 md:pt-[18px]">
+            <span className="font-mono text-[10px] md:text-xs text-black/60">
               {prize.accessLevel}
             </span>
           </div>
@@ -266,57 +160,25 @@ export default function PrizePool() {
     <section
       ref={ref}
       id="prize-pool"
-      style={{
-        background: '#fff',
-        borderTop: '16px solid #000',
-        borderBottom: '16px solid #000',
-        padding: '112px 24px',
-      }}
+      className="bg-white border-t-[8px] md:border-t-[16px] border-b-[8px] md:border-b-[16px] border-hack-black
+        py-16 md:py-28 px-4 md:px-6"
     >
-      <div style={{ maxWidth: 1280, width: '100%', margin: '0 auto' }}>
-
+      <div className="max-w-7xl w-full mx-auto">
         {/* Heading row */}
-        <div
-          style={{
-            display: 'flex',
-            alignItems: 'flex-end',
-            justifyContent: 'space-between',
-            marginBottom: '5rem',
-          }}
-        >
+        <div className="flex flex-col md:flex-row md:items-end md:justify-between mb-10 md:mb-20 gap-4">
           <motion.div
             initial={{ opacity: 0, y: 24 }}
             animate={inView ? { opacity: 1, y: 0 } : {}}
             transition={{ duration: 0.12 }}
           >
-            <h2
-              style={{
-                fontFamily: "'Space Grotesk', sans-serif",
-                fontWeight: 700,
-                fontSize: 'clamp(48px, 11vw, 160px)',
-                lineHeight: 1,
-                letterSpacing: '-0.05em',
-                textTransform: 'uppercase',
-                color: '#000',
-              }}
-            >
+            <h2 className="font-display font-bold text-[40px] sm:text-[60px] md:text-[9vw] lg:text-[120px] xl:text-[160px]
+              leading-none tracking-tighter uppercase text-hack-black">
               REWARD_FILES
             </h2>
           </motion.div>
 
           {/* Encryption metadata */}
-          <div
-            style={{
-              fontFamily: "'JetBrains Mono', monospace",
-              fontSize: '12px',
-              color: 'rgba(0,0,0,0.5)',
-              textAlign: 'right',
-              lineHeight: 1.6,
-              paddingBottom: '1rem',
-              flexShrink: 0,
-              marginLeft: '1rem',
-            }}
-          >
+          <div className="font-mono text-[10px] md:text-xs text-black/50 md:text-right leading-relaxed pb-2 md:pb-4 shrink-0">
             <div>ENCRYPTION:</div>
             <div>AES_256</div>
             <div>SOURCE:</div>
@@ -325,13 +187,7 @@ export default function PrizePool() {
         </div>
 
         {/* Prize cards grid */}
-        <div
-          style={{
-            display: 'grid',
-            gridTemplateColumns: 'repeat(3, 1fr)',
-            gap: '2rem',
-          }}
-        >
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
           {prizes.map((prize, i) => (
             <PrizeCard key={prize.title} prize={prize} index={i} />
           ))}

@@ -19,7 +19,7 @@ const faqs = [
     id: 3,
     question: 'WHAT IS THE PRIZE POOL STRUCTURE?',
     answer:
-      'TOTAL_POOL: 230K. DISTRIBUTED ACROSS ALPHA, ROOT, AND BETA ACCESS TIERS. ADDITIONAL BOUNTIES UNLOCKED DURING EXECUTION_CYCLE.',
+      'TOTAL_POOL: 10K. DISTRIBUTED ACROSS ALPHA, ROOT, AND BETA ACCESS TIERS. ADDITIONAL BOUNTIES UNLOCKED DURING EXECUTION_CYCLE.',
   },
   {
     id: 4,
@@ -42,93 +42,34 @@ function FAQItem({ faq, index }: { faq: typeof faqs[0]; index: number }) {
     <motion.div
       custom={index}
       variants={brutalistEntrance}
-      style={{
-        background: open ? 'rgba(255,255,255,0.08)' : 'rgba(255,255,255,0.05)',
-        border: `4px solid ${open ? '#c00100' : '#fff'}`,
-        position: 'relative',
-        transition: 'border-color 0.04s, background 0.04s',
-      }}
+      className={`
+        relative transition-all duration-75
+        ${open ? 'bg-white/[0.08] border-4 border-hack-red' : 'bg-white/[0.05] border-4 border-white'}
+      `}
     >
       {/* HUD bracket — top left */}
-      <div
-        style={{
-          position: 'absolute',
-          top: -8,
-          left: -8,
-          width: 20,
-          height: 20,
-          borderTop: '4px solid #000',
-          borderLeft: '4px solid #000',
-          zIndex: 1,
-        }}
-      />
+      <div className="absolute -top-2 -left-2 w-5 h-5 border-t-4 border-l-4 border-hack-black z-[1]" />
       {/* HUD bracket — bottom right */}
-      <div
-        style={{
-          position: 'absolute',
-          bottom: -8,
-          right: -8,
-          width: 20,
-          height: 20,
-          borderBottom: '4px solid #000',
-          borderRight: '4px solid #000',
-          zIndex: 1,
-        }}
-      />
+      <div className="absolute -bottom-2 -right-2 w-5 h-5 border-b-4 border-r-4 border-hack-black z-[1]" />
 
       {/* Question row */}
       <button
         onClick={() => setOpen(!open)}
-        style={{
-          width: '100%',
-          background: 'none',
-          border: 'none',
-          padding: '44px',
-          display: 'flex',
-          gap: '1.5rem',
-          alignItems: 'flex-start',
-          cursor: 'pointer',
-          textAlign: 'left',
-        }}
+        className="w-full bg-transparent border-0 p-6 sm:p-8 md:p-11 flex gap-3 md:gap-6 items-start cursor-pointer text-left"
       >
-        <span
-          style={{
-            fontFamily: "'JetBrains Mono', monospace",
-            fontWeight: 700,
-            fontSize: 'clamp(16px, 2vw, 24px)',
-            color: '#c00100',
-            flexShrink: 0,
-            lineHeight: 1.2,
-          }}
-        >
+        <span className="font-mono font-bold text-base sm:text-lg md:text-xl lg:text-2xl text-hack-red shrink-0 leading-tight">
           QRY:
         </span>
-        <span
-          style={{
-            fontFamily: "'Inter', sans-serif",
-            fontWeight: 900,
-            fontSize: 'clamp(16px, 2.2vw, 30px)',
-            color: '#fff',
-            textTransform: 'uppercase',
-            lineHeight: 1.2,
-            flex: 1,
-          }}
-        >
+        <span className="font-body font-black text-sm sm:text-base md:text-xl lg:text-[28px] text-white uppercase leading-tight flex-1">
           {faq.question}
         </span>
-        <span
-          style={{
-            fontFamily: "'JetBrains Mono', monospace",
-            fontSize: '24px',
-            color: '#c00100',
-            flexShrink: 0,
-            lineHeight: 1,
-            transform: open ? 'rotate(45deg)' : 'none',
-            transition: 'transform 0.05s',
-          }}
+        <motion.span
+          className="font-mono text-xl md:text-2xl text-hack-red shrink-0 leading-none"
+          animate={{ rotate: open ? 45 : 0 }}
+          transition={{ duration: 0.1 }}
         >
           +
-        </span>
+        </motion.span>
       </button>
 
       {/* Answer */}
@@ -139,30 +80,12 @@ function FAQItem({ faq, index }: { faq: typeof faqs[0]; index: number }) {
             initial={{ height: 0, opacity: 0 }}
             animate={{ height: 'auto', opacity: 1 }}
             exit={{ height: 0, opacity: 0 }}
-            transition={{ duration: 0.05 }}
-            style={{ overflow: 'hidden' }}
+            transition={{ duration: 0.15, ease: [0.25, 0, 0.25, 1] }}
+            className="overflow-hidden"
           >
-            <div
-              style={{
-                padding: '0 44px 44px 44px',
-                paddingLeft: 'calc(44px + clamp(16px, 2vw, 24px) + 1.5rem)',
-              }}
-            >
-              <div
-                style={{
-                  borderLeft: '4px solid #c00100',
-                  paddingLeft: '28px',
-                }}
-              >
-                <p
-                  style={{
-                    fontFamily: "'JetBrains Mono', monospace",
-                    fontSize: 'clamp(12px, 1.4vw, 18px)',
-                    color: 'rgba(253, 228, 3, 0.8)',
-                    lineHeight: 1.6,
-                    textTransform: 'uppercase',
-                  }}
-                >
+            <div className="px-6 sm:px-8 md:px-11 pb-6 sm:pb-8 md:pb-11 pl-12 sm:pl-16 md:pl-[calc(44px+24px+1.5rem)]">
+              <div className="border-l-4 border-hack-red pl-4 md:pl-7">
+                <p className="font-mono text-xs sm:text-sm md:text-base lg:text-lg text-hack-yellow/80 leading-relaxed uppercase">
                   {faq.answer}
                 </p>
               </div>
@@ -182,56 +105,25 @@ export default function FAQs() {
     <section
       ref={ref}
       id="faq"
-      style={{
-        background: '#000',
-        padding: '128px 0',
-        overflow: 'hidden',
-        position: 'relative',
-      }}
+      className="bg-hack-black py-16 md:py-32 overflow-hidden relative"
     >
       {/* Giant ghost FAQ text */}
       <div
-        style={{
-          position: 'absolute',
-          top: 0,
-          right: 0,
-          fontFamily: "'Inter', sans-serif",
-          fontWeight: 900,
-          fontSize: 'clamp(160px, 22vw, 320px)',
-          color: 'rgba(255,255,255,0.05)',
-          letterSpacing: '-0.05em',
-          lineHeight: 0.85,
-          userSelect: 'none',
-          pointerEvents: 'none',
-        }}
+        className="absolute top-0 right-0 font-body font-black text-white/5
+          text-[120px] sm:text-[180px] md:text-[22vw] xl:text-[320px]
+          tracking-tighter leading-[0.85] select-none pointer-events-none"
       >
         FAQ
       </div>
 
-      <div
-        style={{
-          maxWidth: 1024,
-          width: '100%',
-          margin: '0 auto',
-          padding: '0 24px',
-          position: 'relative',
-        }}
-      >
+      <div className="max-w-5xl w-full mx-auto px-4 md:px-6 relative">
         {/* Heading */}
         <motion.h2
           initial={{ opacity: 0, x: -24 }}
           animate={inView ? { opacity: 1, x: 0 } : {}}
           transition={{ duration: 0.12 }}
-          style={{
-            fontFamily: "'Space Grotesk', sans-serif",
-            fontWeight: 700,
-            fontSize: 'clamp(32px, 5vw, 72px)',
-            lineHeight: 1,
-            letterSpacing: '-0.05em',
-            textTransform: 'uppercase',
-            color: '#c00100',
-            marginBottom: '5rem',
-          }}
+          className="font-display font-bold text-2xl sm:text-3xl md:text-5xl lg:text-7xl
+            leading-none tracking-tighter uppercase text-hack-red mb-10 md:mb-20"
         >
           {'> SYSTEM_LOGS.FAQ'}
         </motion.h2>
@@ -241,11 +133,7 @@ export default function FAQs() {
           initial="hidden"
           animate={inView ? 'visible' : 'hidden'}
           variants={{ visible: { transition: { staggerChildren: 0.07 } } }}
-          style={{
-            display: 'flex',
-            flexDirection: 'column',
-            gap: '1.5rem',
-          }}
+          className="flex flex-col gap-4 md:gap-6"
         >
           {faqs.map((faq, i) => (
             <FAQItem key={faq.id} faq={faq} index={i} />
