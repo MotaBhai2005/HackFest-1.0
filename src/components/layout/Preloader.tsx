@@ -64,15 +64,16 @@ function useTypewriter(text: string, trigger: boolean, speed = 35) {
 function ParticleField() {
   return (
     <div className="absolute inset-0 overflow-hidden pointer-events-none">
-      {Array.from({ length: 30 }).map((_, i) => (
+      {Array.from({ length: 35 }).map((_, i) => (
         <div
           key={i}
-          className="absolute w-px bg-hack-red"
+          className="absolute w-px"
           style={{
             left: `${rand(0, 100)}%`,
             top: `${rand(0, 100)}%`,
-            height: `${rand(10, 60)}px`,
-            opacity: rand(0.1, 0.4),
+            height: `${rand(12, 70)}px`,
+            opacity: rand(0.15, 0.6),
+            backgroundColor: i % 3 === 0 ? '#00ff41' : i % 3 === 1 ? '#ffffff' : '#00ff41',
             animation: `particle-fall ${rand(2, 5)}s linear infinite`,
             animationDelay: `${rand(0, 4)}s`,
           }}
@@ -81,49 +82,166 @@ function ParticleField() {
       <style>{`
         @keyframes particle-fall {
           0%   { transform: translateY(-20px); opacity: 0; }
-          20%  { opacity: 0.4; }
-          80%  { opacity: 0.2; }
+          20%  { opacity: 0.5; }
+          80%  { opacity: 0.25; }
           100% { transform: translateY(120vh); opacity: 0; }
         }
       `}</style>
     </div>
   );
 }
-
-/* ── Data Construct (Stage 1 center graphic) ────────────────────────── */
+/* ── Cyber Tunnel Construct (Stage 1 center graphic) ────────────────────────── */
 function DataConstruct({ progress }: { progress: number }) {
   const p = Math.min(progress, 1);
   const dash = (len: number) => `${len * p} ${len * (1 - p)}`;
+  const G = '#00ff41'; // Neon green
+  const W = '#ffffff'; // White
+
+  // Perspective tunnel rings (Hexagons going inward)
+  const rings = [140, 110, 85, 60, 40, 25];
+  const hexPoints = (r: number) => {
+    const w = r * 0.866;
+    const h = r * 0.5;
+    return `200,${200 - r} ${200 + w},${200 - h} ${200 + w},${200 + h} 200,${200 + r} ${200 - w},${200 + h} ${200 - w},${200 - h}`;
+  };
+
+  const corners = [
+    (r: number) => [200, 200 - r],
+    (r: number) => [200 + r * 0.866, 200 - r * 0.5],
+    (r: number) => [200 + r * 0.866, 200 + r * 0.5],
+    (r: number) => [200, 200 + r],
+    (r: number) => [200 - r * 0.866, 200 + r * 0.5],
+    (r: number) => [200 - r * 0.866, 200 - r * 0.5],
+  ];
 
   return (
-    <svg viewBox="0 0 300 300" className="w-64 h-64 sm:w-80 sm:h-80" fill="none">
-      <circle cx="150" cy="150" r="120" stroke="#c00100" strokeWidth="0.5" strokeDasharray={dash(754)} opacity="0.6" />
-      <circle cx="150" cy="150" r="100" stroke="#c00100" strokeWidth="0.5" strokeDasharray={dash(628)} opacity="0.3" />
-      <polygon points="150,40 260,110 260,190 150,260 40,190 40,110"
-        stroke="#c00100" strokeWidth="1" strokeDasharray={dash(520)} fill="none" opacity={p} />
-      <polygon points="150,70 230,115 230,185 150,230 70,185 70,115"
-        stroke="#c00100" strokeWidth="0.8" strokeDasharray={dash(416)} fill="none" opacity={p * 0.7} />
-      <line x1="150" y1="10" x2="150" y2="60" stroke="#c00100" strokeWidth="1" opacity={p} />
-      <line x1="150" y1="240" x2="150" y2="290" stroke="#c00100" strokeWidth="1" opacity={p} />
-      <line x1="10" y1="150" x2="60" y2="150" stroke="#c00100" strokeWidth="1" opacity={p} />
-      <line x1="240" y1="150" x2="290" y2="150" stroke="#c00100" strokeWidth="1" opacity={p} />
-      <path d="M20,20 L20,50 M20,20 L50,20" stroke="#c00100" strokeWidth="1.5" opacity={p} />
-      <path d="M280,20 L280,50 M280,20 L250,20" stroke="#c00100" strokeWidth="1.5" opacity={p} />
-      <path d="M20,280 L20,250 M20,280 L50,280" stroke="#c00100" strokeWidth="1.5" opacity={p} />
-      <path d="M280,280 L280,250 M280,280 L250,280" stroke="#c00100" strokeWidth="1.5" opacity={p} />
-      {[30, 60, 120, 180, 220, 280, 330].map((angle, i) => {
-        const rad = (angle * Math.PI) / 180;
-        const x = 150 + 80 * Math.cos(rad);
-        const y = 150 + 80 * Math.sin(rad);
-        return (
-          <rect key={i} x={x - 4} y={y - 4} width="8" height="8"
-            stroke="#c00100" strokeWidth="1"
-            fill="none" opacity={p * (0.5 + 0.5 * Math.sin(i))} />
-        );
-      })}
-      <circle cx="150" cy="150" r="8" stroke="#fde403" strokeWidth="1.5" fill="none" opacity={p} />
-      <circle cx="150" cy="150" r="3" fill="#fde403" opacity={p} />
-    </svg>
+    <div className="relative">
+      <svg viewBox="0 0 400 400" className="w-72 h-72 sm:w-[22rem] sm:h-[22rem] md:w-[26rem] md:h-[26rem]" fill="none">
+        
+        {/* ── Outer framing brackets ── */}
+        <path d="M 40,20 L 20,20 L 20,40" stroke={G} strokeWidth="2" opacity={p * 0.8} />
+        <path d="M 360,20 L 380,20 L 380,40" stroke={G} strokeWidth="2" opacity={p * 0.8} />
+        <path d="M 20,360 L 20,380 L 40,380" stroke={G} strokeWidth="2" opacity={p * 0.8} />
+        <path d="M 380,360 L 380,380 L 360,380" stroke={G} strokeWidth="2" opacity={p * 0.8} />
+        
+        {/* Decorative corner perspective lines */}
+        <line x1="25" y1="25" x2="60" y2="60" stroke={W} strokeWidth="1" opacity={p * 0.5} />
+        <line x1="375" y1="25" x2="340" y2="60" stroke={W} strokeWidth="1" opacity={p * 0.5} />
+        <line x1="25" y1="375" x2="60" y2="340" stroke={W} strokeWidth="1" opacity={p * 0.5} />
+        <line x1="375" y1="375" x2="340" y2="340" stroke={W} strokeWidth="1" opacity={p * 0.5} />
+
+        {/* ── Rotating Text Ring ── */}
+        <g opacity={p}>
+          <animateTransform attributeName="transform" type="rotate" from="0 200 200" to="-360 200 200" dur="25s" repeatCount="indefinite" />
+          <path id="text-path" d="M 200, 200 m -175, 0 a 175,175 0 1,1 350,0 a 175,175 0 1,1 -350,0" fill="none" />
+          <text fill={G} fontSize="9" fontFamily="monospace" letterSpacing="3" opacity="0.6">
+            <textPath href="#text-path" startOffset="0%">
+              HACK_FEST_INITIALIZATION_PROTOCOL_ACTIVE // OVERRIDE_CODE_0x7F8C // SYSTEM_BREACH_DETECTED // ACCESS_GRANTED // 
+            </textPath>
+          </text>
+        </g>
+
+        {/* ── Outer gear / mechanical ring ── */}
+        <circle cx="200" cy="200" r="155" stroke={G} strokeWidth="1" strokeDasharray="10 15 2 15" opacity={p * 0.4}>
+          <animateTransform attributeName="transform" type="rotate" from="0 200 200" to="360 200 200" dur="20s" repeatCount="indefinite" />
+        </circle>
+        <circle cx="200" cy="200" r="148" stroke={W} strokeWidth="0.5" strokeDasharray="3 4" opacity={p * 0.3} />
+
+        {/* ── Tunnel Hexagons ── */}
+        {rings.map((r, i) => (
+          <polygon 
+            key={`ring-${i}`} 
+            points={hexPoints(r)} 
+            stroke={i % 2 === 0 ? G : W} 
+            strokeWidth={1.5 - i * 0.15} 
+            opacity={p * (0.9 - i * 0.1)} 
+            fill={G} 
+            fillOpacity={0.03 * (rings.length - i)}
+            strokeDasharray={dash(r * 6)} 
+          />
+        ))}
+
+        {/* ── Perspective Edge Lines (Connecting corners) ── */}
+        {corners.map((cornerFn, i) => {
+          const outer = cornerFn(rings[0]);
+          const inner = cornerFn(rings[rings.length - 1]);
+          return (
+            <line 
+              key={`corner-edge-${i}`} 
+              x1={outer[0]} y1={outer[1]} 
+              x2={inner[0]} y2={inner[1]} 
+              stroke={G} 
+              strokeWidth="1" 
+              opacity={p * 0.5}
+            />
+          );
+        })}
+
+        {/* ── Animated Data Flowing Down Tunnel ── */}
+        {corners.map((cornerFn, i) => {
+          const outer = cornerFn(rings[0]);
+          const inner = cornerFn(rings[rings.length - 1]);
+          return (
+            <line 
+              key={`flow-${i}`} 
+              x1={outer[0]} y1={outer[1]} 
+              x2={inner[0]} y2={inner[1]} 
+              stroke={W} 
+              strokeWidth="2.5" 
+              opacity={p * 0.9}
+              strokeDasharray="8 80"
+              strokeDashoffset="0"
+            >
+              <animate attributeName="stroke-dashoffset" values="88; -20" dur={`${1 + (i % 3) * 0.4}s`} repeatCount="indefinite" />
+            </line>
+          );
+        })}
+
+        {/* ── Central Eye / Core ── */}
+        <circle cx="200" cy="200" r="16" stroke={G} strokeWidth="1" fill={G} fillOpacity="0.1" opacity={p} />
+        <circle cx="200" cy="200" r="8" stroke={W} strokeWidth="0.5" fill="none" opacity={p * 0.8} />
+        
+        {/* Pulsing inner dot */}
+        <circle cx="200" cy="200" r="3" fill={W} opacity={p}>
+          <animate attributeName="r" values="2;5;2" dur="1s" repeatCount="indefinite" />
+          <animate attributeName="opacity" values="1;0.4;1" dur="1s" repeatCount="indefinite" />
+        </circle>
+
+        {/* ── HUD Overlay Elements ── */}
+        {/* Scanning horizontal line */}
+        <line x1="40" y1="200" x2="360" y2="200" stroke={G} strokeWidth="0.5" opacity={p * 0.5}>
+          <animate attributeName="y1" values="40;360;40" dur="4s" keyTimes="0;0.5;1" repeatCount="indefinite" />
+          <animate attributeName="y2" values="40;360;40" dur="4s" keyTimes="0;0.5;1" repeatCount="indefinite" />
+        </line>
+        
+        <text x="35" y="195" fill={G} fontSize="7" fontFamily="monospace" opacity={p * 0.5}>
+           <animate attributeName="y" values="35;355;35" dur="4s" keyTimes="0;0.5;1" repeatCount="indefinite" />
+           SCANNING...
+        </text>
+
+        {/* Small Data Readouts */}
+        <g opacity={p * 0.7} fontFamily="monospace" fontSize="6" fill={G}>
+           <text x="25" y="60">UPLINK: SECURE</text>
+           <text x="25" y="70">NODE_ID: 0x9A4</text>
+           <text x="25" y="80">LATENCY: 12ms</text>
+
+           <text x="310" y="330">CORE: STABLE</text>
+           <text x="310" y="340">THROTTLING: OFF</text>
+           <text x="310" y="350">FLOW_RATE: MAX</text>
+        </g>
+      </svg>
+
+      {/* Center glow */}
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-24 h-24 rounded-full bg-[#00ff41] blur-[30px] opacity-20 pointer-events-none"
+        style={{ animation: 'center-glow 2s ease-in-out infinite alternate' }} />
+
+      <style>{`
+        @keyframes center-glow {
+          from { opacity: 0.1; transform: translate(-50%,-50%) scale(1); }
+          to   { opacity: 0.3; transform: translate(-50%,-50%) scale(1.6); }
+        }
+      `}</style>
+    </div>
   );
 }
 
@@ -171,7 +289,7 @@ function StatusFooter({ lines }: { lines: string[] }) {
   return (
     <div className="space-y-0.5">
       {lines.map((l, i) => (
-        <div key={i} className="font-mono text-[9px] sm:text-[11px] leading-tight text-hack-red" style={{ opacity: 0.85 }}>
+        <div key={i} className="font-mono text-[9px] sm:text-[11px] leading-tight text-[#00ff41]" style={{ opacity: 0.85 }}>
           {l}
         </div>
       ))}
@@ -229,9 +347,9 @@ export default function Preloader({ onDone }: { onDone: () => void }) {
       <ParticleField />
 
       {/* ── Top bar ──────────────────────────────────────────────── */}
-      <div className="relative z-30 flex items-center justify-between px-4 sm:px-8 py-3 border-b border-red-900/30">
-        <div className="font-mono text-[10px] sm:text-xs text-hack-red tracking-widest">
-          {stage === 1 && <>{header1}<Cursor /></>}
+      <div className="relative z-30 flex items-center justify-between px-4 sm:px-8 py-3 border-b border-green-900/30">
+        <div className="font-mono text-[10px] sm:text-xs tracking-widest">
+          {stage === 1 && <span className="text-[#00ff41]">{header1}<Cursor color="#00ff41" /></span>}
           {stage === 2 && <span className="text-hack-red">{'> SYSTEM_RESTORED :: HACK_FEST ONLINE'}</span>}
         </div>
         <div className="flex items-center gap-2">
@@ -240,7 +358,7 @@ export default function Preloader({ onDone }: { onDone: () => void }) {
               className="font-mono text-[10px] font-black w-5 h-5 flex items-center justify-center border"
               style={{
                 borderColor: s <= stage ? '#c00100' : '#333',
-                color: s === stage ? '#fde403' : s < stage ? '#c00100' : '#333',
+                color: s === stage ? '#00ff41' : s < stage ? '#c00100' : '#333',
                 backgroundColor: s === stage ? '#1a0000' : 'transparent',
               }}>
               {s}
@@ -257,7 +375,7 @@ export default function Preloader({ onDone }: { onDone: () => void }) {
           {stage === 1 && (
             <motion.div key="s1" className="flex flex-col items-center gap-4"
               initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0, transition: { duration: 0.15 } }}>
-              <div className="font-mono text-[10px] text-white/30 tracking-[0.4em] uppercase mb-2">
+              <div className="font-mono text-[10px] text-[#00ff41]/50 tracking-[0.4em] uppercase mb-2">
                 ASSEMBLING :: DATA_CONSTRUCT :: {Math.round(bpProgress * 100)}%
               </div>
               <DataConstruct progress={bpProgress} />
