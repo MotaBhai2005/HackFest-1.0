@@ -1,0 +1,45 @@
+:root {
+  /* ── Surfaces ── */
+  --surface: #fff9ea;
+  --surface-dim: #f4db00;
+  --surface-container-low: #fff4bf;
+  --surface-container: #ffef90;
+  --surface-container-highest: #fde403;
+  --surface-variant: #fde403;
+
+  /* ── Content ── */
+  --on-surface: #201c00;
+  --on-surface-variant: #4b4732;
+  --outline: #7c775f;
+
+  /* ── Primary ── */
+  --primary: #c00100;
+  --on-primary: #ffffff;
+  --on-primary-container: #cb0100;
+
+  /* ── Secondary ── */
+  --on-secondary-fixed: #1a1c1c;
+
+  /* ── Tertiary ── */
+  --tertiary-container: #e1e1e1;
+
+  /* ── Error / Glitch ── */
+  --error: #ba1a1a;
+
+  /* ── Typography ── */
+  --font-display: 'Space Grotesk', sans-serif;
+  --font-body: 'Inter', sans-serif;
+  --font-mono: 'JetBrains Mono', 'Courier New', monospace;
+
+  /* ── Spacing ── */
+  --spacing-2: 0.4rem;
+  --spacing-4: 0.75rem;
+  --spacing-8: 1.75rem;
+
+  /* ── Design System Hard Rules ── */
+  --radius: 0px;
+  --divider-weight: 4px;
+  --shadow-offset: 6px;
+  --bracket-size: 20px;
+  --bracket-weight: 4px;
+}

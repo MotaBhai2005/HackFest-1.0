@@ -1,0 +1,32 @@
+import './styles/globals.css';
+import Navbar from './components/layout/Navbar';
+import Footer from './components/layout/Footer';
+import Hero from './components/sections/Hero';
+import SectionDivider from './components/sections/SectionDivider';
+import About from './components/sections/About';
+import Register from './components/sections/Register';
+import PrizePool from './components/sections/PrizePool';
+import GuestSpeaker from './components/sections/GuestSpeaker';
+import Events from './components/sections/Events';
+import Sponsors from './components/sections/Sponsors';
+import FAQs from './components/sections/FAQs';
+
+export default function App() {
+  return (
+    <>
+      <Navbar />
+      <main>
+        <Hero />
+        <SectionDivider />
+        <About />
+        <Register />
+        <PrizePool />
+        <GuestSpeaker />
+        <Events />
+        <Sponsors />
+        <FAQs />
+      </main>
+      <Footer />
+    </>
+  );
+}
