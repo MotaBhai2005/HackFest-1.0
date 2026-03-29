@@ -10,6 +10,7 @@ import Register from './components/sections/Register';
 import PrizePool from './components/sections/PrizePool';
 import GuestSpeaker from './components/sections/GuestSpeaker';
 import Events from './components/sections/Events';
+import PeripheralNodes from './components/sections/PeripheralNodes';
 import Sponsors from './components/sections/Sponsors';
 import FAQs from './components/sections/FAQs';
 import ScanlineOverlay from './components/ui/ScanlineOverlay';
@@ -43,6 +44,7 @@ export default function App() {
             <PrizePool />
             <GuestSpeaker />
             <Events />
+            <PeripheralNodes />
             <Sponsors />
             <FAQs />
           </main>
