@@ -205,7 +205,7 @@ export default function Hero() {
         <img
           src="/images/hf-logo.svg"
           alt="HF Logo"
-          className="w-12 h-8 md:w-16 md:h-10"
+          className="w-16 h-[29px] md:w-24 md:h-[43px]"
           onError={(e) => ((e.target as HTMLImageElement).style.display = 'none')}
         />
       </motion.div>
@@ -225,7 +225,7 @@ export default function Hero() {
           hidden: {},
           visible: { transition: { staggerChildren: 0.06, delayChildren: 0.3 } },
         }}
-        className="absolute left-6 md:left-12 top-1/2 -translate-y-1/2 z-20 hidden md:flex flex-col gap-3 md:gap-4"
+        className="absolute left-6 md:left-12 top-[45%] -translate-y-1/2 z-20 hidden md:flex flex-col gap-3 md:gap-4"
       >
         {sideNavLinks.map((link, i) => (
           <motion.a
