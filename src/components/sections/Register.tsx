@@ -2,6 +2,7 @@ import { useRef, useState, useEffect, useCallback } from 'react';
 import { motion, useInView } from 'framer-motion';
 import { brutalistEntrance, buttonGlitch } from '../../lib/animations';
 import CyberBox from '../ui/CyberBox';
+import HudDataChip from '../ui/HudDataChip';
 
 /* ─── Scramble Text Hook ─────────────────────────────────────────────── */
 const GLITCH_CHARS = 'ABCDEFGHIJKLMNOPQRSTUVWXYz01#$%&@!?_/\\<>';
@@ -195,9 +196,19 @@ export default function Register() {
           >
             <SyncNowButton />
 
-            <div className="font-mono text-sm md:text-base text-hack-red tracking-widest leading-relaxed mt-2 text-left">
-              <div>[ STATUS: WAITING_FOR_USER_INPUT ]</div>
-              <div>[ UPLOAD_SPEED: UNRESTRICTED ]</div>
+            <div className="flex flex-wrap gap-2 mt-2">
+              <HudDataChip
+                label="STATUS"
+                value="WAITING_FOR_USER_INPUT"
+                status="error"
+                tooltip="PENDING REGISTRATION"
+              />
+              <HudDataChip
+                label="UPLOAD_SPEED"
+                value="UNRESTRICTED"
+                status="primary"
+                tooltip="BANDWIDTH: MAX"
+              />
             </div>
           </motion.div>
         </CyberBox>

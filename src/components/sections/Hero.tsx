@@ -3,6 +3,8 @@ import { motion } from 'framer-motion';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { brutalistEntrance } from '../../lib/animations';
+import HudDataChip from '../ui/HudDataChip';
+import HudTooltip from '../ui/HudTooltip';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -210,7 +212,9 @@ export default function Hero() {
 
       {/* ===== Countdown Timer — top right ===== */}
       <div className="absolute top-6 md:top-8 right-6 md:right-12 z-20">
-        <CountdownTimer />
+        <HudTooltip content="EVENT LAUNCH: ERROR 404" position="bottom">
+          <CountdownTimer />
+        </HudTooltip>
       </div>
 
       {/* ===== Side Navigation — left side (desktop only) ===== */}
@@ -343,10 +347,14 @@ export default function Hero() {
         </span>
       </motion.div>
 
-      {/* HUD — bottom-left status chip */}
-      <div className="absolute bottom-4 md:bottom-8 left-6 md:left-12 flex items-center gap-2 font-mono text-[10px] tracking-[0.15em] text-hack-black/50 uppercase z-20">
-        <div className="w-2 h-2 bg-hack-red animate-pulse" />
-        STATUS: AWAITING_DEPLOY
+      {/* HUD — bottom-left status chips */}
+      <div className="absolute bottom-4 md:bottom-8 left-6 md:left-12 flex items-center gap-2 z-20">
+        <HudDataChip
+          label="STATUS"
+          value="AWAITING_DEPLOY"
+          status="error"
+          tooltip="SYSTEM NOT YET LIVE"
+        />
       </div>
     </section>
   );
