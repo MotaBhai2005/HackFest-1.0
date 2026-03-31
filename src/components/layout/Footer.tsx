@@ -22,9 +22,9 @@ export default function Footer() {
 					<div
 						className="absolute top-0 -left-4 font-body font-black text-white/5 leading-[0.85] tracking-tight select-none pointer-events-none
             text-[80px] sm:text-[120px] md:text-[16vw] xl:text-[240px]"
-					>
-						CYBER
-					</div>
+          >
+            HACKFEST
+          </div>
 
 					<div className="relative pt-28 md:pt-56">
 						<motion.div initial="hidden" animate={inView ? "visible" : "hidden"} variants={{ visible: { transition: { staggerChildren: 0.06 } } }}>

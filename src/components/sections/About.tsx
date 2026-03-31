@@ -116,7 +116,22 @@ function TypewriterText({ trigger }: { trigger: boolean }) {
   );
 }
 
-// ─── StatIcon ─────────────────────────────────────────────────────────────────
+const stats = [
+  {
+    target: 48,
+    suffix: 'H',
+    pad: 0,
+    label: 'UPTIME_REQUIRED',
+    icon: '/images/icon-clock.png',
+  },
+  {
+    target: 10,
+    suffix: '',
+    pad: 2,
+    label: 'PROBLEM_STATEMENT',
+    icon: '/images/icon-nodes.png',
+  },
+];
 
 function StatIcon({ type, className }: { type: string; className?: string }) {
   const ref = useRef<SVGSVGElement>(null);
