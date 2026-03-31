@@ -296,8 +296,8 @@ export default function Hero() {
 				className="absolute bottom-10 md:bottom-16 left-1/2 -translate-x-1/2 z-20 text-center whitespace-nowrap"
 			>
 				<span className="font-body italic font-medium text-hack-red text-base sm:text-xl md:text-[28px]">{"> an initiative by "}</span>
-				<span className="font-display font-semibold text-hack-red text-base sm:text-xl md:text-[28px] not-italic">TeCHSoC</span>
-				<span className="font-display font-semibold text-hack-red text-base sm:text-xl md:text-[28px] not-italic">{" , oUTr"}</span>
+				<span className="font-display font-semibold text-hack-red text-base sm:text-xl md:text-[28px] not-italic">TechSoc</span>
+				<span className="font-display font-semibold text-hack-red text-base sm:text-xl md:text-[28px] not-italic">{", OUTR"}</span>
 			</motion.div>
 
 			{/* HUD — bottom-left status chips */}
