@@ -74,8 +74,7 @@ function ParticleField() {
             height: `${rand(12, 70)}px`,
             opacity: rand(0.15, 0.6),
             backgroundColor: i % 3 === 0 ? '#00ff41' : i % 3 === 1 ? '#ffffff' : '#00ff41',
-            animation: `particle-fall ${rand(2, 5)}s linear infinite`,
-            animationDelay: `${rand(0, 4)}s`,
+            animation: `particle-fall ${rand(2, 5)}s linear ${rand(0, 4)}s infinite`,
           }}
         />
       ))}
@@ -258,8 +257,7 @@ function Waveform() {
           style={{
             height: `${h}%`,
             opacity: 0.5 + (h / 200),
-            animation: `wbar ${0.4 + rand(0, 0.8)}s ease-in-out infinite alternate`,
-            animationDelay: `${i * 0.02}s`,
+            animation: `wbar ${0.4 + rand(0, 0.8)}s ease-in-out ${i * 0.02}s infinite alternate`,
           }}
         />
       ))}

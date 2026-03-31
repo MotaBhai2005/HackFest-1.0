@@ -57,10 +57,10 @@ const stats = [
     icon: '/images/icon-clock.png',
   },
   {
-    target: 2048,
+    target: 10,
     suffix: '',
-    pad: 4,
-    label: 'CONNECTED_NODES',
+    pad: 2,
+    label: 'PROBLEM_STATEMENT',
     icon: '/images/icon-nodes.png',
   },
 ];
