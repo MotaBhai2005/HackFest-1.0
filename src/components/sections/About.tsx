@@ -12,11 +12,6 @@ const BODY_TEXT =
 
 const WORDS = ['ANALOG', 'HEART', 'DIGITAL', 'MIND'] as const;
 
-const stats = [
-  { target: 48, suffix: 'H', pad: 0, label: 'UPTIME_REQUIRED', icon: 'clock' },
-  { target: 2048, suffix: '', pad: 4, label: 'CONNECTED_NODES', icon: 'nodes' },
-] as const;
-
 // ─── Variants ─────────────────────────────────────────────────────────────────
 
 const slamUp = {
