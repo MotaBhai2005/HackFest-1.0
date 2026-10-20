@@ -7,16 +7,15 @@ import HudDataChip from "../ui/HudDataChip";
 import HudTooltip from "../ui/HudTooltip";
 import { useCountdown } from "../../hooks/useCountdown";
 import BreachOverlay from "../ui/BreachOverlay";
+import { festival } from '../../data/festival';
+import { navigation } from '../../data/navigation';
 
 gsap.registerPlugin(ScrollTrigger);
 
 const sideNavLinks = [
-  { label: "Home", href: "#hero", active: true },
-  { label: "About Us", href: "#about", active: false },
-  { label: "Register", href: "#register", active: false },
-  { label: "Prize Pool", href: "#prize-pool", active: false },
-  { label: "Events", href: "#events", active: false },
-  { label: "FAQs", href: "#faq", active: false },
+  { label: 'Home', href: '#hero', active: true },
+  { label: 'About Us', href: '#about', active: false },
+  ...navigation.filter(link => link.href !== '/').map(link => ({ ...link, label: link.href === '/events' ? 'Events' : link.label, active: false })),
 ];
 
 const HEX_CHARS = '0123456789ABCDEF←→↑↓▓░▒█';
@@ -24,7 +23,7 @@ const randomHexChar = () => HEX_CHARS[Math.floor(Math.random() * HEX_CHARS.lengt
 
 /* ─── Live Countdown Display ─────────────────────────── */
 function CountdownBox() {
-  const { phase, display, elapsed } = useCountdown();
+  const { phase, display } = useCountdown();
   const [showBreach, setShowBreach] = useState(false);
   const [breachDone, setBreachDone] = useState(false);
   const [glitchDigits, setGlitchDigits] = useState(display);
@@ -82,7 +81,7 @@ function CountdownBox() {
             : 'text-[#c00100]'
           }`}
         >
-          {isLive ? 'HACK_TIME_LEFT' : phase === 'critical' ? '⚠ BREACH_IMMINENT' : 'T minus'}
+          {isLive ? (festival.startTimeConfirmed ? 'HACKFEST_IS_LIVE' : 'EVENT_DAY_REACHED') : phase === 'critical' ? '⚠ BREACH_IMMINENT' : 'T minus'}
         </span>
 
         {/* Timer box */}
@@ -108,9 +107,11 @@ function CountdownBox() {
               filter: phase === 'critical' ? 'drop-shadow(0 0 4px #c00100)' : 'none',
             }}
           >
-            {isLive ? elapsed : glitchDigits}
+            {isLive ? '04 NOV 2026' : glitchDigits}
           </span>
         </motion.div>
+        <span className="font-mono text-[9px] sm:text-[10px] text-hack-black font-bold mt-2">04 NOV 2026 · IST (UTC+05:30)</span>
+        <span className="font-mono text-[9px] sm:text-[10px] text-hack-red max-w-48 text-right">{festival.startTimeConfirmed ? `Starts ${festival.startTimeIST.slice(0, 5)} IST` : 'Start time TBA · Date countdown'}</span>
       </div>
     </>
   );
@@ -134,28 +135,11 @@ const glitchCSS = `
   }
   .glitch-clone.red {
     mix-blend-mode: multiply;
-    animation: glitch-red 0.3s infinite linear alternate;
+    animation: hackfest-rgb-red 0.3s infinite linear alternate;
   }
   .glitch-clone.cyan {
     mix-blend-mode: screen;
-    animation: glitch-cyan 0.35s infinite linear alternate;
-  }
-
-  @keyframes glitch-red {
-    0%   { clip-path: inset(40% 0 20% 0); transform: translate(4px, 0); opacity: 0.7; filter: hue-rotate(-30deg) saturate(2); }
-    20%  { clip-path: inset(10% 0 60% 0); transform: translate(-3px, 1px); opacity: 0.5; }
-    40%  { clip-path: inset(70% 0 5% 0);  transform: translate(5px, -1px); opacity: 0.8; filter: hue-rotate(10deg); }
-    60%  { clip-path: inset(25% 0 35% 0); transform: translate(-2px, 0); opacity: 0.4; }
-    80%  { clip-path: inset(55% 0 15% 0); transform: translate(3px, 1px); opacity: 0.6; filter: hue-rotate(-20deg) saturate(3); }
-    100% { clip-path: inset(5% 0 80% 0);  transform: translate(-4px, 0); opacity: 0.5; }
-  }
-
-  @keyframes glitch-cyan {
-    0%   { clip-path: inset(60% 0 10% 0); transform: translate(-5px, 0); opacity: 0.6; filter: hue-rotate(180deg) saturate(2); }
-    25%  { clip-path: inset(15% 0 50% 0); transform: translate(3px, -1px); opacity: 0.4; }
-    50%  { clip-path: inset(80% 0 2% 0);  transform: translate(-2px, 1px); opacity: 0.7; filter: hue-rotate(150deg); }
-    75%  { clip-path: inset(30% 0 40% 0); transform: translate(4px, 0); opacity: 0.3; }
-    100% { clip-path: inset(50% 0 20% 0); transform: translate(-3px, -1px); opacity: 0.6; filter: hue-rotate(200deg) saturate(3); }
+    animation: hackfest-rgb-cyan 0.35s infinite linear alternate;
   }
 
   @keyframes glitch-skew {
@@ -265,7 +249,8 @@ export default function Hero() {
           hidden: {},
           visible: { transition: { staggerChildren: 0.06, delayChildren: 0.3 } },
         }}
-        className="absolute left-4 sm:left-6 md:left-[52px] top-[90px] md:top-36 z-20 flex flex-col gap-2 md:gap-[17px] w-[90px] sm:w-[100px] md:w-[127px]"
+        aria-label="Festival navigation"
+        className="hero-navigation absolute left-4 sm:left-6 md:left-[52px] top-[90px] md:top-36 z-20 flex flex-col gap-2 md:gap-[17px] w-[90px] sm:w-[100px] md:w-[127px]"
       >
         {sideNavLinks.map((link, i) => (
           <motion.a
@@ -273,7 +258,7 @@ export default function Hero() {
             href={link.href}
             custom={i}
             variants={brutalistEntrance}
-            className={`font-lexend text-xs sm:text-[14px] md:text-[18px] leading-tight transition-colors duration-100 flex items-center
+            className={`font-lexend text-xs sm:text-[14px] md:text-[18px] leading-tight transition-colors duration-100 flex items-center whitespace-nowrap
               ${link.active
                 ? 'text-[#df0101] font-semibold text-[14px] md:text-[20px]'
                 : 'text-[#c9a102] font-light hover:text-[#df0101]'

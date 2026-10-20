@@ -1,14 +1,10 @@
 import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import GlitchText from '../ui/GlitchText';
+import { navigation } from '../../data/navigation';
 
-const navLinks = [
-  { label: '01_ABOUT', href: '#about', section: 'about' },
-  { label: '02_REGISTER', href: '#register', section: 'register' },
-  { label: '03_PRIZE POOL', href: '#prize-pool', section: 'prize-pool' },
-  { label: '04_EVENTS', href: '#events', section: 'events' },
-  { label: '05_FAQ', href: '#faq', section: 'faq' },
-];
+const navLinks = navigation;
+const currentPath = window.location.pathname.replace(/\/$/, '') || '/';
 
 /* ─── Blinking dot status indicator ─────────────────────────────────── */
 function SysStatus() {
@@ -39,6 +35,7 @@ function NavLink({ link, active }: { link: typeof navLinks[0]; active: boolean }
   return (
     <a
       href={link.href}
+      aria-current={active ? (link.href.includes('#') ? 'location' : 'page') : undefined}
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
       className="relative font-display font-bold text-sm xl:text-base tracking-tight uppercase"
@@ -72,6 +69,26 @@ function NavLink({ link, active }: { link: typeof navLinks[0]; active: boolean }
 export default function Navbar() {
   const [mobileOpen, setMobileOpen] = useState(false);
   const [activeSection, setActiveSection] = useState('');
+  const isActive = (link: typeof navLinks[0]) => link.href.includes('#')
+    ? currentPath === '/' && activeSection === link.section
+    : currentPath === link.href && (link.href !== '/' || activeSection !== 'sponsors');
+
+  useEffect(() => {
+    if (!mobileOpen) return;
+    const previousOverflow = document.body.style.overflow;
+    document.body.style.overflow = 'hidden';
+    const closeOnEscape = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') {
+        setMobileOpen(false);
+        document.getElementById('mobile-menu-toggle')?.focus();
+      }
+    };
+    window.addEventListener('keydown', closeOnEscape);
+    return () => {
+      document.body.style.overflow = previousOverflow;
+      window.removeEventListener('keydown', closeOnEscape);
+    };
+  }, [mobileOpen]);
 
   // IntersectionObserver to track which section is in view
   useEffect(() => {
@@ -101,9 +118,9 @@ export default function Navbar() {
         }
       `}</style>
 
-      <nav className="relative w-full z-[100] bg-hack-yellow border-b-4 border-hack-black flex items-center justify-between px-4 py-3 md:px-6 md:py-4 lg:py-5">
+      <nav aria-label="Main navigation" className="relative w-full z-[100] bg-hack-yellow border-b-4 border-hack-black flex items-center justify-between gap-4 px-4 py-3 md:px-6 md:py-4 lg:py-5">
         {/* Logo + status */}
-        <div className="flex items-center">
+        <a href="/" aria-label="HACKFEST home" className="flex items-center shrink-0">
           <GlitchText
             as="span"
             className="font-display font-bold text-xl md:text-3xl tracking-tighter text-hack-black leading-none"
@@ -111,29 +128,29 @@ export default function Navbar() {
             HACK_FEST
           </GlitchText>
           <SysStatus />
-        </div>
+        </a>
 
         {/* Desktop nav links */}
-        <div className="hidden lg:flex gap-8 xl:gap-12 items-center">
+        <div className="hidden lg:flex gap-2 xl:gap-5 items-center">
           {navLinks.map((link) => (
             <NavLink
               key={link.href}
               link={link}
-              active={activeSection === link.section}
+              active={isActive(link)}
             />
           ))}
         </div>
 
         {/* Desktop CTA */}
         <motion.a
-          href="#register"
-          className="hidden lg:inline-block bg-hack-black text-hack-yellow font-body font-black text-xs xl:text-sm tracking-widest uppercase px-6 xl:px-8 py-3"
+          href="/events"
+          className="hidden xl:inline-block bg-hack-black text-hack-yellow font-body font-black text-xs tracking-widest uppercase px-5 py-3"
           style={{ boxShadow: '4px 4px 0px #c00100' }}
           whileHover={{ boxShadow: '2px 2px 0px #c00100', x: 2, y: 2 }}
           whileTap={{ boxShadow: '0px 0px 0px #c00100', x: 4, y: 4 }}
           transition={{ duration: 0.04 }}
         >
-          INITIATE_UPLOAD
+          EXPLORE_EVENTS
         </motion.a>
 
         {/* Mobile hamburger */}
@@ -141,6 +158,9 @@ export default function Navbar() {
           className="lg:hidden flex flex-col justify-center items-center w-10 h-10 gap-1.5 relative z-[110]"
           onClick={() => setMobileOpen(!mobileOpen)}
           aria-label="Toggle navigation"
+          id="mobile-menu-toggle"
+          aria-expanded={mobileOpen}
+          aria-controls={mobileOpen ? 'mobile-navigation' : undefined}
         >
           <motion.span
             className="block w-7 h-[3px] bg-hack-black origin-center"
@@ -164,7 +184,8 @@ export default function Navbar() {
       <AnimatePresence>
         {mobileOpen && (
           <motion.div
-            className="fixed inset-0 z-[99] bg-hack-black flex flex-col items-center justify-center gap-8"
+            id="mobile-navigation"
+            className="mobile-navigation fixed inset-0 z-[99] bg-hack-black flex flex-col items-center justify-center gap-6"
             initial={{ clipPath: 'inset(0 0 100% 0)' }}
             animate={{ clipPath: 'inset(0 0 0% 0)' }}
             exit={{ clipPath: 'inset(0 0 100% 0)' }}
@@ -174,6 +195,7 @@ export default function Navbar() {
               <motion.a
                 key={link.href}
                 href={link.href}
+                aria-current={isActive(link) ? (link.href.includes('#') ? 'location' : 'page') : undefined}
                 className="font-display font-bold text-3xl md:text-5xl tracking-tight uppercase text-hack-yellow hover:text-hack-red"
                 style={{ transition: 'none' }}
                 initial={{ opacity: 0, y: 20 }}
@@ -182,12 +204,12 @@ export default function Navbar() {
                 transition={{ delay: i * 0.05, duration: 0.2 }}
                 onClick={() => setMobileOpen(false)}
               >
-                {activeSection === link.section ? `[ ${link.label}_ ]` : link.label}
+                {isActive(link) ? `[ ${link.label}_ ]` : link.label}
               </motion.a>
             ))}
 
             <motion.a
-              href="#register"
+              href="/events"
               className="mt-4 bg-hack-red text-white font-body font-black text-lg tracking-widest uppercase px-10 py-4 border-4 border-white"
               style={{ boxShadow: '8px 8px 0px #fde403' }}
               initial={{ opacity: 0, y: 20 }}
@@ -195,7 +217,7 @@ export default function Navbar() {
               transition={{ delay: 0.3, duration: 0.2 }}
               onClick={() => setMobileOpen(false)}
             >
-              INITIATE_UPLOAD
+              EXPLORE_EVENTS
             </motion.a>
 
             {/* HUD corners */}

@@ -1,6 +1,7 @@
 import { motion, useInView } from "framer-motion";
 import { useRef } from "react";
 import { brutalistEntrance } from "../../lib/animations";
+import { navigation } from '../../data/navigation';
 
 export default function Footer() {
 	const ref = useRef<HTMLElement>(null);
@@ -63,10 +64,17 @@ export default function Footer() {
 				</div>
 			</div>
 
+			<nav aria-label="Footer navigation" className="flex flex-wrap gap-5 font-mono text-sm text-hack-yellow">
+				{navigation.map(link => <a key={link.href} href={link.href} className="hover:underline">{link.label}</a>)}
+				<a href="/#about" className="hover:underline">About</a>
+				<a href="/#register" className="hover:underline">Register</a>
+				<a href="/#prize-pool" className="hover:underline">Prize Pool</a>
+				<a href="/#faq" className="hover:underline">FAQs</a>
+			</nav>
 			{/* Bottom row: Logos */}
 			<div className="mt-12 md:mt-24 flex justify-between items-center gap-4">
-				<img src="images/tech soc.png" alt="Tech Soc" className="h-10 md:h-16 lg:h-20 w-auto opacity-70 hover:opacity-100 transition-opacity" />
-				<img src="images/outr.png" alt="OUTR Seal" className="h-10 md:h-20 lg:h-24 w-auto opacity-70 hover:opacity-100 transition-opacity" />
+				<img src="/images/tech soc.png" alt="Tech Soc" className="h-10 md:h-16 lg:h-20 w-auto opacity-70 hover:opacity-100 transition-opacity" />
+				<img src="/images/outr.png" alt="OUTR Seal" className="h-10 md:h-20 lg:h-24 w-auto opacity-70 hover:opacity-100 transition-opacity" />
 			</div>
 		</footer>
 	);

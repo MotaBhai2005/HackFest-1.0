@@ -96,16 +96,19 @@ export default function MagneticDots({
     };
 
     resize();
+    const observer = new ResizeObserver(resize);
+    observer.observe(parent);
     window.addEventListener('resize', resize);
     window.addEventListener('mousemove', onMouseMove);
-    canvas.addEventListener('mouseleave', onMouseLeave);
+    parent.addEventListener('mouseleave', onMouseLeave);
 
     rafRef.current = requestAnimationFrame(draw);
 
     return () => {
       window.removeEventListener('resize', resize);
       window.removeEventListener('mousemove', onMouseMove);
-      canvas.removeEventListener('mouseleave', onMouseLeave);
+      parent.removeEventListener('mouseleave', onMouseLeave);
+      observer.disconnect();
       cancelAnimationFrame(rafRef.current);
     };
   }, [draw]);
@@ -113,8 +116,8 @@ export default function MagneticDots({
   return (
     <canvas
       ref={canvasRef}
-      className="absolute inset-0 w-full h-full pointer-events-auto"
-      style={{ zIndex: 0 }}
+      className="magnetic-dots"
+      aria-hidden="true"
     />
   );
 }

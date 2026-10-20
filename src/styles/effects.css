@@ -1,0 +1,45 @@
+/* Recovered from GuestSpeaker.tsx in commit 1275d7f (de53d25).
+   Those keyframes also governed the hero through the old CSS cascade.
+   Explicit shared names preserve that appearance without section-order leaks. */
+@keyframes hackfest-rgb-red {
+  0%   { transform: translate(6px, -2px); }
+  25%  { transform: translate(-4px, 4px); }
+  50%  { transform: translate(8px, 0px); }
+  75%  { transform: translate(-2px, -3px); }
+  100% { transform: translate(6px, -2px); }
+}
+@keyframes hackfest-rgb-cyan {
+  0%   { transform: translate(-6px, 3px); }
+  25%  { transform: translate(5px, -2px); }
+  50%  { transform: translate(-8px, 1px); }
+  75%  { transform: translate(3px, 4px); }
+  100% { transform: translate(-6px, 3px); }
+}
+@keyframes hackfest-glitch-slice {
+  0%   { opacity: 1; top: 20%; }
+  33%  { opacity: 0.5; top: 55%; }
+  66%  { opacity: 1; top: 75%; }
+  100% { opacity: 0; }
+}
+.rgb-glitch-image { position: relative; width: 100%; height: 100%; overflow: hidden; user-select: none; }
+.rgb-glitch-base, .rgb-glitch-layer { display: block; width: 100%; height: 100%; object-fit: cover; }
+.rgb-glitch-layer { position: absolute; inset: 0; pointer-events: none; opacity: 0; mix-blend-mode: screen; }
+.rgb-glitch-image[data-glitching="true"] .rgb-glitch-layer,
+.rgb-glitch-image:hover .rgb-glitch-layer { opacity: 0.85; }
+.rgb-glitch-red { animation: hackfest-rgb-red 0.6s steps(1) infinite; }
+.rgb-glitch-cyan { animation: hackfest-rgb-cyan 0.6s steps(1) infinite; }
+.rgb-glitch-slice { display: none; position: absolute; left: 0; right: 0; height: 6px; background: #ffffff1a; pointer-events: none; }
+.rgb-glitch-image[data-glitching="true"] .rgb-glitch-slice,
+.rgb-glitch-image:hover .rgb-glitch-slice { display: block; animation: hackfest-glitch-slice 0.6s steps(3) infinite; }
+.magnetic-dots { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; z-index: 0; }
+.hackfest-cursor { display: none; mix-blend-mode: difference; }
+@keyframes protocol-fill-wipe { from { transform: scaleX(0); } to { transform: scaleX(1); } }
+@keyframes protocol-scanbar { from { transform: translateX(0); } to { transform: translateX(400px); } }
+@keyframes protocol-crt-blink { 0%, 49% { opacity: 1; } 50%, 100% { opacity: 0; } }
+@keyframes protocol-border-flash { 0%, 100% { outline: 2px solid #fde403; } 50% { outline: 2px solid #c00100; } }
+@media (any-hover: hover) and (any-pointer: fine) {
+  .hackfest-cursor { display: block; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .rgb-glitch-layer, .rgb-glitch-slice { animation: none; }
+}

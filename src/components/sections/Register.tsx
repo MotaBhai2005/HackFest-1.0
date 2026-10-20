@@ -98,7 +98,7 @@ function SyncNowButton() {
       <div className="w-5 md:w-7 -my-3 border-y-[8px] border-l-[8px] border-hack-red opacity-0 group-hover:opacity-100 transition-none" />
 
       <motion.a
-        href="#"
+        href="/events"
         initial="rest"
         whileHover="hover"
         whileTap="tap"
