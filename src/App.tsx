@@ -17,13 +17,23 @@ import Preloader from './components/layout/Preloader';
 import CustomCursor from './components/ui/CustomCursor';
 import { crtFlicker } from './lib/animations';
 import CatalogPage, { type CatalogPath } from './pages/CatalogPage';
+import { hasSeenPreloaderToday, markPreloaderSeenToday } from './lib/preloaderStorage';
 
 const path = window.location.pathname.replace(/\/$/, '') || '/';
 const isCatalog = ['/events', '/fun-events', '/workshops'].includes(path);
 
 export default function App() {
-  const [preloaderDone, setPreloaderDone] = useState(path !== '/');
+  const [preloaderDone, setPreloaderDone] = useState(() => {
+    if (path !== '/') return true;
+    return hasSeenPreloaderToday();
+  });
   const [showNavbar, setShowNavbar] = useState(false);
+
+  useEffect(() => {
+    if (!preloaderDone) {
+      markPreloaderSeenToday();
+    }
+  }, [preloaderDone]);
 
   useEffect(() => {
     if (!preloaderDone) return;
@@ -54,7 +64,13 @@ export default function App() {
       <CustomCursor />
       <AnimatePresence>
         {!preloaderDone && (
-          <Preloader key="preloader" onDone={() => setPreloaderDone(true)} />
+          <Preloader
+            key="preloader"
+            onDone={() => {
+              markPreloaderSeenToday();
+              setPreloaderDone(true);
+            }}
+          />
         )}
       </AnimatePresence>
 
