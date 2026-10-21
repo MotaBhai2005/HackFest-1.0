@@ -32,9 +32,22 @@ function SysStatus() {
 function NavLink({ link, active }: { link: typeof navLinks[0]; active: boolean }) {
   const [hovered, setHovered] = useState(false);
 
+  const handleClick = (e: React.MouseEvent<HTMLAnchorElement>) => {
+    if ((link.href === '/' || link.section === 'hero') && currentPath === '/') {
+      e.preventDefault();
+      const hero = document.getElementById('hero');
+      if (hero) {
+        hero.scrollIntoView({ behavior: 'smooth' });
+      } else {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      }
+    }
+  };
+
   return (
     <a
       href={link.href}
+      onClick={handleClick}
       aria-current={active ? (link.href.includes('#') ? 'location' : 'page') : undefined}
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
@@ -68,10 +81,22 @@ function NavLink({ link, active }: { link: typeof navLinks[0]; active: boolean }
 /* ─── Navbar ─────────────────────────────────────────────────────────── */
 export default function Navbar() {
   const [mobileOpen, setMobileOpen] = useState(false);
-  const [activeSection, setActiveSection] = useState('');
-  const isActive = (link: typeof navLinks[0]) => link.href.includes('#')
-    ? currentPath === '/' && activeSection === link.section
-    : currentPath === link.href && (link.href !== '/' || activeSection !== 'sponsors');
+  const [activeSection, setActiveSection] = useState('hero');
+  const isActive = (link: typeof navLinks[0]) => {
+    if (currentPath !== '/') {
+      return currentPath === link.href;
+    }
+    if (link.href === '/' || link.section === 'hero') {
+      return activeSection === 'hero';
+    }
+    if (link.section === 'sponsors') {
+      return activeSection === 'sponsors';
+    }
+    if (link.section === 'events') {
+      return activeSection === 'events';
+    }
+    return false;
+  };
 
   useEffect(() => {
     if (!mobileOpen) return;
@@ -90,23 +115,41 @@ export default function Navbar() {
     };
   }, [mobileOpen]);
 
-  // IntersectionObserver to track which section is in view
+  // Track active section on home page based on scroll position
   useEffect(() => {
-    const sectionIds = navLinks.map(l => l.section);
-    const observers: IntersectionObserver[] = [];
+    if (currentPath !== '/') return;
 
-    sectionIds.forEach(id => {
-      const el = document.getElementById(id);
-      if (!el) return;
-      const obs = new IntersectionObserver(
-        ([entry]) => { if (entry.isIntersecting) setActiveSection(id); },
-        { threshold: 0.3 }
-      );
-      obs.observe(el);
-      observers.push(obs);
-    });
+    const sections = [
+      'hero',
+      'about',
+      'register',
+      'prize-pool',
+      'speakers',
+      'events',
+      'sponsors',
+      'faq',
+    ];
 
-    return () => observers.forEach(o => o.disconnect());
+    const handleScroll = () => {
+      let current = '';
+      for (const id of sections) {
+        const el = document.getElementById(id);
+        if (el) {
+          const rect = el.getBoundingClientRect();
+          if (rect.top <= 250 && rect.bottom > 100) {
+            current = id;
+            break;
+          }
+        }
+      }
+      if (current) {
+        setActiveSection(current);
+      }
+    };
+
+    handleScroll();
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
   return (
@@ -120,7 +163,22 @@ export default function Navbar() {
 
       <nav aria-label="Main navigation" className="relative w-full z-[100] bg-hack-yellow border-b-4 border-hack-black flex items-center justify-between gap-4 px-4 py-3 md:px-6 md:py-4 lg:py-5">
         {/* Logo + status */}
-        <a href="/" aria-label="HACKFEST home" className="flex items-center shrink-0">
+        <a
+          href="/"
+          aria-label="HACKFEST home"
+          className="flex items-center shrink-0"
+          onClick={(e) => {
+            if (currentPath === '/') {
+              e.preventDefault();
+              const hero = document.getElementById('hero');
+              if (hero) {
+                hero.scrollIntoView({ behavior: 'smooth' });
+              } else {
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+              }
+            }
+          }}
+        >
           <GlitchText
             as="span"
             className="font-display font-bold text-xl md:text-3xl tracking-tighter text-hack-black leading-none"
@@ -202,7 +260,18 @@ export default function Navbar() {
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: -20 }}
                 transition={{ delay: i * 0.05, duration: 0.2 }}
-                onClick={() => setMobileOpen(false)}
+                onClick={(e) => {
+                  setMobileOpen(false);
+                  if ((link.href === '/' || link.section === 'hero') && currentPath === '/') {
+                    e.preventDefault();
+                    const hero = document.getElementById('hero');
+                    if (hero) {
+                      hero.scrollIntoView({ behavior: 'smooth' });
+                    } else {
+                      window.scrollTo({ top: 0, behavior: 'smooth' });
+                    }
+                  }
+                }}
               >
                 {isActive(link) ? `[ ${link.label}_ ]` : link.label}
               </motion.a>
