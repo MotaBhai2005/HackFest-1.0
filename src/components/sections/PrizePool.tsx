@@ -1,15 +1,9 @@
-import { useRef, useEffect } from "react";
+import { useRef } from "react";
 import { motion, useInView } from "framer-motion";
-import gsap from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { boltOnReveal, popIn } from "../../lib/animations";
-import HUDBracket from "../ui/HUDBracket";
-
-gsap.registerPlugin(ScrollTrigger);
 
 interface PrizeCardData {
 	amount: string;
-	numericAmount: number;
 	title: string;
 	fileId: string;
 	accessLevel: string;
@@ -19,26 +13,23 @@ interface PrizeCardData {
 
 const prizes: PrizeCardData[] = [
 	{
-		amount: "3K",
-		numericAmount: 3000,
-		title: "MAIN_FRAME_CHAMP",
+		amount: "TBA",
+		title: "CP RUSH",
 		fileId: "#FILE_001",
 		accessLevel: "ACCESS_LEVEL: ALPHA",
 		icon: "images/prize-icon-1.png",
 	},
 	{
-		amount: "5K",
-		numericAmount: 5000,
-		title: "GRAND_SYS_ADMIN",
+		amount: "TBA",
+		title: "HACKATHON",
 		fileId: "#SYSTEM_ROOT",
 		accessLevel: "TOTAL_POOL_RESERVE",
 		icon: "images/prize-icon-2.png",
 		isGrand: true,
 	},
 	{
-		amount: "2K",
-		numericAmount: 2000,
-		title: "NEURAL_EXPLORER",
+		amount: "TBA",
+		title: "CTF",
 		fileId: "#FILE_003",
 		accessLevel: "ACCESS_LEVEL: BETA",
 		icon: "images/prize-icon-3.png",
@@ -46,26 +37,8 @@ const prizes: PrizeCardData[] = [
 ];
 
 function PrizeCard({ prize, index }: { prize: PrizeCardData; index: number }) {
-	const amountRef = useRef<HTMLDivElement>(null);
 	const cardRef = useRef<HTMLDivElement>(null);
 	const inView = useInView(cardRef, { once: true, margin: "-80px" });
-
-	useEffect(() => {
-		if (!inView || !amountRef.current) return;
-		const el = amountRef.current;
-		const suffix = prize.amount.replace(/\d+/g, "");
-		const target = { val: 0 };
-
-		gsap.to(target, {
-			val: prize.numericAmount / 1000,
-			duration: prize.isGrand ? 1.8 : 1.2,
-			ease: "power2.out",
-			delay: index * 0.15,
-			onUpdate: () => {
-				el.textContent = Math.round(target.val) + suffix;
-			},
-		});
-	}, [inView, prize.numericAmount, prize.amount, prize.isGrand, index]);
 
 	return (
 		<motion.div
@@ -109,7 +82,6 @@ function PrizeCard({ prize, index }: { prize: PrizeCardData; index: number }) {
 			{/* Amount */}
 			<div className="absolute top-28 md:top-[148px] left-6 md:left-10 right-6 md:right-10">
 				<div
-					ref={amountRef}
 					className={`font-display font-bold text-5xl sm:text-6xl md:text-[7vw] lg:text-8xl leading-none
             ${prize.isGrand ? "text-white" : "text-hack-black"}`}
 				>
