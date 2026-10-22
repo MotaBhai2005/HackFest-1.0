@@ -113,7 +113,7 @@ function TypewriterText({ trigger }: { trigger: boolean }) {
 
 const stats = [
   {
-    target: 48,
+    target: 36,
     suffix: 'H',
     pad: 0,
     label: 'UPTIME_REQUIRED',

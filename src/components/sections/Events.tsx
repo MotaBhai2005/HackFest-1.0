@@ -22,7 +22,14 @@ export default function Events() {
           >
             <EventVisual visual={event.visual} code={`0${i + 1}`} />
             <div className="festival-card-content">
-              <p className="festival-eyebrow">{event.category}</p>
+              <div className="flex items-center justify-between gap-2 flex-wrap">
+                <p className="festival-eyebrow">{event.category}</p>
+                {event.fee && (
+                  <span className="font-mono text-xs font-bold text-hack-yellow border border-hack-yellow/40 bg-hack-yellow/10 px-2 py-0.5 tracking-wider">
+                    {event.fee}
+                  </span>
+                )}
+              </div>
               <h3 className="font-display font-bold text-2xl text-white uppercase group-hover:text-hack-yellow">{event.name}</h3>
               <p className="text-sm text-white/70 leading-relaxed">{event.description}</p>
               <div className="mt-auto pt-3"><ProtocolLink href={`/events#${event.id}`}>Explore Event</ProtocolLink></div>

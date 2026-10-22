@@ -41,6 +41,14 @@ function NavLink({ link, active }: { link: typeof navLinks[0]; active: boolean }
       } else {
         window.scrollTo({ top: 0, behavior: 'smooth' });
       }
+    } else if (link.href.startsWith('/#') && currentPath === '/') {
+      e.preventDefault();
+      const targetId = link.href.replace('/#', '');
+      const el = document.getElementById(targetId);
+      if (el) {
+        el.scrollIntoView({ behavior: 'smooth' });
+        window.history.pushState(null, '', `/#${targetId}`);
+      }
     }
   };
 
@@ -88,6 +96,9 @@ export default function Navbar() {
     }
     if (link.href === '/' || link.section === 'hero') {
       return activeSection === 'hero';
+    }
+    if (link.section === 'about') {
+      return activeSection === 'about';
     }
     if (link.section === 'sponsors') {
       return activeSection === 'sponsors';
@@ -269,6 +280,14 @@ export default function Navbar() {
                       hero.scrollIntoView({ behavior: 'smooth' });
                     } else {
                       window.scrollTo({ top: 0, behavior: 'smooth' });
+                    }
+                  } else if (link.href.startsWith('/#') && currentPath === '/') {
+                    e.preventDefault();
+                    const targetId = link.href.replace('/#', '');
+                    const el = document.getElementById(targetId);
+                    if (el) {
+                      el.scrollIntoView({ behavior: 'smooth' });
+                      window.history.pushState(null, '', `/#${targetId}`);
                     }
                   }
                 }}

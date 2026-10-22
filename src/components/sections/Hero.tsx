@@ -12,11 +12,11 @@ import { navigation } from '../../data/navigation';
 
 gsap.registerPlugin(ScrollTrigger);
 
-const sideNavLinks = [
-  { label: 'Home', href: '#hero', active: true },
-  { label: 'About Us', href: '#about', active: false },
-  ...navigation.filter(link => link.href !== '/').map(link => ({ ...link, label: link.href === '/events' ? 'Events' : link.label, active: false })),
-];
+const sideNavLinks = navigation.map(link => ({
+  label: link.section === 'about' ? 'About Us' : link.label,
+  href: link.href === '/' ? '#hero' : link.href.startsWith('/#') ? link.href.slice(1) : link.href,
+  active: link.section === 'hero',
+}));
 
 const HEX_CHARS = '0123456789ABCDEF←→↑↓▓░▒█';
 const randomHexChar = () => HEX_CHARS[Math.floor(Math.random() * HEX_CHARS.length)];

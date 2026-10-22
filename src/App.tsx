@@ -19,7 +19,11 @@ import { crtFlicker } from './lib/animations';
 import CatalogPage, { type CatalogPath } from './pages/CatalogPage';
 import { hasSeenPreloaderToday, markPreloaderSeenToday } from './lib/preloaderStorage';
 
-const path = window.location.pathname.replace(/\/$/, '') || '/';
+const rawPath = window.location.pathname.replace(/\/$/, '') || '/';
+if (rawPath === '/about') {
+  window.history.replaceState(null, '', '/#about');
+}
+const path = rawPath === '/about' ? '/' : rawPath;
 const isCatalog = ['/events', '/fun-events', '/workshops'].includes(path);
 
 export default function App() {
@@ -51,9 +55,10 @@ export default function App() {
 
   useEffect(() => {
     document.title = `${path === '/events' ? 'Competitions' : path === '/fun-events' ? 'Fun Events' : path === '/workshops' ? 'Workshops' : 'Rewriting Reality'} — HACKFEST 2026`;
-    if (!preloaderDone || !window.location.hash) return;
+    const targetHash = window.location.hash || (rawPath === '/about' ? '#about' : '');
+    if (!preloaderDone || !targetHash) return;
     const id = requestAnimationFrame(() => {
-      const target = document.getElementById(decodeURIComponent(window.location.hash.slice(1)));
+      const target = document.getElementById(decodeURIComponent(targetHash.slice(1)));
       target?.scrollIntoView();
     });
     return () => cancelAnimationFrame(id);

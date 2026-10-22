@@ -29,7 +29,14 @@ export default function EventCard({ event, index }: { event: FestivalEvent; inde
     >
       <EventVisual visual={event.visual} code={String(index + 1).padStart(2, '0')} />
       <div className="festival-card-content">
-        <p className="festival-eyebrow">{event.category}</p>
+        <div className="flex items-center justify-between gap-2 flex-wrap">
+          <p className="festival-eyebrow">{event.category}</p>
+          {event.fee && (
+            <span className="font-mono text-xs font-bold text-hack-yellow border border-hack-yellow/40 bg-hack-yellow/10 px-2 py-0.5 tracking-wider">
+              {event.fee}
+            </span>
+          )}
+        </div>
         <h2 className="font-display font-bold text-2xl sm:text-3xl text-white leading-tight uppercase">{event.name}</h2>
         <p className="text-sm text-white/75 leading-relaxed">{event.description}</p>
         <p className="font-mono text-xs text-hack-yellow leading-relaxed">
@@ -50,6 +57,7 @@ export default function EventCard({ event, index }: { event: FestivalEvent; inde
             <dl className="event-facts">
               <div><dt>Participation format</dt><dd>{event.format || 'To Be Announced'}</dd></div>
               <div><dt>Team size</dt><dd>{event.teamSize || 'To Be Announced'}</dd></div>
+              <div><dt>Registration Fee</dt><dd className="text-hack-yellow font-bold">{event.fee || 'Free / To Be Announced'}</dd></div>
               <div><dt>Schedule</dt><dd>{event.schedule.days.length ? event.schedule.days.map(day => `Day ${day}`).join(' + ') : 'To Be Announced'}{event.schedule.time ? ` · ${event.schedule.time} IST` : ' · Time TBA'}</dd></div>
               <div><dt>Venue</dt><dd>{event.schedule.venue || 'To Be Announced'}</dd></div>
               {event.sessions && <>
