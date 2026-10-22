@@ -40,3 +40,4 @@ The build runs the existing TypeScript check and production Vite build. This pro
 ## Routes and hosting
 
 The homepage retains its existing hero, effects, about, registration discovery, prize pool, and FAQ sections. Its event content is a compact featured preview. Catalogs use native links at `/events`, `/fun-events`, and `/workshops`; details expand inline on each event card. The build creates `dist/events/index.html`, `dist/fun-events/index.html`, and `dist/workshops/index.html`, so the current GitHub Pages workflow supports direct visits and refreshes without a server rewrite or a new router dependency. Root-relative assets work from nested pages, with the existing Vite `base: '/'` deployment setting. Hosting under a repository subpath would require updating this existing base-path convention.
+
