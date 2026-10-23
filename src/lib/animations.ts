@@ -56,6 +56,29 @@ export const glitchHover: Variants = {
   },
 };
 
+/** Glitch hover for vector logo — drop-shadow chromatic split matching text glitch */
+export const glitchLogoHover: Variants = {
+  rest: {
+    x: 0,
+    filter: 'drop-shadow(0px 0px 0px rgba(186,26,26,0)) drop-shadow(0px 0px 0px rgba(0,255,255,0))',
+    transition: { duration: 0.05 },
+  },
+  hover: {
+    x: [0, 2, -2, 2, 0],
+    filter: [
+      'drop-shadow(0px 0px 0px rgba(186,26,26,0)) drop-shadow(0px 0px 0px rgba(0,255,255,0))',
+      'drop-shadow(2px 0px 0px rgba(186,26,26,1)) drop-shadow(-2px 0px 0px rgba(0,255,255,1))',
+      'drop-shadow(-2px 0px 0px rgba(186,26,26,1)) drop-shadow(2px 0px 0px rgba(0,255,255,1))',
+      'drop-shadow(2px 0px 0px rgba(186,26,26,1)) drop-shadow(-2px 0px 0px rgba(0,255,255,1))',
+      'drop-shadow(0px 0px 0px rgba(186,26,26,0)) drop-shadow(0px 0px 0px rgba(0,255,255,0))',
+    ],
+    transition: {
+      duration: 0.25,
+      times: [0, 0.25, 0.5, 0.75, 1],
+    },
+  },
+};
+
 /** Button glitch + scale on hover — hard step snap, no ease */
 export const buttonGlitch: Variants = {
   rest: {

@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import GlitchText from '../ui/GlitchText';
+import GlitchLogo from '../ui/GlitchLogo';
 import { navigation } from '../../data/navigation';
 
 const navLinks = navigation;
@@ -190,12 +190,7 @@ export default function Navbar() {
             }
           }}
         >
-          <GlitchText
-            as="span"
-            className="font-display font-bold text-xl md:text-3xl tracking-tighter text-hack-black leading-none"
-          >
-            HACK_FEST
-          </GlitchText>
+          <GlitchLogo className="h-4 sm:h-[18px] md:h-5 lg:h-6 w-auto text-hack-black" />
           <SysStatus />
         </a>
 
@@ -212,14 +207,16 @@ export default function Navbar() {
 
         {/* Desktop CTA */}
         <motion.a
-          href="/events"
+          href="https://drive.google.com/file/d/1Vnb9OGS_HjEma9LvXwF-3PN6JefXlWO0/view?usp=drivesdk"
+          target="_blank"
+          rel="noopener noreferrer"
           className="hidden xl:inline-block bg-hack-black text-hack-yellow font-body font-black text-xs tracking-widest uppercase px-5 py-3"
           style={{ boxShadow: '4px 4px 0px #c00100' }}
           whileHover={{ boxShadow: '2px 2px 0px #c00100', x: 2, y: 2 }}
           whileTap={{ boxShadow: '0px 0px 0px #c00100', x: 4, y: 4 }}
           transition={{ duration: 0.04 }}
         >
-          EXPLORE_EVENTS
+          STUDENT BROCHURE
         </motion.a>
 
         {/* Mobile hamburger */}
@@ -306,6 +303,20 @@ export default function Navbar() {
               onClick={() => setMobileOpen(false)}
             >
               EXPLORE_EVENTS
+            </motion.a>
+
+            <motion.a
+              href="https://drive.google.com/file/d/1Vnb9OGS_HjEma9LvXwF-3PN6JefXlWO0/view?usp=drivesdk"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="bg-hack-yellow text-hack-black font-body font-black text-sm tracking-widest uppercase px-6 py-2.5 border-2 border-black"
+              style={{ boxShadow: '4px 4px 0px #c00100' }}
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.35, duration: 0.2 }}
+              onClick={() => setMobileOpen(false)}
+            >
+              STUDENT BROCHURE ↗
             </motion.a>
 
             {/* HUD corners */}

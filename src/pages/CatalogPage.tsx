@@ -8,7 +8,7 @@ import MagneticDots from '../components/ui/MagneticDots';
 const catalogs = {
   '/events': {
     code: '01 / ALL EVENTS', title: 'Build. Solve. Compete.',
-    description: 'Every event at HACKFEST 2026 — from the main hackathons to flagship competitions, fun events, and hands-on workshops. Find your challenge.',
+    description: 'Every event at HACKFEST 2026 — from HackOUTR hackathon editions to flagship competitions, fun events, and hands-on workshops. Find your challenge.',
     events: allEvents,
   },
   '/fun-events': {
@@ -26,18 +26,18 @@ const catalogs = {
 export type CatalogPath = keyof typeof catalogs;
 
 const CATEGORY_FILTERS: { value: CategoryFilter; label: string }[] = [
-  { value: 'all',                label: 'All Events' },
-  { value: 'hackathon-software', label: 'Software Hackathon' },
-  { value: 'hackathon-hardware', label: 'Hardware Hackathon' },
-  { value: 'flagship',           label: 'Flagship Events' },
-  { value: 'fun',                label: 'Fun Events' },
-  { value: 'workshop',           label: 'Workshops' },
+  { value: 'all',      label: 'All Events' },
+  { value: 'hackoutr', label: 'HackOUTR' },
+  { value: 'flagship', label: 'Flagship Events' },
+  { value: 'fun',      label: 'Fun Events' },
+  { value: 'workshop', label: 'Workshops' },
 ];
 
 const CATEGORY_LABEL_MAP: Record<CategoryFilter, string> = {
   'all':                'All Events',
-  'hackathon-software': 'Software Hackathon',
-  'hackathon-hardware': 'Hardware Hackathon',
+  'hackoutr':           'HackOUTR',
+  'hackathon-software': 'HackOUTR Software Edition',
+  'hackathon-hardware': 'HackOUTR Hardware Edition',
   'flagship':           'Flagship Events',
   'fun':                'Fun Events',
   'workshop':           'Workshops',
@@ -57,7 +57,7 @@ export default function CatalogPage({ path }: { path: CatalogPath }) {
   const pendingCount = byCategory.filter(event => !event.schedule.days.length).length;
 
   // Status label
-  const typeLabel = category === 'workshop' || category === 'all' && path === '/workshops' ? 'workshops' : 'events';
+  const typeLabel = category === 'workshop' || category === 'all' && path === '/workshops' ? 'workshops' : category === 'hackoutr' ? 'hackathon editions' : 'events';
   const filterLabel = isHub && category !== 'all' ? ` · ${CATEGORY_LABEL_MAP[category]}` : '';
   const dayLabel = day !== 'all' ? ` · Day ${day}` : ' to explore';
 
@@ -65,19 +65,27 @@ export default function CatalogPage({ path }: { path: CatalogPath }) {
     <>
       <header className="catalog-header">
         <div className="max-w-7xl mx-auto relative">
-          <a href="/" className="font-mono text-xs font-bold hover:underline">← BACK TO HOME</a>
-          <p className="festival-eyebrow mt-10">HACKFEST 2026 // {catalog.code}</p>
-          <motion.h1 initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} className="font-display font-bold text-[clamp(2.5rem,7vw,7rem)] uppercase leading-none tracking-tighter mt-3 max-w-5xl">{catalog.title}</motion.h1>
-          <p className="mt-6 max-w-2xl text-sm sm:text-base leading-relaxed">{catalog.description}</p>
-          <div className="font-mono text-xs font-bold mt-8 flex flex-wrap gap-4">
+          <a href="/" className="font-mono text-xs font-bold hover:underline inline-flex items-center gap-1 text-black/80 hover:text-black">← BACK TO HOME</a>
+          <p className="festival-eyebrow mt-3 sm:mt-4 text-black/70">HACKFEST 2026 // {catalog.code}</p>
+          <motion.h1
+            initial={{ opacity: 0, x: -20 }}
+            animate={{ opacity: 1, x: 0 }}
+            className="font-display font-bold text-3xl sm:text-4xl md:text-5xl lg:text-6xl uppercase leading-none tracking-tight mt-2 max-w-5xl text-hack-black"
+          >
+            {catalog.title}
+          </motion.h1>
+          <p className="mt-2.5 sm:mt-3 max-w-2xl text-xs sm:text-sm text-black/80 leading-relaxed">{catalog.description}</p>
+          <div className="font-mono text-[11px] sm:text-xs font-bold mt-4 flex flex-wrap items-center gap-x-3 gap-y-1 text-black/70">
             <span>STARTING 04 NOV 2026</span>
+            <span>·</span>
             <span>ALL TIMES IN IST</span>
+            <span>·</span>
             <span>[ {catalog.events.length} {path === '/workshops' ? 'WORKSHOPS' : 'EVENTS'} ]</span>
           </div>
         </div>
       </header>
 
-      <section className="bg-hack-black px-4 md:px-8 py-12 md:py-20 relative overflow-hidden" aria-label={path === '/workshops' ? 'Workshops' : 'Events'}>
+      <section className="bg-hack-black px-4 md:px-8 py-8 md:py-12 relative overflow-hidden" aria-label={path === '/workshops' ? 'Workshops' : 'Events'}>
         <MagneticDots />
         <div className="max-w-7xl mx-auto relative z-[1]">
 

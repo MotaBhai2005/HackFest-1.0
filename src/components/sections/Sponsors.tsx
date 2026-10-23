@@ -36,9 +36,34 @@ export default function Sponsors() {
             </motion.div>
           ))}
         </motion.div>
-        <div className="text-center">
-          <PrimaryButton href={sponsorshipMailto()} size="sm">Sponsor Us ↗</PrimaryButton>
-          <p className="font-mono text-xs mt-6 break-words">{festival.sponsorship.email || 'Sponsorship contact email to be announced.'}</p>
+        <div className="flex flex-col items-center gap-6 text-center">
+          <div className="flex flex-col sm:flex-row items-center justify-center gap-4 sm:gap-6">
+            <PrimaryButton
+              href={festival.sponsorship.brochureUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              size="sm"
+              variant="dark"
+            >
+              Sponsorship Brochure ↗
+            </PrimaryButton>
+            <PrimaryButton
+              href={sponsorshipMailto()}
+              size="sm"
+              variant="primary"
+            >
+              Sponsor Us ↗
+            </PrimaryButton>
+          </div>
+          <p className="font-mono text-xs mt-2 break-words text-hack-black/80">
+            Direct enquiries:{' '}
+            <a
+              href={`mailto:${festival.sponsorship.email}`}
+              className="font-bold underline hover:text-hack-red transition-colors"
+            >
+              {festival.sponsorship.email}
+            </a>
+          </p>
         </div>
       </div>
     </section>

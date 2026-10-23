@@ -26,7 +26,7 @@ execFileSync(process.execPath, [
 const require = createRequire(import.meta.url);
 const { countdownAt } = require(join(output, 'lib/countdown.js'));
 const { festival, festivalStart, sponsorshipMailto } = require(join(output, 'data/festival.js'));
-const { competitions, funEvents, workshops, filterEventsByDay, registrationHref } = require(join(output, 'data/events.js'));
+const { allEvents, competitions, funEvents, workshops, filterEventsByDay, registrationHref } = require(join(output, 'data/events.js'));
 // Initialize Motion's server environment before providing the location fixture.
 require('framer-motion');
 globalThis.window = { location: { hash: '', pathname: '/events' } };
@@ -65,9 +65,9 @@ test('countdown handles critical, zero, elapsed, and configured opening hour', (
 });
 
 test('catalog includes every requested event and supports valid organizer metadata', () => {
-  assert.deepEqual([competitions.length, funEvents.length, workshops.length], [6, 7, 2]);
+  assert.deepEqual([competitions.length, funEvents.length, workshops.length], [7, 7, 3]);
   const all = [...competitions, ...funEvents, ...workshops];
-  assert.equal(new Set(all.map(event => event.id)).size, 15);
+  assert.equal(new Set(all.map(event => event.id)).size, 17);
   for (const event of all) {
     assert.ok(event.schedule.days.every(day => [1, 2, 3].includes(day)));
     if (event.registrationUrl) assert.ok(registrationHref(event.registrationUrl));
@@ -83,8 +83,8 @@ test('day filters exclude unassigned events and support later single- and multi-
   for (const day of [1, 2, 3]) assert.equal(filterEventsByDay(unassigned, day).length, 0);
   const assigned = [
     { ...funEvents[0], schedule: { ...funEvents[0].schedule, days: [1, 3] } },
-    { ...funEvents[1], schedule: { ...funEvents[1].schedule, days: [2] } },
-    unassigned[2],
+    { ...funEvents[2], schedule: { ...funEvents[2].schedule, days: [2] } },
+    unassigned[1],
   ];
   assert.deepEqual(filterEventsByDay(assigned, 1).map(event => event.id), ['ipl-auction']);
   assert.deepEqual(filterEventsByDay(assigned, 2).map(event => event.id), ['atv-racing']);
@@ -114,7 +114,7 @@ test('event rendering keeps missing registrations inactive and configured regist
 });
 
 test('all three catalog pages render their event details and fun-event day filters', () => {
-  for (const [path, events] of [['/events', competitions], ['/fun-events', funEvents], ['/workshops', workshops]]) {
+  for (const [path, events] of [['/events', allEvents], ['/fun-events', funEvents], ['/workshops', workshops]]) {
     const html = renderToStaticMarkup(React.createElement(CatalogPage, { path }));
     for (const event of events) {
       assert.ok(html.includes(event.name));
@@ -146,5 +146,5 @@ test('sponsor draft, mystery speakers, and shared navigation contain no invented
   assert.equal((speakers.match(/To Be Announced/g) || []).length, festival.speakers.length);
   assert.doesNotMatch(speakers, /XENON_BYTE|NOVA_LEAK/);
   const nav = renderToStaticMarkup(React.createElement(Navbar));
-  for (const href of ['/', '/events', '/fun-events', '/workshops', '/#sponsors']) assert.ok(nav.includes(`href="${href}"`));
+  for (const href of ['/', '/#about', '/events', '/#sponsors']) assert.ok(nav.includes(`href="${href}"`));
 });

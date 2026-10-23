@@ -9,30 +9,34 @@ interface PrizeCardData {
 	accessLevel: string;
 	icon: string;
 	isGrand?: boolean;
+	fontSize?: string;
 }
 
 const prizes: PrizeCardData[] = [
 	{
-		amount: "TBA",
-		title: "CP RUSH",
+		amount: "Certificates",
+		title: "COMPETITIONS",
 		fileId: "#FILE_001",
 		accessLevel: "ACCESS_LEVEL: ALPHA",
-		icon: "images/prize-icon-1.png",
+		icon: "/images/prize-icon-1.png",
+		fontSize: "text-2xl sm:text-3xl md:text-4xl lg:text-[26px] xl:text-4xl 2xl:text-5xl",
 	},
 	{
-		amount: "TBA",
-		title: "HACKATHON",
+		amount: "₹5Lakhs",
+		title: "",
 		fileId: "#SYSTEM_ROOT",
 		accessLevel: "TOTAL_POOL_RESERVE",
-		icon: "images/prize-icon-2.png",
+		icon: "/images/prize-icon-2.png",
 		isGrand: true,
+		fontSize: "text-4xl sm:text-5xl md:text-6xl lg:text-5xl xl:text-6xl 2xl:text-7xl",
 	},
 	{
-		amount: "TBA",
-		title: "CTF",
+		amount: "Goodies",
+		title: "FUN EVENTS",
 		fileId: "#FILE_003",
 		accessLevel: "ACCESS_LEVEL: BETA",
-		icon: "images/prize-icon-3.png",
+		icon: "/images/prize-icon-3.png",
+		fontSize: "text-3xl sm:text-4xl md:text-5xl lg:text-4xl xl:text-5xl 2xl:text-6xl",
 	},
 ];
 
@@ -49,18 +53,18 @@ function PrizeCard({ prize, index }: { prize: PrizeCardData; index: number }) {
 			animate={inView ? "visible" : "hidden"}
 			whileHover={{ y: -8, transition: { duration: 0.2 } }}
 			className={`
-        border-4 border-hack-black h-80 md:h-[404px] relative
+        border-4 border-hack-black h-80 md:h-[404px] relative p-6 md:p-8 flex flex-col justify-between
         transition-transform
         ${prize.isGrand ? "bg-hack-red shadow-[10px_10px_0px_#000] md:shadow-[15px_15px_0px_#000]" : "bg-hack-yellow"}
       `}
 		>
 			{/* HUD bracket — top left */}
-			<div className="absolute -top-2 -left-2 w-5 h-5 border-t-4 border-l-4 border-hack-black" />
+			<div className="absolute -top-2 -left-2 w-5 h-5 border-t-4 border-l-4 border-hack-black pointer-events-none" />
 			{/* HUD bracket — bottom right */}
-			<div className="absolute -bottom-2 -right-2 w-5 h-5 border-b-4 border-r-4 border-hack-black" />
+			<div className="absolute -bottom-2 -right-2 w-5 h-5 border-b-4 border-r-4 border-hack-black pointer-events-none" />
 
 			{/* Top row: icon + file ID */}
-			<div className="absolute top-6 md:top-10 left-6 md:left-10 right-6 md:right-10 flex justify-between items-start">
+			<div className="flex justify-between items-start">
 				<motion.img
 					src={prize.icon}
 					alt=""
@@ -79,28 +83,26 @@ function PrizeCard({ prize, index }: { prize: PrizeCardData; index: number }) {
 				)}
 			</div>
 
-			{/* Amount */}
-			<div className="absolute top-28 md:top-[148px] left-6 md:left-10 right-6 md:right-10">
+			{/* Middle: Amount + Title */}
+			<div className="my-auto flex flex-col justify-center">
 				<div
-					className={`font-display font-bold text-5xl sm:text-6xl md:text-[7vw] lg:text-8xl leading-none
+					className={`font-display font-bold tracking-tight leading-none ${prize.fontSize}
             ${prize.isGrand ? "text-white" : "text-hack-black"}`}
 				>
 					{prize.amount}
 				</div>
+				{prize.title && (
+					<div
+						className={`font-body font-black text-[10px] sm:text-xs md:text-sm lg:text-base tracking-widest uppercase mt-3 md:mt-4
+            ${prize.isGrand ? "text-white" : "text-hack-black"}`}
+					>
+						{prize.title}
+					</div>
+				)}
 			</div>
 
-			{/* Title */}
-			<div className="absolute top-48 md:top-[260px] left-6 md:left-10 right-6 md:right-10">
-				<div
-					className={`font-body font-black text-[10px] sm:text-xs md:text-sm lg:text-base tracking-widest uppercase
-          ${prize.isGrand ? "text-white" : "text-hack-black"}`}
-				>
-					{prize.title}
-				</div>
-			</div>
-
-			{/* Access level */}
-			<div className="absolute top-60 md:top-[320px] left-6 md:left-10 right-6 md:right-10">
+			{/* Bottom: Access level */}
+			<div className="mt-auto">
 				{prize.isGrand ? (
 					<div className="bg-hack-black inline-block px-3 md:px-4 py-1.5 md:py-2">
 						<span className="font-body font-black text-[10px] md:text-sm text-hack-yellow uppercase">{prize.accessLevel}</span>
