@@ -18,7 +18,7 @@ function SysStatus() {
   return (
     <div className="hidden lg:flex items-center gap-1.5 ml-4">
       <span
-        className="inline-block w-2 h-2 rounded-full bg-green-400"
+        className="inline-block w-2 h-2 rounded-full bg-hack-red"
         style={{ opacity: on ? 1 : 0.2, transition: 'none' }}
       />
       <span className="font-mono text-[9px] tracking-[0.2em] text-hack-black uppercase font-bold">

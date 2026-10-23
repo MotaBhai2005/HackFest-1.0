@@ -18,14 +18,14 @@ export function RegistrationButton({ event }: { event: FestivalEvent }) {
 
   if (event.eventType === 'workshop') {
     return (
-      <span className="w-full text-center py-2.5 px-3 bg-[#111111] border-2 border-green-400 text-green-400 font-mono font-bold text-xs uppercase tracking-wider block shadow-[2px_2px_0_0_#000]">
+      <span className="w-full text-center py-2.5 px-3 bg-[#111111] border-2 border-hack-red text-hack-red font-mono font-bold text-xs uppercase tracking-wider block shadow-[2px_2px_0_0_#000]">
         Open to All · Walk-in
       </span>
     );
   }
 
   return (
-    <span className="registration-pending">Registration Coming Soon</span>
+    <span className="registration-pending">On Spot Registration</span>
   );
 }
 

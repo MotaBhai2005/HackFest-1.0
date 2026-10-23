@@ -1,4 +1,5 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
+import { createPortal } from 'react-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import type { FestivalEvent } from '../../data/events';
 import { RegistrationButton } from './EventCard';
@@ -9,7 +10,83 @@ interface EventDetailsModalProps {
   onClose: () => void;
 }
 
+/* ── Chamfered border wrapper (top-left / bottom-right diagonal) ── */
+function ChamferCard({
+  children,
+  className = '',
+  innerClass = '',
+  cut = 10,
+}: {
+  children: React.ReactNode;
+  className?: string;
+  innerClass?: string;
+  cut?: number;
+}) {
+  const poly = `polygon(${cut}px 0%, 100% 0%, 100% calc(100% - ${cut}px), calc(100% - ${cut}px) 100%, 0% 100%, 0% ${cut}px)`;
+  return (
+    <div
+      className={`bg-white/15 ${className}`}
+      style={{ clipPath: poly }}
+    >
+      <div
+        className={`bg-[#0b0e1a] ${innerClass}`}
+        style={{
+          clipPath: `polygon(${cut}px 0%, 100% 0%, 100% calc(100% - ${cut}px), calc(100% - ${cut}px) 100%, 0% 100%, 0% ${cut}px)`,
+          margin: '1px',
+        }}
+      >
+        {children}
+      </div>
+    </div>
+  );
+}
+
+/* ── Chamfered chip badge ── */
+function Chip({
+  children,
+  accent = false,
+}: {
+  children: React.ReactNode;
+  accent?: boolean;
+}) {
+  return (
+    <div
+      className={`inline-block ${accent ? 'bg-hack-yellow' : 'bg-white/20'}`}
+      style={{ clipPath: 'polygon(6px 0%, 100% 0%, calc(100% - 6px) 100%, 0% 100%)' }}
+    >
+      <div
+        className={`font-mono text-[10px] md:text-xs font-bold uppercase tracking-wider px-3 py-0.5 ${accent ? 'bg-hack-yellow text-black' : 'bg-transparent text-hack-yellow'}`}
+        style={{
+          clipPath: 'polygon(6px 0%, 100% 0%, calc(100% - 6px) 100%, 0% 100%)',
+          margin: accent ? '0' : '1px',
+        }}
+      >
+        {children}
+      </div>
+    </div>
+  );
+}
+
+/* ── Section heading with divider line ── */
+function SectionHeading({ number, label }: { number: string; label: string }) {
+  return (
+    <div className="flex items-center gap-3 mb-3">
+      <span className="font-mono text-[10px] font-bold text-hack-yellow/60 shrink-0 tracking-widest">{number}</span>
+      <div className="h-px flex-1 bg-gradient-to-r from-hack-yellow/30 to-transparent" />
+      <span className="font-mono text-[10px] font-bold text-hack-yellow tracking-[0.2em] uppercase shrink-0">
+        {label}
+      </span>
+    </div>
+  );
+}
+
 export default function EventDetailsModal({ event, isOpen, onClose }: EventDetailsModalProps) {
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
   useEffect(() => {
     if (!isOpen) return;
 
@@ -27,7 +104,14 @@ export default function EventDetailsModal({ event, isOpen, onClose }: EventDetai
     };
   }, [isOpen, onClose]);
 
-  return (
+  /* ── Section counter ── */
+  let secIdx = 0;
+  const nextSec = () => String(++secIdx).padStart(2, '0');
+
+  const CHAMFER = 18;
+  const chamferPoly = `polygon(${CHAMFER}px 0%, 100% 0%, 100% calc(100% - ${CHAMFER}px), calc(100% - ${CHAMFER}px) 100%, 0% 100%, 0% ${CHAMFER}px)`;
+
+  const modalContent = (
     <AnimatePresence>
       {isOpen && (
         <div
@@ -36,260 +120,309 @@ export default function EventDetailsModal({ event, isOpen, onClose }: EventDetai
           aria-modal="true"
           aria-labelledby={`modal-title-${event.id}`}
         >
-          {/* Backdrop */}
+          {/* ── Backdrop ── */}
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            transition={{ duration: 0.2 }}
-            className="fixed inset-0 bg-black/85 backdrop-blur-md"
+            transition={{ duration: 0.25 }}
+            className="fixed inset-0 bg-black/80 backdrop-blur-lg"
             onClick={onClose}
             aria-hidden="true"
           />
 
-          {/* Modal Container */}
+          {/* ── Modal Shell ── */}
           <motion.div
-            initial={{ opacity: 0, scale: 0.94, y: 16 }}
+            initial={{ opacity: 0, scale: 0.93, y: 20 }}
             animate={{ opacity: 1, scale: 1, y: 0 }}
-            exit={{ opacity: 0, scale: 0.94, y: 16 }}
-            transition={{ duration: 0.22, ease: [0.16, 1, 0.3, 1] }}
-            className="relative z-10 w-full max-w-3xl max-h-[90vh] bg-[#0c0c0c] border-4 border-hack-yellow shadow-[10px_10px_0px_#c00100] md:shadow-[14px_14px_0px_#c00100] flex flex-col overflow-hidden"
+            exit={{ opacity: 0, scale: 0.93, y: 20 }}
+            transition={{ duration: 0.28, ease: [0.16, 1, 0.3, 1] }}
+            className="relative z-10 w-full max-w-3xl max-h-[90vh] flex flex-col"
           >
-            {/* Cyber HUD Brackets */}
-            <div className="absolute -top-2 -left-2 w-5 h-5 border-t-4 border-l-4 border-hack-yellow pointer-events-none" />
-            <div className="absolute -bottom-2 -right-2 w-5 h-5 border-b-4 border-r-4 border-hack-yellow pointer-events-none" />
-
-            {/* Modal Header */}
-            <div className="p-4 sm:p-6 bg-gradient-to-b from-[#181818] to-[#0c0c0c] border-b-2 border-hack-yellow/40 shrink-0">
-              <div className="flex items-center justify-between gap-3 flex-wrap">
-                <div className="flex items-center gap-2 flex-wrap">
-                  <span className="font-mono text-[10px] md:text-xs font-bold uppercase tracking-wider bg-hack-yellow text-black px-2.5 py-0.5">
-                    {event.category}
-                  </span>
-                  {event.fee && (
-                    <span className="font-mono text-[10px] md:text-xs font-bold text-hack-yellow border border-hack-yellow/40 bg-hack-yellow/10 px-2 py-0.5 tracking-wider">
-                      {event.fee}
-                    </span>
-                  )}
-                </div>
-
-                <button
-                  type="button"
-                  onClick={onClose}
-                  className="font-mono text-xs font-bold text-hack-yellow hover:text-white border-2 border-hack-yellow hover:border-white px-3 py-1 bg-black/50 transition-colors uppercase cursor-pointer"
-                  aria-label="Close dialog"
-                >
-                  [ ✕ ESC ]
-                </button>
-              </div>
-
-              <h2
-                id={`modal-title-${event.id}`}
-                className="font-display font-bold text-2xl sm:text-3xl md:text-4xl text-white uppercase mt-3 leading-tight tracking-tight"
+            {/* Outer chamfer border layer */}
+            <div
+              className="flex flex-col flex-1 min-h-0 bg-gradient-to-br from-amber-400/25 via-white/10 to-red-600/20"
+              style={{ clipPath: chamferPoly }}
+            >
+              {/* Inner surface */}
+              <div
+                className="flex flex-col flex-1 min-h-0 bg-gradient-to-br from-[#0b0e18] via-[#080b14] to-[#06080f] overflow-hidden"
+                style={{
+                  clipPath: chamferPoly,
+                  margin: '1px',
+                }}
               >
-                {event.name}
-              </h2>
-
-              <p className="font-mono text-xs text-hack-yellow/90 mt-2 flex flex-wrap items-center gap-x-3 gap-y-1">
-                <span>
-                  {event.schedule.days.length
-                    ? event.schedule.days.map((day) => `Day ${day}`).join(' + ')
-                    : 'Day to be announced'}
-                </span>
-                <span>·</span>
-                <span>{event.schedule.time && event.schedule.time !== 'TBA' ? `${event.schedule.time} IST` : 'Time TBA'}</span>
-                {event.schedule.venue && (
-                  <>
-                    <span>·</span>
-                    <span className="text-white/80">{event.schedule.venue}</span>
-                  </>
-                )}
-              </p>
-            </div>
-
-            {/* Modal Body — Scrollable */}
-            <div className="p-4 sm:p-6 md:p-8 overflow-y-auto space-y-6 flex-1 text-white/85">
-              {/* Overview */}
-              <div>
-                <h3 className="font-mono text-xs font-bold text-hack-yellow tracking-widest uppercase mb-2">
-                  01 // OVERVIEW
-                </h3>
-                <p className="text-sm sm:text-base leading-relaxed text-white/90">
-                  {event.overview}
-                </p>
-              </div>
-
-              {/* Sessions & Curriculum (if applicable) */}
-              {event.sessions && event.sessions.length > 0 && (
-                <div>
-                  <h3 className="font-mono text-xs font-bold text-hack-yellow tracking-widest uppercase mb-2">
-                    02 // SESSIONS & TOPICS
-                  </h3>
-                  <ul className="list-square pl-5 space-y-1.5 text-sm sm:text-base text-white/85">
-                    {event.sessions.map((session) => (
-                      <li key={session}>{session}</li>
-                    ))}
-                  </ul>
+                {/* Ambient glow blobs */}
+                <div className="pointer-events-none absolute inset-0 overflow-hidden">
+                  <div className="absolute -top-16 right-0 w-64 h-64 rounded-full bg-red-600/10 blur-[80px]" />
+                  <div className="absolute bottom-0 -left-8 w-56 h-56 rounded-full bg-amber-400/8 blur-[70px]" />
                 </div>
-              )}
 
-              {/* Organizer Experience (if applicable) */}
-              {event.organizerExperience && (
-                <div>
-                  <h3 className="font-mono text-xs font-bold text-hack-yellow tracking-widest uppercase mb-2">
-                    FROM THE ORGANIZERS
-                  </h3>
-                  <p className="text-sm sm:text-base leading-relaxed text-white/85">
-                    {event.organizerExperience}
-                  </p>
+                {/* ── HEADER ── */}
+                <div className="relative shrink-0 p-5 sm:p-7 border-b border-white/8">
+                  {/* Subtle scanline on header */}
+                  <div className="absolute inset-0 scanlines opacity-30 pointer-events-none" />
+
+                  <div className="flex items-start justify-between gap-3 flex-wrap relative">
+                    {/* Chips */}
+                    <div className="flex items-center gap-2 flex-wrap">
+                      <Chip accent>{event.category}</Chip>
+                      {event.fee && <Chip>{event.fee}</Chip>}
+                    </div>
+
+                    {/* Close Button */}
+                    <button
+                      type="button"
+                      onClick={onClose}
+                      aria-label="Close dialog"
+                      className="group relative shrink-0 cursor-pointer"
+                    >
+                      <div
+                        className="bg-white/20 group-hover:bg-red-500/60 transition-colors duration-200"
+                        style={{ clipPath: 'polygon(6px 0%,100% 0%,calc(100% - 6px) 100%,0% 100%)' }}
+                      >
+                        <div
+                          className="font-mono text-[10px] font-bold text-white/70 group-hover:text-white px-4 py-1.5 uppercase tracking-widest transition-colors bg-[#0b0e18] group-hover:bg-red-900/50"
+                          style={{ clipPath: 'polygon(6px 0%,100% 0%,calc(100% - 6px) 100%,0% 100%)', margin: '1px' }}
+                        >
+                          ✕ ESC
+                        </div>
+                      </div>
+                    </button>
+                  </div>
+
+                  {/* Title */}
+                  <h2
+                    id={`modal-title-${event.id}`}
+                    className="font-display font-black text-2xl sm:text-3xl md:text-[2.2rem] text-white uppercase mt-4 leading-none tracking-tight"
+                  >
+                    {event.name}
+                  </h2>
+
+                  {/* Schedule meta row */}
+                  <div className="flex flex-wrap items-center gap-x-2.5 gap-y-1 mt-3">
+                    {event.schedule.days.length > 0 ? (
+                      <span className="font-mono text-xs text-hack-yellow font-bold">
+                        {event.schedule.days.map((d) => `Day ${d}`).join(' + ')}
+                      </span>
+                    ) : (
+                      <span className="font-mono text-xs text-white/40">Day TBA</span>
+                    )}
+                    <span className="text-white/20 text-xs">·</span>
+                    <span className="font-mono text-xs text-white/60">
+                      {event.schedule.time && event.schedule.time !== 'TBA'
+                        ? `${event.schedule.time} IST`
+                        : 'Time TBA'}
+                    </span>
+                    {event.schedule.venue && (
+                      <>
+                        <span className="text-white/20 text-xs">·</span>
+                        <span className="font-mono text-xs text-white/50">{event.schedule.venue}</span>
+                      </>
+                    )}
+                  </div>
                 </div>
-              )}
 
-              {/* Rules & Guidelines */}
-              <div>
-                <h3 className="font-mono text-xs font-bold text-hack-yellow tracking-widest uppercase mb-2">
-                  {event.sessions ? '03 // GUIDELINES & PREREQUISITES' : '02 // RULES & GUIDELINES'}
-                </h3>
-                {!event.rulesConfirmed && (
-                  <p className="text-sm text-white/70 italic mb-2">
-                    Final rules and guidelines to be announced by the organizers.
-                  </p>
-                )}
-                {event.rules.length > 0 && (
-                  <ul className="list-square pl-5 space-y-1.5 text-sm sm:text-base text-white/85">
-                    {event.rules.map((rule) => (
-                      <li key={rule}>{rule}</li>
-                    ))}
-                  </ul>
-                )}
-              </div>
+                {/* ── BODY (scrollable) ── */}
+                <div className="flex-1 min-h-0 overflow-y-auto p-5 sm:p-7 space-y-7">
 
-              {/* Event Facts / Specifications */}
-              <div>
-                <h3 className="font-mono text-xs font-bold text-hack-yellow tracking-widest uppercase mb-3">
-                  SPECIFICATIONS MATRIX
-                </h3>
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs sm:text-sm">
-                  <div className="border border-white/20 bg-white/5 p-3">
-                    <span className="font-mono text-[10px] uppercase text-hack-yellow block font-bold">
-                      Participation Format
-                    </span>
-                    <span className="mt-1 block font-medium">
-                      {event.format || 'To Be Announced'}
-                    </span>
+                  {/* Overview */}
+                  <div>
+                    <SectionHeading number={nextSec()} label="Overview" />
+                    <p className="text-sm sm:text-[15px] leading-relaxed text-neutral-300">
+                      {event.overview}
+                    </p>
                   </div>
 
-                  <div className="border border-white/20 bg-white/5 p-3">
-                    <span className="font-mono text-[10px] uppercase text-hack-yellow block font-bold">
-                      Team Size
-                    </span>
-                    <span className="mt-1 block font-medium">
-                      {event.teamSize || 'To Be Announced'}
-                    </span>
+                  {/* Sessions */}
+                  {event.sessions && event.sessions.length > 0 && (
+                    <div>
+                      <SectionHeading number={nextSec()} label="Sessions & Topics" />
+                      <ul className="space-y-2">
+                        {event.sessions.map((session) => (
+                          <li key={session} className="flex items-start gap-2.5 text-sm sm:text-[15px] text-neutral-300">
+                            <span className="text-hack-yellow mt-[3px] text-[10px] shrink-0">▶</span>
+                            {session}
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                  )}
+
+                  {/* Organizer experience */}
+                  {event.organizerExperience && (
+                    <div>
+                      <SectionHeading number={nextSec()} label="From the Organizers" />
+                      <p className="text-sm sm:text-[15px] leading-relaxed text-neutral-300">
+                        {event.organizerExperience}
+                      </p>
+                    </div>
+                  )}
+
+                  {/* Rules & Guidelines */}
+                  <div>
+                    <SectionHeading
+                      number={nextSec()}
+                      label={event.sessions ? 'Guidelines & Prerequisites' : 'Rules & Guidelines'}
+                    />
+                    {!event.rulesConfirmed && (
+                      <p className="text-xs text-white/40 italic mb-2.5">
+                        Final rules to be announced by the organizers.
+                      </p>
+                    )}
+                    {event.rules.length > 0 && (
+                      <ul className="space-y-2">
+                        {event.rules.map((rule) => (
+                          <li key={rule} className="flex items-start gap-2.5 text-sm sm:text-[15px] text-neutral-300">
+                            <span className="text-hack-yellow/60 mt-[3px] text-[10px] shrink-0">◆</span>
+                            {rule}
+                          </li>
+                        ))}
+                      </ul>
+                    )}
                   </div>
 
-                  <div className="border border-white/20 bg-white/5 p-3">
-                    <span className="font-mono text-[10px] uppercase text-hack-yellow block font-bold">
-                      Registration Fee
-                    </span>
-                    <span className="mt-1 block font-bold text-hack-yellow">
-                      {event.fee || 'Free / To Be Announced'}
-                    </span>
+                  {/* Specifications Matrix */}
+                  <div>
+                    <SectionHeading number={nextSec()} label="Specifications Matrix" />
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
+                      {(
+                        [
+                          { label: 'Participation Format', value: event.format, highlight: false },
+                          { label: 'Team Size', value: event.teamSize, highlight: false },
+                          { label: 'Registration Fee', value: event.fee, highlight: true },
+                          { label: 'Venue', value: event.schedule.venue, highlight: false },
+                          ...(event.sessions
+                            ? [
+                                { label: 'Duration', value: event.duration, highlight: false },
+                                { label: 'What to Bring', value: event.prerequisites, highlight: false },
+                              ]
+                            : []),
+                        ] as { label: string; value?: string; highlight: boolean }[]
+                      ).map(({ label, value, highlight }) => (
+                        <ChamferCard key={label} cut={8} innerClass="p-3">
+                          <span className="font-mono text-[9px] uppercase tracking-[0.18em] text-hack-yellow/70 font-bold block">
+                            {label}
+                          </span>
+                          <span
+                            className={`mt-1.5 block text-sm font-semibold leading-snug ${
+                              highlight ? 'text-hack-yellow' : 'text-white'
+                            } ${!value ? 'text-white/30 italic text-xs' : ''}`}
+                          >
+                            {value || 'To Be Announced'}
+                          </span>
+                        </ChamferCard>
+                      ))}
+                    </div>
                   </div>
 
-                  <div className="border border-white/20 bg-white/5 p-3">
-                    <span className="font-mono text-[10px] uppercase text-hack-yellow block font-bold">
-                      Venue
-                    </span>
-                    <span className="mt-1 block font-medium">
-                      {event.schedule.venue || 'To Be Announced'}
-                    </span>
-                  </div>
-
-                  {event.sessions && (
-                    <>
-                      <div className="border border-white/20 bg-white/5 p-3">
-                        <span className="font-mono text-[10px] uppercase text-hack-yellow block font-bold">
-                          Duration
-                        </span>
-                        <span className="mt-1 block font-medium">
-                          {event.duration || 'To Be Announced'}
-                        </span>
+                  {/* Requirements alert box */}
+                  {event.requirements && (
+                    <div>
+                      <SectionHeading number={nextSec()} label="Requirements & Equipment" />
+                      <div className="relative overflow-hidden">
+                        <div
+                          className="bg-amber-400/20 p-[1px]"
+                          style={{ clipPath: 'polygon(8px 0%,100% 0%,100% calc(100% - 8px),calc(100% - 8px) 100%,0% 100%,0% 8px)' }}
+                        >
+                          <div
+                            className="bg-amber-400/5 px-4 py-3"
+                            style={{ clipPath: 'polygon(8px 0%,100% 0%,100% calc(100% - 8px),calc(100% - 8px) 100%,0% 100%,0% 8px)' }}
+                          >
+                            <p className="text-sm text-neutral-200 leading-relaxed">{event.requirements}</p>
+                          </div>
+                        </div>
                       </div>
-                      <div className="border border-white/20 bg-white/5 p-3">
-                        <span className="font-mono text-[10px] uppercase text-hack-yellow block font-bold">
-                          What to Bring
-                        </span>
-                        <span className="mt-1 block font-medium">
-                          {event.prerequisites || 'Equipment and prerequisites to be announced'}
-                        </span>
+                    </div>
+                  )}
+
+                  {/* Event Coordinators */}
+                  {event.coordinators && event.coordinators.length > 0 && (
+                    <div>
+                      <SectionHeading number={nextSec()} label="Event Coordinators" />
+                      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-2.5">
+                        {event.coordinators.map((coordinator) => (
+                          <ChamferCard key={coordinator.name} cut={7} innerClass="p-3">
+                            <span className="font-mono text-xs font-bold text-white uppercase block leading-tight">
+                              {coordinator.name}
+                            </span>
+                            {coordinator.phone && (
+                              <a
+                                href={`tel:${coordinator.phone.replace(/[^0-9+]/g, '')}`}
+                                className="font-mono text-[11px] text-hack-yellow hover:text-amber-300 transition-colors mt-1.5 inline-flex items-center gap-1.5"
+                              >
+                                <svg width="10" height="10" viewBox="0 0 24 24" fill="currentColor">
+                                  <path d="M6.6 10.8c1.4 2.8 3.8 5.1 6.6 6.6l2.2-2.2c.3-.3.7-.4 1-.2 1.1.4 2.3.6 3.6.6.6 0 1 .4 1 1V20c0 .6-.4 1-1 1-9.4 0-17-7.6-17-17 0-.6.4-1 1-1h3.5c.6 0 1 .4 1 1 0 1.3.2 2.5.6 3.6.1.3 0 .7-.2 1L6.6 10.8z"/>
+                                </svg>
+                                {coordinator.phone}
+                              </a>
+                            )}
+                          </ChamferCard>
+                        ))}
                       </div>
-                    </>
+                    </div>
                   )}
                 </div>
-              </div>
 
-              {/* Requirements & Equipment (if specified) */}
-              {event.requirements && (
-                <div className="border border-hack-yellow/40 bg-hack-yellow/5 p-3 sm:p-4">
-                  <span className="font-mono text-xs font-bold text-hack-yellow uppercase block mb-1">
-                    Requirements & Equipment
-                  </span>
-                  <p className="text-sm text-white/90">{event.requirements}</p>
-                </div>
-              )}
+                {/* ── FOOTER ── */}
+                <div className="relative shrink-0 border-t border-white/8 bg-white/[0.02] backdrop-blur-sm px-5 sm:px-7 py-4 flex flex-wrap items-center justify-between gap-4">
+                  {/* Meta text */}
+                  <div className="font-mono text-[11px] text-white/40 min-w-0">
+                    <span className="text-hack-yellow font-bold text-xs">{event.name}</span>
+                    <span className="mx-2 text-white/20">·</span>
+                    <span>
+                      {event.schedule.days.length
+                        ? `Day${event.schedule.days.length > 1 ? 's' : ''}: ${event.schedule.days.join(', ')}`
+                        : 'Schedule TBA'}
+                    </span>
+                  </div>
 
-              {/* Event Coordinators */}
-              {event.coordinators && event.coordinators.length > 0 && (
-                <div>
-                  <h3 className="font-mono text-xs font-bold text-hack-yellow tracking-widest uppercase mb-3">
-                    EVENT COORDINATORS
-                  </h3>
-                  <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-2.5">
-                    {event.coordinators.map((coordinator) => (
-                      <div key={coordinator.name} className="border border-white/20 bg-white/5 p-3">
-                        <span className="font-mono text-xs font-bold text-white block uppercase">
-                          {coordinator.name}
-                        </span>
-                        {coordinator.phone && (
-                          <a
-                            href={`tel:${coordinator.phone.replace(/[^0-9+]/g, '')}`}
-                            className="font-mono text-xs text-hack-yellow hover:underline mt-1 inline-flex items-center gap-1"
-                          >
-                            <span>📞</span> {coordinator.phone}
-                          </a>
-                        )}
+                  {/* Actions */}
+                  <div className="flex items-center gap-3">
+                    {/* Close ghost button */}
+                    <button
+                      type="button"
+                      onClick={onClose}
+                      className="group cursor-pointer"
+                    >
+                      <div
+                        className="bg-white/15 group-hover:bg-white/25 transition-colors"
+                        style={{ clipPath: 'polygon(6px 0%,100% 0%,calc(100% - 6px) 100%,0% 100%)' }}
+                      >
+                        <div
+                          className="font-mono text-[10px] font-bold text-white/60 group-hover:text-white transition-colors px-4 py-2 uppercase tracking-widest bg-[#0b0e18] group-hover:bg-[#141820]"
+                          style={{ clipPath: 'polygon(6px 0%,100% 0%,calc(100% - 6px) 100%,0% 100%)', margin: '1px' }}
+                        >
+                          Close
+                        </div>
                       </div>
-                    ))}
+                    </button>
+
+                    {/* Register CTA */}
+                    <RegistrationButton event={event} />
                   </div>
                 </div>
-              )}
+              </div>
             </div>
 
-            {/* Modal Footer */}
-            <div className="p-4 sm:p-6 bg-[#121212] border-t-2 border-white/20 flex flex-wrap items-center justify-between gap-4 shrink-0">
-              <div className="font-mono text-xs text-white/70">
-                <span className="text-hack-yellow font-bold uppercase block sm:inline">
-                  {event.name}
-                </span>
-                <span className="hidden sm:inline"> · </span>
-                <span>{event.schedule.days.length ? `Days: ${event.schedule.days.join(', ')}` : 'Schedule TBA'}</span>
-              </div>
-
-              <div className="flex items-center gap-3">
-                <button
-                  type="button"
-                  onClick={onClose}
-                  className="px-4 py-2.5 font-mono text-xs font-bold uppercase text-white/80 hover:text-white border border-white/30 hover:border-white transition-colors cursor-pointer"
-                >
-                  Close
-                </button>
-                <RegistrationButton event={event} />
-              </div>
+            {/* ── Corner accent marks (thin 1px, only at two diagonal corners) ── */}
+            {/* top-left */}
+            <div className="pointer-events-none absolute top-0 left-0" style={{ transform: 'translate(-1px,-1px)' }}>
+              <div className="w-5 h-[1px] bg-hack-yellow" />
+              <div className="w-[1px] h-5 bg-hack-yellow" />
+            </div>
+            {/* bottom-right */}
+            <div className="pointer-events-none absolute bottom-0 right-0" style={{ transform: 'translate(1px,1px)' }}>
+              <div className="w-5 h-[1px] bg-hack-yellow absolute bottom-0 right-0" />
+              <div className="w-[1px] h-5 bg-hack-yellow absolute bottom-0 right-0" />
             </div>
           </motion.div>
         </div>
       )}
     </AnimatePresence>
   );
+
+  if (!mounted || typeof document === 'undefined') return null;
+
+  return createPortal(modalContent, document.body);
 }
