@@ -1,7 +1,7 @@
 import { mkdir, readFile, writeFile } from 'node:fs/promises';
 
 // Base URL for production deployment (override with SITE_URL env var if provided)
-const BASE_URL = (process.env.SITE_URL || 'https://motabhai2005.github.io').replace(/\/$/, '');
+const BASE_URL = (process.env.SITE_URL || 'https://hackfest.outrb.tech').replace(/\/$/, '');
 const TODAY = new Date().toISOString().split('T')[0];
 
 const rootHtml = await readFile(new URL('../dist/index.html', import.meta.url), 'utf8');
