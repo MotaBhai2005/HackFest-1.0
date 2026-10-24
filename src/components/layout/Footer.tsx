@@ -66,8 +66,8 @@ export default function Footer() {
 
 			{/* Bottom row: Logos */}
 			<div className="mt-12 md:mt-24 flex justify-between items-center gap-4">
-				<img src="/images/tech soc.png" alt="Tech Soc" className="h-10 md:h-16 lg:h-20 w-auto opacity-70 hover:opacity-100 transition-opacity" />
-				<img src="/images/outr.png" alt="OUTR Seal" className="h-10 md:h-20 lg:h-24 w-auto opacity-70 hover:opacity-100 transition-opacity" />
+				<img src="/images/tech soc.png" alt="Tech Soc" width="80" height="80" loading="lazy" decoding="async" className="h-10 md:h-16 lg:h-20 w-auto opacity-70 hover:opacity-100 transition-opacity" />
+				<img src="/images/outr.png" alt="OUTR Seal" width="96" height="96" loading="lazy" decoding="async" className="h-10 md:h-20 lg:h-24 w-auto opacity-70 hover:opacity-100 transition-opacity" />
 			</div>
 		</footer>
 	);

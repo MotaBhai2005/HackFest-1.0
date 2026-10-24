@@ -231,6 +231,8 @@ export default function Hero() {
         <img
           src="/images/hf-logo.svg"
           alt="HF Logo"
+          width="112"
+          height="50"
           className="w-12 sm:w-16 md:w-28 h-auto"
           onError={(e) => ((e.target as HTMLImageElement).style.display = 'none')}
         />
@@ -258,10 +260,10 @@ export default function Hero() {
             href={link.href}
             custom={i}
             variants={brutalistEntrance}
-            className={`font-lexend text-xs sm:text-[14px] md:text-[18px] leading-tight transition-colors duration-100 flex items-center whitespace-nowrap
+            className={`font-lexend text-xs sm:text-[14px] md:text-[18px] leading-tight transition-colors duration-100 flex items-center whitespace-nowrap py-1 md:py-0.5
               ${link.active
-                ? 'text-[#df0101] font-semibold text-[14px] md:text-[20px]'
-                : 'text-[#c9a102] font-light hover:text-[#df0101]'
+                ? 'text-[#c00100] font-semibold text-[14px] md:text-[20px]'
+                : 'text-[#443e00] font-medium hover:text-[#c00100]'
               }`}
           >
             {link.label}
@@ -314,6 +316,9 @@ export default function Hero() {
               <img
                 src="/images/hero-hacker.png"
                 alt="HackFest Cyberpunk Hacker"
+                width="400"
+                height="400"
+                fetchPriority="high"
                 className="block w-full h-auto relative z-[1] glitch-img"
                 onError={(e) => {
                   (e.target as HTMLImageElement).style.background = '#333';
@@ -325,6 +330,10 @@ export default function Hero() {
               <img
                 src="/images/hero-hacker.png"
                 alt=""
+                width="400"
+                height="400"
+                loading="lazy"
+                decoding="async"
                 className="block w-full h-auto glitch-clone red z-[2]"
                 aria-hidden="true"
               />
@@ -333,6 +342,10 @@ export default function Hero() {
               <img
                 src="/images/hero-hacker.png"
                 alt=""
+                width="400"
+                height="400"
+                loading="lazy"
+                decoding="async"
                 className="block w-full h-auto glitch-clone cyan z-[3]"
                 aria-hidden="true"
               />

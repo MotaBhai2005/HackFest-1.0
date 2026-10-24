@@ -221,7 +221,7 @@ export default function Navbar() {
 
         {/* Mobile hamburger */}
         <button
-          className="lg:hidden flex flex-col justify-center items-center w-10 h-10 gap-1.5 relative z-[110]"
+          className="lg:hidden flex flex-col justify-center items-center w-12 h-12 p-2 gap-1.5 relative z-[110]"
           onClick={() => setMobileOpen(!mobileOpen)}
           aria-label="Toggle navigation"
           id="mobile-menu-toggle"
