@@ -107,11 +107,9 @@ export default function CatalogPage({ path }: { path: CatalogPath }) {
     <>
       <header className="catalog-header">
         <div className="max-w-7xl mx-auto relative">
-          <div className="flex items-center justify-between gap-4 flex-wrap mb-2">
+          <div className="mb-3 sm:mb-4">
             <Breadcrumb items={breadcrumbItems} theme="light" />
-            <a href="/" className="font-mono text-xs font-bold hover:underline inline-flex items-center gap-1 text-black/80 hover:text-black">← BACK TO HOME</a>
           </div>
-          <p className="festival-eyebrow mt-3 sm:mt-4 text-black/70">HACKFEST 2026 // {catalog.code}</p>
           <motion.h1
             initial={{ opacity: 0, x: -20 }}
             animate={{ opacity: 1, x: 0 }}
