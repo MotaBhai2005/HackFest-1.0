@@ -3,6 +3,7 @@ import { createPortal } from 'react-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import type { FestivalEvent } from '../../data/events';
 import { RegistrationButton } from './EventCard';
+import Breadcrumb, { type BreadcrumbItem } from '../ui/Breadcrumb';
 
 interface EventDetailsModalProps {
   event: FestivalEvent;
@@ -111,6 +112,24 @@ export default function EventDetailsModal({ event, isOpen, onClose }: EventDetai
   const CHAMFER = 18;
   const chamferPoly = `polygon(${CHAMFER}px 0%, 100% 0%, 100% calc(100% - ${CHAMFER}px), calc(100% - ${CHAMFER}px) 100%, 0% 100%, 0% ${CHAMFER}px)`;
 
+  const isHackoutr = event.eventType === 'hackoutr' || event.id.includes('hackoutr');
+  const modalBreadcrumbs: BreadcrumbItem[] = [
+    { label: 'HACKFEST 2026', href: '/' },
+  ];
+
+  if (event.eventType === 'workshop') {
+    modalBreadcrumbs.push({ label: 'Workshops', href: '/workshops' });
+  } else if (event.eventType === 'fun') {
+    modalBreadcrumbs.push({ label: 'Fun Events', href: '/fun-events' });
+  } else {
+    modalBreadcrumbs.push({ label: 'Events', href: '/events' });
+    if (isHackoutr) {
+      modalBreadcrumbs.push({ label: 'HackOUTR', href: '/events#hackoutr' });
+    }
+  }
+
+  modalBreadcrumbs.push({ label: event.name });
+
   const modalContent = (
     <AnimatePresence>
       {isOpen && (
@@ -162,6 +181,11 @@ export default function EventDetailsModal({ event, isOpen, onClose }: EventDetai
                 <div className="relative shrink-0 p-5 sm:p-7 border-b border-white/8">
                   {/* Subtle scanline on header */}
                   <div className="absolute inset-0 scanlines opacity-30 pointer-events-none" />
+
+                  {/* Breadcrumb Trail */}
+                  <div className="mb-3.5 relative z-10">
+                    <Breadcrumb items={modalBreadcrumbs} theme="dark" />
+                  </div>
 
                   <div className="flex items-start justify-between gap-3 flex-wrap relative">
                     {/* Chips */}

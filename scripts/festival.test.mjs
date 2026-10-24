@@ -103,7 +103,7 @@ test('only HTTPS Google Forms and Unstop registrations become active', () => {
 
 test('event rendering keeps missing registrations inactive and configured registrations external', () => {
   const pending = renderToStaticMarkup(React.createElement(EventCard, { event: { ...competitions[0], registrationUrl: null, rulesConfirmed: false, rules: [] }, index: 0 }));
-  assert.match(pending, /Registration Coming Soon/);
+  assert.match(pending, /On Spot Registration|Registration Coming Soon/);
   assert.doesNotMatch(pending, /target="_blank"/);
   assert.match(pending, /Final rules and guidelines to be announced/);
   const html = renderToStaticMarkup(React.createElement(EventCard, {

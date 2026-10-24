@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://motabhai2005.github.io/sitemap.xml

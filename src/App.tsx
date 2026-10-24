@@ -23,7 +23,21 @@ const rawPath = window.location.pathname.replace(/\/$/, '') || '/';
 if (rawPath === '/about') {
   window.history.replaceState(null, '', '/#about');
 }
-const path = rawPath === '/about' ? '/' : rawPath;
+const isHackoutrSoftware = rawPath === '/events/hackoutr-software';
+const isHackoutrHardware = rawPath === '/events/hackoutr-hardware';
+
+if (isHackoutrSoftware && !window.location.hash) {
+  window.location.hash = '#hackoutr-software';
+} else if (isHackoutrHardware && !window.location.hash) {
+  window.location.hash = '#hackoutr-hardware';
+}
+
+const path = rawPath === '/about'
+  ? '/'
+  : (isHackoutrSoftware || isHackoutrHardware)
+  ? '/events'
+  : rawPath;
+
 const isCatalog = ['/events', '/fun-events', '/workshops'].includes(path);
 
 export default function App() {
@@ -54,7 +68,18 @@ export default function App() {
   }, [preloaderDone]);
 
   useEffect(() => {
-    document.title = `${path === '/events' ? 'Competitions' : path === '/fun-events' ? 'Fun Events' : path === '/workshops' ? 'Workshops' : 'Rewriting Reality'} — HACKFEST 2026`;
+    const titlePrefix = isHackoutrSoftware
+      ? 'HackOUTR Software Edition — Competitions'
+      : isHackoutrHardware
+      ? 'HackOUTR Hardware Edition — Competitions'
+      : path === '/events'
+      ? 'Competitions'
+      : path === '/fun-events'
+      ? 'Fun Events'
+      : path === '/workshops'
+      ? 'Workshops'
+      : 'Rewriting Reality';
+    document.title = `${titlePrefix} — HACKFEST 2026`;
     const targetHash = window.location.hash || (rawPath === '/about' ? '#about' : '');
     if (!preloaderDone || !targetHash) return;
     const id = requestAnimationFrame(() => {

@@ -1,9 +1,10 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import EventCard from '../components/events/EventCard';
 import { allEvents, competitions, filterEventsByDay, filterByCategory, funEvents, workshops } from '../data/events';
 import type { FestivalDay, CategoryFilter } from '../data/events';
 import MagneticDots from '../components/ui/MagneticDots';
+import Breadcrumb, { type BreadcrumbItem } from '../components/ui/Breadcrumb';
 
 const catalogs = {
   '/events': {
@@ -46,7 +47,23 @@ const CATEGORY_LABEL_MAP: Record<CategoryFilter, string> = {
 export default function CatalogPage({ path }: { path: CatalogPath }) {
   const catalog = catalogs[path];
   const [day, setDay] = useState<FestivalDay | 'all'>('all');
-  const [category, setCategory] = useState<CategoryFilter>('all');
+  const [category, setCategory] = useState<CategoryFilter>(() => {
+    if (typeof window !== 'undefined' && window.location.hash === '#hackoutr') {
+      return 'hackoutr';
+    }
+    return 'all';
+  });
+
+  useEffect(() => {
+    if (typeof window === 'undefined') return;
+    const onHashChange = () => {
+      if (window.location.hash === '#hackoutr') {
+        setCategory('hackoutr');
+      }
+    };
+    window.addEventListener('hashchange', onHashChange);
+    return () => window.removeEventListener('hashchange', onHashChange);
+  }, []);
 
   const isHub = path === '/events';
 
@@ -61,11 +78,39 @@ export default function CatalogPage({ path }: { path: CatalogPath }) {
   const filterLabel = isHub && category !== 'all' ? ` · ${CATEGORY_LABEL_MAP[category]}` : '';
   const dayLabel = day !== 'all' ? ` · Day ${day}` : ' to explore';
 
+  const breadcrumbItems: BreadcrumbItem[] = [
+    { label: 'HACKFEST 2026', href: '/' },
+  ];
+
+  if (path === '/events') {
+    if (category === 'all') {
+      breadcrumbItems.push({ label: 'Events' });
+    } else {
+      breadcrumbItems.push({
+        label: 'Events',
+        onClick: () => {
+          setCategory('all');
+          setDay('all');
+        },
+      });
+      breadcrumbItems.push({
+        label: CATEGORY_LABEL_MAP[category] || category,
+      });
+    }
+  } else if (path === '/fun-events') {
+    breadcrumbItems.push({ label: 'Fun Events' });
+  } else if (path === '/workshops') {
+    breadcrumbItems.push({ label: 'Workshops' });
+  }
+
   return (
     <>
       <header className="catalog-header">
         <div className="max-w-7xl mx-auto relative">
-          <a href="/" className="font-mono text-xs font-bold hover:underline inline-flex items-center gap-1 text-black/80 hover:text-black">← BACK TO HOME</a>
+          <div className="flex items-center justify-between gap-4 flex-wrap mb-2">
+            <Breadcrumb items={breadcrumbItems} theme="light" />
+            <a href="/" className="font-mono text-xs font-bold hover:underline inline-flex items-center gap-1 text-black/80 hover:text-black">← BACK TO HOME</a>
+          </div>
           <p className="festival-eyebrow mt-3 sm:mt-4 text-black/70">HACKFEST 2026 // {catalog.code}</p>
           <motion.h1
             initial={{ opacity: 0, x: -20 }}
