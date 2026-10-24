@@ -79,7 +79,7 @@ export default function App() {
       : path === '/workshops'
       ? 'Workshops'
       : 'Rewriting Reality';
-    document.title = `${titlePrefix} — HACKFEST 2026`;
+    document.title = `${titlePrefix} — HACKFEST 2026 | OUTR`;
     const targetHash = window.location.hash || (rawPath === '/about' ? '#about' : '');
     if (!preloaderDone || !targetHash) return;
     const id = requestAnimationFrame(() => {
