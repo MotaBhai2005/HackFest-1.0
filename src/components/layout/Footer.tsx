@@ -61,6 +61,31 @@ export default function Footer() {
 						</div>
 					</div>
 				</div>
+
+				{/* Quick Navigation Links for Crawlers & Visitors */}
+				<div className="lg:col-span-12 border-t border-white/10 pt-6 mt-2">
+					<nav aria-label="Footer Quick Navigation" className="flex flex-wrap gap-x-6 md:gap-x-8 gap-y-3 items-center">
+						<span className="font-mono text-[10px] tracking-widest text-hack-red uppercase font-bold">DIRECTORY:</span>
+						<a href="/events/hackoutr-software" className="font-body font-bold text-xs md:text-sm tracking-wider text-hack-yellow hover:text-white uppercase transition-colors">
+							HackOUTR Hackathon
+						</a>
+						<a href="/events" className="font-body font-bold text-xs md:text-sm tracking-wider text-white hover:text-hack-yellow uppercase transition-colors">
+							Competitions
+						</a>
+						<a href="/workshops" className="font-body font-bold text-xs md:text-sm tracking-wider text-white hover:text-hack-yellow uppercase transition-colors">
+							Workshops
+						</a>
+						<a href="/fun-events" className="font-body font-bold text-xs md:text-sm tracking-wider text-white hover:text-hack-yellow uppercase transition-colors">
+							Fun Events
+						</a>
+						<a href="/#about" className="font-body font-bold text-xs md:text-sm tracking-wider text-white hover:text-hack-yellow uppercase transition-colors">
+							About TeCHSoC
+						</a>
+						<a href="/#sponsors" className="font-body font-bold text-xs md:text-sm tracking-wider text-white hover:text-hack-yellow uppercase transition-colors">
+							Sponsors
+						</a>
+					</nav>
+				</div>
 			</div>
 
 
