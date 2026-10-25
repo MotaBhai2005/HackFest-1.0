@@ -22,13 +22,13 @@ const prizes: PrizeCardData[] = [
 		fontSize: "text-2xl sm:text-3xl md:text-4xl lg:text-[26px] xl:text-4xl 2xl:text-5xl",
 	},
 	{
-		amount: "₹5Lakhs",
+		amount: "₹5,00,000+",
 		title: "",
 		fileId: "#SYSTEM_ROOT",
 		accessLevel: "TOTAL_POOL_RESERVE",
 		icon: "/images/prize-icon-2.png",
 		isGrand: true,
-		fontSize: "text-4xl sm:text-5xl md:text-6xl lg:text-5xl xl:text-6xl 2xl:text-7xl",
+		fontSize: "text-3xl sm:text-4xl md:text-5xl lg:text-4xl xl:text-5xl 2xl:text-6xl",
 	},
 	{
 		amount: "Goodies",
