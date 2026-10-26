@@ -3,6 +3,7 @@ import { createPortal } from 'react-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import type { FestivalEvent } from '../../data/events';
 import { RegistrationButton } from './EventCard';
+import RulebookButton from './RulebookButton';
 import Breadcrumb, { type BreadcrumbItem } from '../ui/Breadcrumb';
 
 interface EventDetailsModalProps {
@@ -289,7 +290,8 @@ export default function EventDetailsModal({ event, isOpen, onClose }: EventDetai
                       number={nextSec()}
                       label={event.sessions ? 'Guidelines & Prerequisites' : 'Rules & Guidelines'}
                     />
-                    {!event.rulesConfirmed && (
+                    <RulebookButton event={event} />
+                    {!event.rulesConfirmed && !event.rulebookUrl && (
                       <p className="text-xs text-white/40 italic mb-2.5">
                         Final rules to be announced by the organizers.
                       </p>

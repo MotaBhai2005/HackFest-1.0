@@ -28,6 +28,7 @@ export interface FestivalEvent {
     venue: string | null;
   };
   registrationUrl: string | null;
+  rulebookUrl?: string;
   featured?: boolean;
   sessions?: string[];
   duration?: string | null;
@@ -52,6 +53,7 @@ export const competitions: FestivalEvent[] = [
   {
     ...pendingDetails,
     id: 'hackoutr-software',
+    rulebookUrl: 'https://drive.google.com/file/d/1gowP2YUdik_s1XVw0WHTK2Vx0Si3caNG/view?usp=drive_link',
     name: 'HackOUTR Software Edition',
     eventType: 'hackoutr',
     category: 'Software',
@@ -98,6 +100,7 @@ export const competitions: FestivalEvent[] = [
   {
     ...pendingDetails,
     id: 'cp-rush',
+    rulebookUrl: 'https://drive.google.com/file/d/17q2CXxyiZVDjg9nfwSaipqhedfYwLWva/view?usp=drive_link',
     name: 'Competitive Programming',
     eventType: 'flagship',
     category: 'Algorithms',

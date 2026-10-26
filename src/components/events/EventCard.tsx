@@ -5,6 +5,7 @@ import type { FestivalEvent } from '../../data/events';
 import { registrationHref } from '../../data/events';
 import EventVisual from './EventVisual';
 import EventDetailsModal from './EventDetailsModal';
+import RulebookButton from './RulebookButton';
 
 export function RegistrationButton({ event }: { event: FestivalEvent }) {
   const href = registrationHref(event.registrationUrl);
@@ -105,6 +106,7 @@ export default function EventCard({ event, index }: { event: FestivalEvent; inde
               <span className="font-mono text-base transition-transform group-hover/btn:translate-x-1" aria-hidden="true">+</span>
             </button>
 
+            <RulebookButton event={event} />
             <RegistrationButton event={event} />
           </div>
 
@@ -117,7 +119,7 @@ export default function EventCard({ event, index }: { event: FestivalEvent; inde
               {event.sessions && <><h3>Sessions & learning</h3><ul>{event.sessions.map(session => <li key={session}>{session}</li>)}</ul></>}
               {event.organizerExperience && <><h3>From the organizers</h3><p>{event.organizerExperience}</p></>}
               <h3>Rules & guidelines</h3>
-              {!event.rulesConfirmed && <p>Final rules and guidelines to be announced by the organizers.</p>}
+              {!event.rulesConfirmed && !event.rulebookUrl && <p>Final rules and guidelines to be announced by the organizers.</p>}
               {event.rules.length > 0 && <ul>{event.rules.map(rule => <li key={rule}>{rule}</li>)}</ul>}
               <dl className="event-facts">
                 <div><dt>Participation format</dt><dd>{event.format || 'To Be Announced'}</dd></div>
