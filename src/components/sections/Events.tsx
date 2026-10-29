@@ -25,11 +25,20 @@ export default function Events() {
               <div>
                 <div className="flex items-center justify-between gap-2 flex-wrap mb-2">
                   <p className="festival-eyebrow">{event.category}</p>
-                  {event.fee && (
+                  {event.earlyBird ? (
+                    <div className="flex items-center gap-1.5">
+                      <span className="font-mono text-xs font-bold text-hack-black bg-hack-yellow border border-hack-yellow px-2 py-0.5 tracking-wider animate-pulse">
+                        {event.earlyBird.price} Early Bird
+                      </span>
+                      <span className="line-through text-white/40 text-[10px] font-mono">
+                        {event.earlyBird.regularPrice}
+                      </span>
+                    </div>
+                  ) : event.fee ? (
                     <span className="font-mono text-xs font-bold text-hack-yellow border border-hack-yellow/40 bg-hack-yellow/10 px-2 py-0.5 tracking-wider">
                       {event.fee}
                     </span>
-                  )}
+                  ) : null}
                 </div>
                 <h3 className="font-display font-bold text-xl sm:text-2xl text-white uppercase group-hover:text-hack-yellow line-clamp-2 min-h-[3.5rem] flex items-center mb-2">{event.name}</h3>
                 <p className="text-sm text-white/70 leading-relaxed line-clamp-2 min-h-[2.5rem] mb-3">{event.description}</p>

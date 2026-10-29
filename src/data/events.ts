@@ -8,6 +8,14 @@ export interface EventCoordinator {
   phone?: string;
 }
 
+export interface EarlyBirdOffer {
+  price: string;
+  regularPrice: string;
+  deadline: string;
+  deadlineIso: string;
+  active: boolean;
+}
+
 export interface FestivalEvent {
   id: string;
   name: string;
@@ -18,6 +26,8 @@ export interface FestivalEvent {
   overview: string;
   rules: string[];
   rulesConfirmed: boolean;
+  rulebookUrl?: string | null;
+  earlyBird?: EarlyBirdOffer | null;
   format: string | null;
   teamSize: string | null;
   fee: string | null;
@@ -28,7 +38,6 @@ export interface FestivalEvent {
     venue: string | null;
   };
   registrationUrl: string | null;
-  rulebookUrl?: string;
   featured?: boolean;
   sessions?: string[];
   duration?: string | null;
@@ -41,6 +50,8 @@ export interface FestivalEvent {
 const pendingDetails = {
   rules: [],
   rulesConfirmed: false,
+  rulebookUrl: null,
+  earlyBird: null,
   format: 'TBA',
   teamSize: 'TBA',
   fee: 'TBA',
@@ -60,10 +71,17 @@ export const competitions: FestivalEvent[] = [
     visual: 'code',
     featured: true,
     description: 'The 36-Hour Software Hackathon is an intensive innovation marathon featuring diverse problem statements, challenging participants to transform real-world challenges into practical, impactful software solutions.',
-    overview: 'The 36-Hour Software Hackathon is an intensive innovation marathon featuring diverse problem statements, challenging participants to transform real-world challenges into practical, impactful software solutions. Software track of HackOUTR continuing from 04-Nov-2026 to 06-Nov-2026.',
+    overview: 'The 36-Hour Software Hackathon is an intensive innovation marathon featuring diverse problem statements, challenging participants to transform real-world challenges into practical, impactful software solutions. Software track of HackOUTR continuing from 04-Nov-2026 to 06-Nov-2026.\n\n⚡ EARLY BIRD OFFER: ₹299 (Save ₹200) strictly valid till 29/10/26 11:59 PM IST! Regular fee of ₹499 applies thereafter.',
     format: '36-Hour Hackathon',
     teamSize: '2–4 Members',
-    fee: '₹499',
+    fee: '₹299 Early Bird',
+    earlyBird: {
+      price: '₹299',
+      regularPrice: '₹499',
+      deadline: '29/10/26 11:59 PM IST',
+      deadlineIso: '2026-10-29T23:59:59+05:30',
+      active: true,
+    },
     requirements: 'Laptop, extension cord (Internet provided on-site)',
     prerequisites: 'Laptop, extension cord',
     schedule: { days: [1, 2, 3], time: '2:00 PM Onwards', venue: 'OUTR' },
@@ -83,10 +101,17 @@ export const competitions: FestivalEvent[] = [
     visual: 'chip',
     featured: true,
     description: 'Connect circuits, code, and physical prototyping to engineer real-world hardware solutions.',
-    overview: 'The hardware edition of HackOUTR — explore physical prototyping, circuits, and embedded systems through an intense multi-day challenge. Hardware problem statements, lab access, and testing benches.',
+    overview: 'The hardware edition of HackOUTR — explore physical prototyping, circuits, and embedded systems through an intense multi-day challenge. Hardware problem statements, lab access, and testing benches.\n\n⚡ EARLY BIRD OFFER: ₹299 (Save ₹200) strictly valid till 29/10/26 11:59 PM IST! Regular fee of ₹499 applies thereafter.',
     format: '36-Hour Hackathon',
     teamSize: '2–4 Members',
-    fee: '₹499',
+    fee: '₹299 Early Bird',
+    earlyBird: {
+      price: '₹299',
+      regularPrice: '₹499',
+      deadline: '29/10/26 11:59 PM IST',
+      deadlineIso: '2026-10-29T23:59:59+05:30',
+      active: true,
+    },
     requirements: 'Bring components based on your chosen theme, laptop, extension cord (Internet provided on-site)',
     prerequisites: 'Components based on chosen theme, laptop, extension cord',
     schedule: { days: [1, 2, 3], time: '2:00 PM Onwards', venue: 'OUTR' },
@@ -178,6 +203,14 @@ export const competitions: FestivalEvent[] = [
     requirements: 'TBA',
     schedule: { days: [2], time: '11:00 AM – 1:00 PM', venue: 'OUTR' },
     registrationUrl: 'https://forms.gle/gkxvDRDUEZvBFFeBA',
+    rulebookUrl: 'https://drive.google.com/drive/folders/1GNnVi3EjKNLeZbwHFFN5dVVsHCYnq5Qz',
+    rulesConfirmed: true,
+    rules: [
+      'Official rulebook, problem statement breakdown, and evaluation criteria available on Google Drive.',
+      'Round 1: CAD fundamentals and engineering drawing principles quiz.',
+      'Round 2: AutoCAD technical drawing based on provided isometric views.',
+      'Evaluation strictly based on dimensioning, accuracy, presentation, and time management.',
+    ],
     coordinators: [
       { name: 'Sidharth Parida', phone: '8144861901' },
       { name: 'Devajyoti Pattnaik', phone: '9556649305' },
@@ -242,6 +275,14 @@ export const funEvents: FestivalEvent[] = [
     requirements: 'TBA',
     schedule: { days: [1], time: '2:00 PM – 4:00 PM', venue: 'OUTR (D-403 Civicon Room)' },
     registrationUrl: null,
+    rulebookUrl: 'https://drive.google.com/drive/folders/1FvF2lKy1nqrBumpY7Mf1j4aWBbzjzDrX',
+    rulesConfirmed: true,
+    rules: [
+      'Official tournament rulebook, gameplay parameters, and scoring matrix available on Google Drive.',
+      'Participate solo or in teams of up to 2 players.',
+      'Complete assigned in-game objectives within the designated server environment and time limit.',
+      'Strict adherence to fair-play rules; external mods/exploits are prohibited unless organizer-sanctioned.',
+    ],
     coordinators: [
       { name: 'Ansuman Nayak', phone: '9337232047' },
       { name: 'Himanshu Sekhar Pradhan', phone: '7749032932' },
@@ -305,6 +346,14 @@ export const funEvents: FestivalEvent[] = [
     requirements: 'TBA',
     schedule: { days: [2], time: '2:00 PM – 5:00 PM', venue: 'OUTR' },
     registrationUrl: 'https://forms.gle/LsAx3WLg6oh86Qci6',
+    rulebookUrl: 'https://drive.google.com/drive/folders/1i5ufwMzoRVbVEhEHlFLPuKbRxAXuXNIr',
+    rulesConfirmed: true,
+    rules: [
+      'Official rulebook & bridge structural guidelines available on Google Drive.',
+      'Teams must design and construct a cable-stayed bridge scale model using provided materials.',
+      'Models will undergo load distribution and maximum weight bearing structural testing.',
+      'Scoring considers material efficiency, structural integrity, and aesthetic design.',
+    ],
     coordinators: [
       { name: 'Rituparna Mishra' },
       { name: 'Sambit Kumar Pedi', phone: '8456856261' },

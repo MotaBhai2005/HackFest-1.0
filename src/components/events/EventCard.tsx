@@ -75,15 +75,44 @@ export default function EventCard({ event, index }: { event: FestivalEvent; inde
           <div>
             <div className="flex items-center justify-between gap-2 flex-wrap mb-2">
               <p className="festival-eyebrow">{event.category}</p>
-              {event.fee && (
-                <span className="font-mono text-xs font-bold text-hack-yellow border border-hack-yellow/40 bg-hack-yellow/10 px-2 py-0.5 tracking-wider">
-                  {event.fee}
-                </span>
-              )}
+              <div className="flex items-center gap-1.5 flex-wrap">
+                {event.rulebookUrl && (
+                  <a
+                    href={event.rulebookUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    onClick={(e) => e.stopPropagation()}
+                    className="font-mono text-[10px] font-bold text-hack-yellow hover:text-white border border-hack-yellow/50 hover:border-hack-yellow bg-hack-yellow/10 hover:bg-hack-yellow/20 px-2 py-0.5 tracking-wider transition-colors inline-flex items-center gap-1"
+                    title={`Open Official Rule Book for ${event.name}`}
+                  >
+                    <span>Rulebook ↗</span>
+                  </a>
+                )}
+                {event.earlyBird ? (
+                  <div className="flex items-center gap-1">
+                    <span className="font-mono text-xs font-bold text-hack-black bg-hack-yellow border border-hack-yellow px-2 py-0.5 tracking-wider">
+                      {event.earlyBird.price} Early Bird
+                    </span>
+                    <span className="line-through text-white/40 text-[10px] font-mono">
+                      {event.earlyBird.regularPrice}
+                    </span>
+                  </div>
+                ) : event.fee ? (
+                  <span className="font-mono text-xs font-bold text-hack-yellow border border-hack-yellow/40 bg-hack-yellow/10 px-2 py-0.5 tracking-wider">
+                    {event.fee}
+                  </span>
+                ) : null}
+              </div>
             </div>
             <h2 className="font-display font-bold text-xl sm:text-2xl text-white leading-snug uppercase line-clamp-2 min-h-[3.5rem] flex items-center mb-2">
               {event.name}
             </h2>
+            {event.earlyBird && (
+              <div className="mb-2 px-2.5 py-1 bg-hack-yellow/10 border-l-2 border-hack-yellow flex items-center justify-between text-[11px] font-mono">
+                <span className="text-hack-yellow font-bold">⚡ Early Bird ₹299 till 29/10 11:59 PM</span>
+                <span className="text-white/40 line-through text-[10px]">{event.earlyBird.regularPrice}</span>
+              </div>
+            )}
             <p className="text-sm text-white/75 leading-relaxed line-clamp-2 min-h-[2.5rem] mb-3">
               {event.description}
             </p>
@@ -118,13 +147,14 @@ export default function EventCard({ event, index }: { event: FestivalEvent; inde
               <p>{event.overview}</p>
               {event.sessions && <><h3>Sessions & learning</h3><ul>{event.sessions.map(session => <li key={session}>{session}</li>)}</ul></>}
               {event.organizerExperience && <><h3>From the organizers</h3><p>{event.organizerExperience}</p></>}
+              {event.rulebookUrl && <p><a href={event.rulebookUrl} target="_blank" rel="noopener noreferrer">Official Rule Book (Google Drive)</a></p>}
               <h3>Rules & guidelines</h3>
               {!event.rulesConfirmed && !event.rulebookUrl && <p>Final rules and guidelines to be announced by the organizers.</p>}
               {event.rules.length > 0 && <ul>{event.rules.map(rule => <li key={rule}>{rule}</li>)}</ul>}
               <dl className="event-facts">
                 <div><dt>Participation format</dt><dd>{event.format || 'To Be Announced'}</dd></div>
                 <div><dt>Team size</dt><dd>{event.teamSize || 'To Be Announced'}</dd></div>
-                <div><dt>Registration Fee</dt><dd className="text-hack-yellow font-bold">{event.fee || 'Free / To Be Announced'}</dd></div>
+                <div><dt>Registration Fee</dt><dd className="text-hack-yellow font-bold">{event.earlyBird ? `${event.earlyBird.price} (Early Bird till ${event.earlyBird.deadline} · Reg ${event.earlyBird.regularPrice})` : event.fee || 'Free / To Be Announced'}</dd></div>
                 <div><dt>Schedule</dt><dd>{event.schedule.days.length ? event.schedule.days.map(day => `Day ${day}`).join(' + ') : 'To Be Announced'}{event.schedule.time ? ` · ${event.schedule.time} IST` : ' · Time TBA'}</dd></div>
                 <div><dt>Venue</dt><dd>{event.schedule.venue || 'To Be Announced'}</dd></div>
                 {event.sessions && <>

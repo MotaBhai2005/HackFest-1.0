@@ -148,3 +148,45 @@ test('sponsor draft, mystery speakers, and shared navigation contain no invented
   const nav = renderToStaticMarkup(React.createElement(Navbar));
   for (const href of ['/', '/#about', '/events', '/#sponsors']) assert.ok(nav.includes(`href="${href}"`));
 });
+
+test('early bird offer applies to both HackOUTR hackathons until 29/10/26 11:59 PM', () => {
+  const software = competitions.find(e => e.id === 'hackoutr-software');
+  const hardware = competitions.find(e => e.id === 'hackoutr-hardware');
+
+  assert.ok(software && hardware);
+  for (const hackathon of [software, hardware]) {
+    assert.ok(hackathon.earlyBird);
+    assert.equal(hackathon.earlyBird.price, '₹299');
+    assert.equal(hackathon.earlyBird.regularPrice, '₹499');
+    assert.equal(hackathon.earlyBird.active, true);
+    assert.ok(hackathon.earlyBird.deadline.includes('29/10/26 11:59 PM'));
+
+    const html = renderToStaticMarkup(React.createElement(EventCard, { event: hackathon, index: 0 }));
+    assert.match(html, /299/);
+    assert.match(html, /Early Bird/);
+    assert.match(html, /499/);
+  }
+});
+
+test('rulebook folders configured and rendered for Clash of CAD, Hanging Highway, and Minecraft', () => {
+  const cad = competitions.find(e => e.id === 'cad');
+  const highway = funEvents.find(e => e.id === 'hanging-highway');
+  const minecraft = funEvents.find(e => e.id === 'minecraft');
+
+  assert.ok(cad && highway && minecraft);
+
+  assert.equal(cad.rulebookUrl, 'https://drive.google.com/drive/folders/1GNnVi3EjKNLeZbwHFFN5dVVsHCYnq5Qz');
+  assert.equal(cad.rulesConfirmed, true);
+
+  assert.equal(highway.rulebookUrl, 'https://drive.google.com/drive/folders/1i5ufwMzoRVbVEhEHlFLPuKbRxAXuXNIr');
+  assert.equal(highway.rulesConfirmed, true);
+
+  assert.equal(minecraft.rulebookUrl, 'https://drive.google.com/drive/folders/1FvF2lKy1nqrBumpY7Mf1j4aWBbzjzDrX');
+  assert.equal(minecraft.rulesConfirmed, true);
+
+  for (const event of [cad, highway, minecraft]) {
+    const html = renderToStaticMarkup(React.createElement(EventCard, { event, index: 0 }));
+    assert.match(html, /Rulebook ↗/);
+    assert.ok(html.includes(event.rulebookUrl));
+  }
+});
