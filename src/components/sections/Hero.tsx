@@ -226,7 +226,7 @@ export default function Hero() {
         initial={{ opacity: 0, x: -20 }}
         animate={{ opacity: 1, x: 0 }}
         transition={{ delay: 0.1, duration: 0.15 }}
-        className="absolute top-4 left-4 sm:top-6 sm:left-6 md:top-8 md:left-12 z-20"
+        className="absolute top-12 left-4 sm:top-14 sm:left-6 md:top-16 md:left-12 z-20"
       >
         <img
           src="/images/hf-logo.svg"
@@ -239,7 +239,7 @@ export default function Hero() {
       </motion.div>
 
       {/* ===== Countdown Timer — top right ===== */}
-      <div className="absolute top-4 right-4 sm:top-6 sm:right-6 md:top-8 md:right-12 z-20">
+      <div className="absolute top-12 right-4 sm:top-14 sm:right-6 md:top-16 md:right-12 z-20">
         <CountdownBox />
       </div>
 
@@ -252,7 +252,7 @@ export default function Hero() {
           visible: { transition: { staggerChildren: 0.06, delayChildren: 0.3 } },
         }}
         aria-label="Festival navigation"
-        className="hero-navigation absolute left-4 sm:left-6 md:left-[52px] top-[90px] md:top-36 z-20 flex flex-col gap-2 md:gap-[17px] w-[90px] sm:w-[100px] md:w-[127px]"
+        className="hero-navigation absolute left-4 sm:left-6 md:left-[52px] top-[125px] md:top-44 z-20 flex flex-col gap-2 md:gap-[17px] w-[90px] sm:w-[100px] md:w-[127px]"
       >
         {sideNavLinks.map((link, i) => (
           <motion.a
@@ -400,9 +400,17 @@ export default function Hero() {
       </motion.div>
 
       {/* HUD — bottom-left status chip */}
-      <div className="absolute bottom-4 md:bottom-8 left-6 md:left-12 flex items-center gap-2 font-mono text-[10px] tracking-[0.15em] text-hack-black/50 uppercase z-20">
-        <div className="w-2 h-2 bg-hack-red animate-pulse" />
-        STATUS: AWAITING_DEPLOY
+      <div className="absolute bottom-4 md:bottom-8 left-6 md:left-12 flex flex-wrap items-center gap-3 font-mono text-[10px] tracking-[0.15em] uppercase z-20">
+        <div className="flex items-center gap-2 text-hack-black/60">
+          <div className="w-2 h-2 bg-hack-red animate-pulse" />
+          STATUS: AWAITING_DEPLOY
+        </div>
+        <a
+          href="/events#hackoutr"
+          className="hidden sm:inline-flex items-center gap-1.5 font-bold text-[#c00100] hover:text-black border border-[#c00100]/40 hover:border-black px-2 py-0.5 tracking-wider bg-black/5 hover:bg-black/10 transition-colors"
+        >
+          <span>⚡ Early Bird ₹299 (Ends Tonight) ↗</span>
+        </a>
       </div>
     </section>
   );

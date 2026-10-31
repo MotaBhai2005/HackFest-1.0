@@ -16,6 +16,7 @@ import ScanlineOverlay from './components/ui/ScanlineOverlay';
 import Preloader from './components/layout/Preloader';
 import CustomCursor from './components/ui/CustomCursor';
 import { crtFlicker } from './lib/animations';
+import EarlyBirdBanner from './components/ui/EarlyBirdBanner';
 import CatalogPage, { type CatalogPath } from './pages/CatalogPage';
 import { hasSeenPreloaderToday, markPreloaderSeenToday } from './lib/preloaderStorage';
 
@@ -113,21 +114,23 @@ export default function App() {
           <ScanlineOverlay />
           <a href="#main-content" className="skip-link">Skip to content</a>
 
-          {/* Sticky Navbar — slides in after scrolling past the hero */}
-          <AnimatePresence>
-            {(showNavbar || path !== '/') && (
-              <motion.div
-                key="navbar"
-                initial={{ y: -80, opacity: 0 }}
-                animate={{ y: 0, opacity: 1 }}
-                exit={{ y: -80, opacity: 0 }}
-                transition={{ duration: 0.25, ease: [0.25, 0, 0.25, 1] }}
-                style={{ position: 'fixed', top: 0, left: 0, right: 0, zIndex: 100 }}
-              >
-                <Navbar />
-              </motion.div>
-            )}
-          </AnimatePresence>
+          {/* Fixed header container: EarlyBirdBanner + Sticky Navbar */}
+          <div style={{ position: 'fixed', top: 0, left: 0, right: 0, zIndex: 100 }}>
+            <EarlyBirdBanner />
+            <AnimatePresence>
+              {(showNavbar || path !== '/') && (
+                <motion.div
+                  key="navbar"
+                  initial={{ y: -80, opacity: 0 }}
+                  animate={{ y: 0, opacity: 1 }}
+                  exit={{ y: -80, opacity: 0 }}
+                  transition={{ duration: 0.25, ease: [0.25, 0, 0.25, 1] }}
+                >
+                  <Navbar />
+                </motion.div>
+              )}
+            </AnimatePresence>
+          </div>
 
           <main id="main-content" tabIndex={-1}>
             {isCatalog ? <CatalogPage path={path as CatalogPath} /> : path !== '/' ? <div className="catalog-header min-h-[60vh]"><h1 className="font-display text-4xl">Page not found</h1><a href="/" className="festival-button mt-8">Return Home →</a></div> : <>

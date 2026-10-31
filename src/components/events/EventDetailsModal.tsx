@@ -3,7 +3,6 @@ import { createPortal } from 'react-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import type { FestivalEvent } from '../../data/events';
 import { RegistrationButton } from './EventCard';
-import RulebookButton from './RulebookButton';
 import ProblemStatementsButton from './ProblemStatementsButton';
 import Breadcrumb, { type BreadcrumbItem } from '../ui/Breadcrumb';
 
@@ -252,6 +251,28 @@ export default function EventDetailsModal({ event, isOpen, onClose }: EventDetai
                 {/* ── BODY (scrollable) ── */}
                 <div className="flex-1 min-h-0 overflow-y-auto p-5 sm:p-7 space-y-7">
 
+                  {/* Early Bird Offer Banner if active */}
+                  {event.earlyBird && (
+                    <div className="p-4 bg-hack-yellow/15 border-2 border-hack-yellow relative overflow-hidden">
+                      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+                        <div>
+                          <div className="flex items-center gap-2">
+                            <span className="font-mono text-[10px] font-black uppercase tracking-wider bg-hack-yellow text-hack-black px-1.5 py-0.5">
+                              FLASH OFFER
+                            </span>
+                            <span className="font-mono text-xs font-bold text-hack-yellow">
+                              EARLY BIRD REGISTRATION ACTIVE
+                            </span>
+                          </div>
+                          <p className="text-sm text-neutral-200 mt-1.5 leading-relaxed">
+                            Lock in your team slot at <strong className="text-hack-yellow font-bold text-base">{event.earlyBird.price}</strong>{' '}
+                            <span className="line-through text-white/50 text-xs">({event.earlyBird.regularPrice})</span>! Offer valid strictly till <strong className="text-white underline">{event.earlyBird.deadline}</strong>.
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+                  )}
+
                   {/* Overview */}
                   <div>
                     <SectionHeading number={nextSec()} label="Overview" />
@@ -291,10 +312,37 @@ export default function EventDetailsModal({ event, isOpen, onClose }: EventDetai
                       number={nextSec()}
                       label={event.sessions ? 'Guidelines & Prerequisites' : 'Rules & Guidelines'}
                     />
-                    <div className="flex flex-col gap-2.5">
-                      <RulebookButton event={event} />
-                      <ProblemStatementsButton event={event} />
-                    </div>
+
+                    {/* Official Rulebook card if available */}
+                    {event.rulebookUrl && (
+                      <div className="mb-4">
+                        <a
+                          href={event.rulebookUrl}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="group flex items-center justify-between gap-3 p-3.5 bg-hack-yellow/10 border-2 border-hack-yellow hover:bg-hack-yellow/20 transition-all text-white"
+                        >
+                          <div className="flex items-center gap-3">
+                            <span className="text-xl shrink-0" aria-hidden="true">📋</span>
+                            <div>
+                              <div className="font-mono text-xs font-bold text-hack-yellow uppercase tracking-wider group-hover:text-amber-300">
+                                Official Rule Book & Guidelines
+                              </div>
+                              <div className="text-[11px] text-neutral-300 mt-0.5">
+                                View tournament guidelines, rubrics, and detailed rules on Google Drive
+                              </div>
+                            </div>
+                          </div>
+                          <span className="font-mono text-xs font-bold px-3 py-1.5 bg-hack-yellow text-hack-black uppercase tracking-wider group-hover:bg-white transition-colors shrink-0 flex items-center gap-1">
+                            <span>Open</span>
+                            <span aria-hidden="true">↗</span>
+                          </span>
+                        </a>
+                      </div>
+                    )}
+
+                    <ProblemStatementsButton event={event} />
+
                     {!event.rulesConfirmed && !event.rulebookUrl && (
                       <p className="text-xs text-white/40 italic mb-2.5">
                         Final rules to be announced by the organizers.
@@ -320,7 +368,13 @@ export default function EventDetailsModal({ event, isOpen, onClose }: EventDetai
                         [
                           { label: 'Participation Format', value: event.format, highlight: false },
                           { label: 'Team Size', value: event.teamSize, highlight: false },
-                          { label: 'Registration Fee', value: event.fee, highlight: true },
+                          {
+                            label: 'Registration Fee',
+                            value: event.earlyBird
+                              ? `${event.earlyBird.price} (Early Bird till ${event.earlyBird.deadline} · Regular ${event.earlyBird.regularPrice})`
+                              : event.fee,
+                            highlight: true,
+                          },
                           { label: 'Venue', value: event.schedule.venue, highlight: false },
                           ...(event.sessions
                             ? [
@@ -409,6 +463,19 @@ export default function EventDetailsModal({ event, isOpen, onClose }: EventDetai
 
                   {/* Actions */}
                   <div className="flex items-center gap-3">
+                    {/* Rulebook action button if available */}
+                    {event.rulebookUrl && (
+                      <a
+                        href={event.rulebookUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="font-mono text-[10px] sm:text-xs font-bold border border-hack-yellow/70 text-hack-yellow hover:bg-hack-yellow hover:text-hack-black px-3 py-2 uppercase tracking-wider transition-colors inline-flex items-center gap-1 shrink-0"
+                      >
+                        <span>Rulebook</span>
+                        <span aria-hidden="true">↗</span>
+                      </a>
+                    )}
+
                     {/* Close ghost button */}
                     <button
                       type="button"
