@@ -29,6 +29,7 @@ export interface FestivalEvent {
   };
   registrationUrl: string | null;
   rulebookUrl?: string;
+  problemStatementsUrl?: string;
   featured?: boolean;
   sessions?: string[];
   duration?: string | null;
@@ -77,6 +78,8 @@ export const competitions: FestivalEvent[] = [
   {
     ...pendingDetails,
     id: 'hackoutr-hardware',
+    rulebookUrl: 'https://drive.google.com/file/d/1f0QommXC7XuVtWvqU1zI3I6Y92O-ZeVV/view?usp=drivesdk',
+    problemStatementsUrl: '/hardware-problem-statements.html',
     name: 'HackOUTR Hardware Edition',
     eventType: 'hackoutr',
     category: 'Hardware',

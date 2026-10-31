@@ -21,8 +21,45 @@ export default function Sponsors() {
             SPONSORSHIP_NODES
           </motion.h2>
           <p className="font-mono text-xs text-center text-hack-black/70 max-w-xl leading-relaxed">
-            Power the next cycle. Partner with HACKFEST 2026 and help bring new ideas to life.
+            Meet the partners helping bring HACKFEST 2026 to life.
           </p>
+        </motion.div>
+        <motion.div
+          initial="hidden" animate={inView ? 'visible' : 'hidden'}
+          custom={2} variants={brutalistEntrance}
+          className="hackerrank-partner border-4 border-hack-black bg-[#141419] text-white shadow-[8px_8px_0_0_#000]"
+        >
+          <div className="px-6 py-4 sm:px-10 border-b border-white/15 flex flex-wrap items-center justify-between gap-3">
+            <p className="text-sm font-bold">Coding Partner</p>
+            <span className="text-xs text-white/65">HACKFEST 2026</span>
+          </div>
+          <div className="grid lg:grid-cols-2 gap-10 lg:gap-16 items-center p-6 sm:p-10 lg:p-14">
+            <div className="py-8 sm:py-12 lg:py-16">
+              <img
+                src="/images/partners/hackerrank-logo-light.svg"
+                alt="HackerRank"
+                width="616" height="65"
+                loading="lazy"
+                className="w-full max-w-[440px] h-auto mx-auto"
+              />
+            </div>
+            <div>
+              <h3 className="text-3xl sm:text-4xl lg:text-5xl font-bold leading-tight">
+                Built on ideas.<br />Driven by <span className="text-[#05C770]">skills.</span>
+              </h3>
+              <p className="text-base leading-relaxed text-white/75 mt-5 max-w-lg">
+                HackerRank joins HACKFEST 2026 as our coding partner, supporting a community ready to solve problems, build together, and put their skills into practice.
+              </p>
+              <a
+                href="https://www.hackerrank.com/"
+                target="_blank" rel="noopener noreferrer"
+                aria-label="Explore HackerRank (opens in a new tab)"
+                className="inline-flex items-center gap-6 mt-7 px-6 py-3 bg-[#05C770] text-[#141419] font-bold hover:bg-[#DBFFC2] focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-white transition-colors"
+              >
+                Explore HackerRank <span aria-hidden="true">↗</span>
+              </a>
+            </div>
+          </div>
         </motion.div>
         <motion.div initial="hidden" animate={inView ? 'visible' : 'hidden'}
           variants={{ visible: { transition: { staggerChildren: 0.08 } } }}

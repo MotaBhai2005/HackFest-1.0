@@ -4,6 +4,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import type { FestivalEvent } from '../../data/events';
 import { RegistrationButton } from './EventCard';
 import RulebookButton from './RulebookButton';
+import ProblemStatementsButton from './ProblemStatementsButton';
 import Breadcrumb, { type BreadcrumbItem } from '../ui/Breadcrumb';
 
 interface EventDetailsModalProps {
@@ -290,7 +291,10 @@ export default function EventDetailsModal({ event, isOpen, onClose }: EventDetai
                       number={nextSec()}
                       label={event.sessions ? 'Guidelines & Prerequisites' : 'Rules & Guidelines'}
                     />
-                    <RulebookButton event={event} />
+                    <div className="flex flex-col gap-2.5">
+                      <RulebookButton event={event} />
+                      <ProblemStatementsButton event={event} />
+                    </div>
                     {!event.rulesConfirmed && !event.rulebookUrl && (
                       <p className="text-xs text-white/40 italic mb-2.5">
                         Final rules to be announced by the organizers.

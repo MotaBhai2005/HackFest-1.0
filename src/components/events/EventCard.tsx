@@ -6,6 +6,7 @@ import { registrationHref } from '../../data/events';
 import EventVisual from './EventVisual';
 import EventDetailsModal from './EventDetailsModal';
 import RulebookButton from './RulebookButton';
+import ProblemStatementsButton from './ProblemStatementsButton';
 
 export function RegistrationButton({ event }: { event: FestivalEvent }) {
   const href = registrationHref(event.registrationUrl);
@@ -107,6 +108,7 @@ export default function EventCard({ event, index }: { event: FestivalEvent; inde
             </button>
 
             <RulebookButton event={event} />
+            <ProblemStatementsButton event={event} />
             <RegistrationButton event={event} />
           </div>
 
