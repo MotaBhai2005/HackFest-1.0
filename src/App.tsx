@@ -114,9 +114,11 @@ export default function App() {
           <ScanlineOverlay />
           <a href="#main-content" className="skip-link">Skip to content</a>
 
-          {/* Fixed header container: SundayOfferBanner + Sticky Navbar */}
-          <div style={{ position: 'fixed', top: 0, left: 0, right: 0, zIndex: 100 }}>
-            <SundayOfferBanner />
+          {/* The offer occupies its own row above the hero instead of covering it. */}
+          <SundayOfferBanner />
+
+          {/* Navigation appears independently when the hero scrolls out of view. */}
+          <div style={{ position: path === '/' ? 'fixed' : 'sticky', top: 0, left: 0, right: 0, zIndex: 100 }}>
             <AnimatePresence>
               {(showNavbar || path !== '/') && (
                 <motion.div
