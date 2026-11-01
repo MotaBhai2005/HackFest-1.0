@@ -2,6 +2,7 @@ import { useRef, useEffect, useState } from 'react';
 import { motion, useInView, useReducedMotion } from 'framer-motion';
 import { brutalistEntrance } from '../../lib/animations';
 import CountUpNumber from '../ui/CountUpNumber';
+import { festival } from '../../data/festival';
 
 // ─── Constants ────────────────────────────────────────────────────────────────
 
@@ -379,6 +380,19 @@ export default function About() {
                   HACKFEST 2026 is Odisha&apos;s premier 3-day engineering festival uniting programmers,
                   hardware makers, and innovators from across the country.
                 </p>
+                <div className="mt-6 border-2 border-hack-yellow bg-hack-yellow/10 p-5 sm:p-6">
+                  <p className="font-mono text-xs font-bold uppercase tracking-wider text-hack-yellow mb-3">Beyond the hackathon</p>
+                  <h3 className="font-display text-xl sm:text-2xl font-bold text-white leading-tight">
+                    {festival.winnersOpportunity}
+                  </h3>
+                  <p className="mt-3 text-sm sm:text-base text-neutral-200 leading-relaxed">
+                    Build your next breakthrough and take a step towards your career. Winners of both the HackOUTR Software and Hardware editions will have a direct interview opportunity for internships.
+                  </p>
+                  <div className="mt-4 flex flex-wrap gap-x-6 gap-y-3 font-mono text-xs font-bold text-hack-yellow">
+                    <a href="/events/hackoutr-software" className="underline underline-offset-4 hover:text-white">Explore Software Edition ↗</a>
+                    <a href="/events/hackoutr-hardware" className="underline underline-offset-4 hover:text-white">Explore Hardware Edition ↗</a>
+                  </div>
+                </div>
               </motion.div>
             </div>
 

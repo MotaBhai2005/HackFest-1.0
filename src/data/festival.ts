@@ -1,6 +1,7 @@
 /** Organizer settings. Times are local to Asia/Kolkata (UTC+05:30). */
 export const festival = {
   name: 'HACKFEST 2026',
+  winnersOpportunity: 'Direct Interview Internship Opportunity for Winners',
   startDate: '2026-11-04',
   // Provisional midnight counts down to the date, not a confirmed opening hour.
   startTimeIST: '00:00:00',
