@@ -251,8 +251,8 @@ export default function EventDetailsModal({ event, isOpen, onClose }: EventDetai
                 {/* ── BODY (scrollable) ── */}
                 <div className="flex-1 min-h-0 overflow-y-auto p-5 sm:p-7 space-y-7">
 
-                  {/* Early Bird Offer Banner if active */}
-                  {event.earlyBird && (
+                  {/* Sunday Special Offer Banner if active */}
+                  {event.sundayOffer && (
                     <div className="p-4 bg-hack-yellow/15 border-2 border-hack-yellow relative overflow-hidden">
                       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
                         <div>
@@ -261,12 +261,12 @@ export default function EventDetailsModal({ event, isOpen, onClose }: EventDetai
                               FLASH OFFER
                             </span>
                             <span className="font-mono text-xs font-bold text-hack-yellow">
-                              EARLY BIRD REGISTRATION ACTIVE
+                              SUNDAY SPECIAL OFFER ACTIVE
                             </span>
                           </div>
                           <p className="text-sm text-neutral-200 mt-1.5 leading-relaxed">
-                            Lock in your team slot at <strong className="text-hack-yellow font-bold text-base">{event.earlyBird.price}</strong>{' '}
-                            <span className="line-through text-white/50 text-xs">({event.earlyBird.regularPrice})</span>! Offer valid strictly till <strong className="text-white underline">{event.earlyBird.deadline}</strong>.
+                            Lock in your team slot at <strong className="text-hack-yellow font-bold text-base">{event.sundayOffer.price}</strong>{' '}
+                            <span className="line-through text-white/50 text-xs">({event.sundayOffer.regularPrice})</span>! Offer valid strictly till <strong className="text-white underline">{event.sundayOffer.deadline}</strong>.
                           </p>
                         </div>
                       </div>
@@ -370,8 +370,8 @@ export default function EventDetailsModal({ event, isOpen, onClose }: EventDetai
                           { label: 'Team Size', value: event.teamSize, highlight: false },
                           {
                             label: 'Registration Fee',
-                            value: event.earlyBird
-                              ? `${event.earlyBird.price} (Early Bird till ${event.earlyBird.deadline} · Regular ${event.earlyBird.regularPrice})`
+                            value: event.sundayOffer
+                              ? `${event.sundayOffer.price} (Sunday Special Offer till ${event.sundayOffer.deadline} · Regular ${event.sundayOffer.regularPrice})`
                               : event.fee,
                             highlight: true,
                           },

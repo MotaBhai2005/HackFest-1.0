@@ -8,7 +8,7 @@ export interface EventCoordinator {
   phone?: string;
 }
 
-export interface EarlyBirdOffer {
+export interface SundayOffer {
   price: string;
   regularPrice: string;
   deadline: string;
@@ -27,7 +27,7 @@ export interface FestivalEvent {
   rules: string[];
   rulesConfirmed: boolean;
   rulebookUrl?: string | null;
-  earlyBird?: EarlyBirdOffer | null;
+  sundayOffer?: SundayOffer | null;
   format: string | null;
   teamSize: string | null;
   fee: string | null;
@@ -52,7 +52,7 @@ const pendingDetails = {
   rules: [],
   rulesConfirmed: false,
   rulebookUrl: null,
-  earlyBird: null,
+  sundayOffer: null,
   format: 'TBA',
   teamSize: 'TBA',
   fee: 'TBA',
@@ -72,15 +72,15 @@ export const competitions: FestivalEvent[] = [
     visual: 'code',
     featured: true,
     description: 'The 36-Hour Software Hackathon is an intensive innovation marathon featuring diverse problem statements, challenging participants to transform real-world challenges into practical, impactful software solutions.',
-    overview: 'The 36-Hour Software Hackathon is an intensive innovation marathon featuring diverse problem statements, challenging participants to transform real-world challenges into practical, impactful software solutions. Software track of HackOUTR continuing from 04-Nov-2026 to 06-Nov-2026.\n\n⚡ EARLY BIRD OFFER: ₹299 (Save ₹200) strictly valid till 29/10/26 11:59 PM IST! Regular fee of ₹499 applies thereafter.',
+    overview: 'The 36-Hour Software Hackathon is an intensive innovation marathon featuring diverse problem statements, challenging participants to transform real-world challenges into practical, impactful software solutions. Software track of HackOUTR continuing from 04-Nov-2026 to 06-Nov-2026.\n\n⚡ SUNDAY SPECIAL OFFER: ₹399 (Save ₹100) strictly valid till 01/11/26 11:59 PM IST! Regular fee of ₹499 applies thereafter.',
     format: '36-Hour Hackathon',
     teamSize: '2–4 Members',
-    fee: '₹299 Early Bird',
-    earlyBird: {
-      price: '₹299',
+    fee: '₹399 Sunday Special Offer',
+    sundayOffer: {
+      price: '₹399',
       regularPrice: '₹499',
-      deadline: '29/10/26 11:59 PM IST',
-      deadlineIso: '2026-10-29T23:59:59+05:30',
+      deadline: '01/11/26 11:59 PM IST',
+      deadlineIso: '2026-11-01T23:59:59+05:30',
       active: true,
     },
     requirements: 'Laptop, extension cord (Internet provided on-site)',
@@ -104,15 +104,15 @@ export const competitions: FestivalEvent[] = [
     visual: 'chip',
     featured: true,
     description: 'Connect circuits, code, and physical prototyping to engineer real-world hardware solutions.',
-    overview: 'The hardware edition of HackOUTR — explore physical prototyping, circuits, and embedded systems through an intense multi-day challenge. Hardware problem statements, lab access, and testing benches.\n\n⚡ EARLY BIRD OFFER: ₹299 (Save ₹200) strictly valid till 29/10/26 11:59 PM IST! Regular fee of ₹499 applies thereafter.',
+    overview: 'The hardware edition of HackOUTR — explore physical prototyping, circuits, and embedded systems through an intense multi-day challenge. Hardware problem statements, lab access, and testing benches.\n\n⚡ SUNDAY SPECIAL OFFER: ₹399 (Save ₹100) strictly valid till 01/11/26 11:59 PM IST! Regular fee of ₹499 applies thereafter.',
     format: '36-Hour Hackathon',
     teamSize: '2–4 Members',
-    fee: '₹299 Early Bird',
-    earlyBird: {
-      price: '₹299',
+    fee: '₹399 Sunday Special Offer',
+    sundayOffer: {
+      price: '₹399',
       regularPrice: '₹499',
-      deadline: '29/10/26 11:59 PM IST',
-      deadlineIso: '2026-10-29T23:59:59+05:30',
+      deadline: '01/11/26 11:59 PM IST',
+      deadlineIso: '2026-11-01T23:59:59+05:30',
       active: true,
     },
     requirements: 'Bring components based on your chosen theme, laptop, extension cord (Internet provided on-site)',

@@ -89,13 +89,13 @@ export default function EventCard({ event, index }: { event: FestivalEvent; inde
                     <span>Rulebook ↗</span>
                   </a>
                 )}
-                {event.earlyBird ? (
+                {event.sundayOffer ? (
                   <div className="flex items-center gap-1">
                     <span className="font-mono text-xs font-bold text-hack-black bg-hack-yellow border border-hack-yellow px-2 py-0.5 tracking-wider">
-                      {event.earlyBird.price} Early Bird
+                      {event.sundayOffer.price} Sunday Special Offer
                     </span>
                     <span className="line-through text-white/40 text-[10px] font-mono">
-                      {event.earlyBird.regularPrice}
+                      {event.sundayOffer.regularPrice}
                     </span>
                   </div>
                 ) : event.fee ? (
@@ -108,10 +108,10 @@ export default function EventCard({ event, index }: { event: FestivalEvent; inde
             <h2 className="font-display font-bold text-xl sm:text-2xl text-white leading-snug uppercase line-clamp-2 min-h-[3.5rem] flex items-center mb-2">
               {event.name}
             </h2>
-            {event.earlyBird && (
-              <div className="mb-2 px-2.5 py-1 bg-hack-yellow/10 border-l-2 border-hack-yellow flex items-center justify-between text-[11px] font-mono">
-                <span className="text-hack-yellow font-bold">⚡ Early Bird ₹299 till 29/10 11:59 PM</span>
-                <span className="text-white/40 line-through text-[10px]">{event.earlyBird.regularPrice}</span>
+            {event.sundayOffer && (
+              <div className="mb-2 px-2.5 py-1 bg-hack-yellow/10 border-l-2 border-hack-yellow flex items-center justify-between gap-2 text-[11px] font-mono">
+                <span className="text-hack-yellow font-bold">⚡ Sunday Special Offer {event.sundayOffer.price} till {event.sundayOffer.deadline}</span>
+                <span className="text-white/40 line-through text-[10px]">{event.sundayOffer.regularPrice}</span>
               </div>
             )}
             <p className="text-sm text-white/75 leading-relaxed line-clamp-2 min-h-[2.5rem] mb-3">
@@ -156,7 +156,7 @@ export default function EventCard({ event, index }: { event: FestivalEvent; inde
               <dl className="event-facts">
                 <div><dt>Participation format</dt><dd>{event.format || 'To Be Announced'}</dd></div>
                 <div><dt>Team size</dt><dd>{event.teamSize || 'To Be Announced'}</dd></div>
-                <div><dt>Registration Fee</dt><dd className="text-hack-yellow font-bold">{event.earlyBird ? `${event.earlyBird.price} (Early Bird till ${event.earlyBird.deadline} · Reg ${event.earlyBird.regularPrice})` : event.fee || 'Free / To Be Announced'}</dd></div>
+                <div><dt>Registration Fee</dt><dd className="text-hack-yellow font-bold">{event.sundayOffer ? `${event.sundayOffer.price} (Sunday Special Offer till ${event.sundayOffer.deadline} · Reg ${event.sundayOffer.regularPrice})` : event.fee || 'Free / To Be Announced'}</dd></div>
                 <div><dt>Schedule</dt><dd>{event.schedule.days.length ? event.schedule.days.map(day => `Day ${day}`).join(' + ') : 'To Be Announced'}{event.schedule.time ? ` · ${event.schedule.time} IST` : ' · Time TBA'}</dd></div>
                 <div><dt>Venue</dt><dd>{event.schedule.venue || 'To Be Announced'}</dd></div>
                 {event.sessions && <>

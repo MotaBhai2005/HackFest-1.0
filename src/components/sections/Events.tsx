@@ -25,13 +25,13 @@ export default function Events() {
               <div>
                 <div className="flex items-center justify-between gap-2 flex-wrap mb-2">
                   <p className="festival-eyebrow">{event.category}</p>
-                  {event.earlyBird ? (
+                  {event.sundayOffer ? (
                     <div className="flex items-center gap-1.5">
                       <span className="font-mono text-xs font-bold text-hack-black bg-hack-yellow border border-hack-yellow px-2 py-0.5 tracking-wider animate-pulse">
-                        {event.earlyBird.price} Early Bird
+                        {event.sundayOffer.price} Sunday Special Offer
                       </span>
                       <span className="line-through text-white/40 text-[10px] font-mono">
-                        {event.earlyBird.regularPrice}
+                        {event.sundayOffer.regularPrice}
                       </span>
                     </div>
                   ) : event.fee ? (

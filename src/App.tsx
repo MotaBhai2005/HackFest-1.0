@@ -16,7 +16,7 @@ import ScanlineOverlay from './components/ui/ScanlineOverlay';
 import Preloader from './components/layout/Preloader';
 import CustomCursor from './components/ui/CustomCursor';
 import { crtFlicker } from './lib/animations';
-import EarlyBirdBanner from './components/ui/EarlyBirdBanner';
+import SundayOfferBanner from './components/ui/SundayOfferBanner';
 import CatalogPage, { type CatalogPath } from './pages/CatalogPage';
 import { hasSeenPreloaderToday, markPreloaderSeenToday } from './lib/preloaderStorage';
 
@@ -114,9 +114,9 @@ export default function App() {
           <ScanlineOverlay />
           <a href="#main-content" className="skip-link">Skip to content</a>
 
-          {/* Fixed header container: EarlyBirdBanner + Sticky Navbar */}
+          {/* Fixed header container: SundayOfferBanner + Sticky Navbar */}
           <div style={{ position: 'fixed', top: 0, left: 0, right: 0, zIndex: 100 }}>
-            <EarlyBirdBanner />
+            <SundayOfferBanner />
             <AnimatePresence>
               {(showNavbar || path !== '/') && (
                 <motion.div

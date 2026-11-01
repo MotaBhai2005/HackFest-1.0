@@ -149,21 +149,23 @@ test('sponsor draft, mystery speakers, and shared navigation contain no invented
   for (const href of ['/', '/#about', '/events', '/#sponsors']) assert.ok(nav.includes(`href="${href}"`));
 });
 
-test('early bird offer applies to both HackOUTR hackathons until 29/10/26 11:59 PM', () => {
+test('Sunday Special Offer applies to both HackOUTR hackathons until 01/11/26 11:59 PM', () => {
   const software = competitions.find(e => e.id === 'hackoutr-software');
   const hardware = competitions.find(e => e.id === 'hackoutr-hardware');
 
   assert.ok(software && hardware);
   for (const hackathon of [software, hardware]) {
-    assert.ok(hackathon.earlyBird);
-    assert.equal(hackathon.earlyBird.price, '₹299');
-    assert.equal(hackathon.earlyBird.regularPrice, '₹499');
-    assert.equal(hackathon.earlyBird.active, true);
-    assert.ok(hackathon.earlyBird.deadline.includes('29/10/26 11:59 PM'));
+    assert.ok(hackathon.sundayOffer);
+    assert.equal(hackathon.sundayOffer.price, '₹399');
+    assert.equal(hackathon.sundayOffer.regularPrice, '₹499');
+    assert.equal(hackathon.sundayOffer.active, true);
+    assert.equal(hackathon.sundayOffer.deadlineIso, '2026-11-01T23:59:59+05:30');
+    assert.ok(hackathon.sundayOffer.deadline.includes('01/11/26 11:59 PM'));
 
     const html = renderToStaticMarkup(React.createElement(EventCard, { event: hackathon, index: 0 }));
-    assert.match(html, /299/);
-    assert.match(html, /Early Bird/);
+    assert.match(html, /399/);
+    assert.match(html, /Sunday Special Offer/);
+    assert.doesNotMatch(html, /Early Bird|₹299|29\/10/);
     assert.match(html, /499/);
   }
 });

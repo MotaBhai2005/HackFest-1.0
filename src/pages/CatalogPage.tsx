@@ -176,7 +176,7 @@ export default function CatalogPage({ path }: { path: CatalogPath }) {
             {events.length} {typeLabel}{filterLabel}{dayLabel}
           </p>
 
-          {/* ── Early Bird Promo Banner (Hub + HackOUTR) ── */}
+          {/* ── Sunday Special Offer Promo Banner (Hub + HackOUTR) ── */}
           {isHub && (category === 'all' || category === 'hackoutr') && (
             <div className="mb-8 p-4 sm:p-5 bg-gradient-to-r from-hack-yellow/15 via-hack-yellow/5 to-transparent border-2 border-hack-yellow relative overflow-hidden">
               <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
@@ -186,11 +186,11 @@ export default function CatalogPage({ path }: { path: CatalogPath }) {
                       FLASH PROMO · ENDS TONIGHT
                     </span>
                     <span className="font-mono text-xs font-bold text-hack-yellow">
-                      EARLY BIRD REGISTRATION: ₹299 ONLY
+                      SUNDAY SPECIAL OFFER: ₹399 ONLY
                     </span>
                   </div>
                   <p className="text-sm text-neutral-200 mt-1.5 leading-relaxed">
-                    Register for <strong className="text-white">HackOUTR Software Edition</strong> and <strong className="text-white">HackOUTR Hardware Edition</strong> at an exclusive early bird price of <strong className="text-hack-yellow">₹299</strong> (Regular fee ₹499). Offer strictly valid till <strong className="text-white underline">29/10/26 11:59 PM IST</strong>.
+                    Register for <strong className="text-white">HackOUTR Software Edition</strong> and <strong className="text-white">HackOUTR Hardware Edition</strong> at an exclusive Sunday Special Offer price of <strong className="text-hack-yellow">₹399</strong> (Regular fee ₹499). Offer strictly valid till <strong className="text-white underline">01/11/26 11:59 PM IST</strong>.
                   </p>
                 </div>
                 <a
@@ -199,7 +199,7 @@ export default function CatalogPage({ path }: { path: CatalogPath }) {
                   rel="noopener noreferrer"
                   className="festival-button text-xs py-2.5 px-4 shrink-0 whitespace-nowrap self-start md:self-center"
                 >
-                  Register for ₹299 Now ↗
+                  Register for ₹399 Now ↗
                 </a>
               </div>
             </div>

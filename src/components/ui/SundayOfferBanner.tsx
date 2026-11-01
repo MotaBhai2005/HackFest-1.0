@@ -1,12 +1,12 @@
 import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 
-export default function EarlyBirdBanner() {
+export default function SundayOfferBanner() {
   const [visible, setVisible] = useState(true);
 
   useEffect(() => {
     try {
-      if (sessionStorage.getItem('hide_early_bird_banner') === 'true') {
+      if (sessionStorage.getItem('hide_sunday_offer_banner_2026_11_01') === 'true') {
         setVisible(false);
       }
     } catch {
@@ -17,7 +17,7 @@ export default function EarlyBirdBanner() {
   const handleDismiss = () => {
     setVisible(false);
     try {
-      sessionStorage.setItem('hide_early_bird_banner', 'true');
+      sessionStorage.setItem('hide_sunday_offer_banner_2026_11_01', 'true');
     } catch {
       // Ignore
     }
@@ -47,9 +47,9 @@ export default function EarlyBirdBanner() {
                 FLASH OFFER
               </span>
               <p className="font-mono font-medium text-white/95 leading-tight">
-                <span className="text-hack-yellow font-bold">EARLY BIRD ₹299</span> for both HackOUTR Hackathons (Software & Hardware)!
+                <span className="text-hack-yellow font-bold">SUNDAY SPECIAL OFFER ₹399</span> for both HackOUTR Hackathons (Software & Hardware)!
                 <span className="text-white/60 ml-1.5 hidden md:inline">Regular: <span className="line-through">₹499</span></span>
-                <span className="text-hack-yellow/90 font-bold ml-2">Ends tonight: 29/10/26 11:59 PM IST</span>
+                <span className="text-hack-yellow/90 font-bold ml-2">Ends tonight: 01/11/26 11:59 PM IST</span>
               </p>
             </div>
 
@@ -59,7 +59,7 @@ export default function EarlyBirdBanner() {
                 href="/events#hackoutr"
                 className="font-mono text-[11px] sm:text-xs font-bold uppercase tracking-wider px-3 py-1 bg-hack-yellow hover:bg-white text-hack-black transition-colors inline-flex items-center gap-1 shadow-[2px_2px_0_0_#c00100]"
               >
-                <span>Claim ₹299 Offer</span>
+                <span>Claim ₹399 Offer</span>
                 <span aria-hidden="true">↗</span>
               </a>
 
@@ -67,7 +67,7 @@ export default function EarlyBirdBanner() {
                 type="button"
                 onClick={handleDismiss}
                 className="p-1 text-white/50 hover:text-white hover:bg-white/10 transition-colors rounded"
-                aria-label="Dismiss early bird offer banner"
+                aria-label="Dismiss Sunday Special Offer banner"
               >
                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
                   <line x1="18" y1="6" x2="6" y2="18" />
