@@ -430,7 +430,7 @@ export const workshops: FestivalEvent[] = [
     schedule: { days: [2], time: '2:00 PM – 5:00 PM', venue: 'OUTR' },
     registrationUrl: null,
     coordinators: [
-      { name: 'Devidutta Mishra', phone: '7978343148' },
+      { name: 'Swadesh Raul', phone: '7325868950' },
     ],
   },
   {
