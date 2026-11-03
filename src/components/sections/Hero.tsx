@@ -405,12 +405,6 @@ export default function Hero() {
           <div className="w-2 h-2 bg-hack-red animate-pulse" />
           STATUS: AWAITING_DEPLOY
         </div>
-        <a
-          href="/events#hackoutr"
-          className="hidden sm:inline-flex items-center gap-1.5 font-bold text-[#c00100] hover:text-black border border-[#c00100]/40 hover:border-black px-2 py-0.5 tracking-wider bg-black/5 hover:bg-black/10 transition-colors"
-        >
-          <span>⚡ Sunday Special Offer ₹399 (Ends Tonight) ↗</span>
-        </a>
       </div>
     </section>
   );

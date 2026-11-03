@@ -16,7 +16,6 @@ import ScanlineOverlay from './components/ui/ScanlineOverlay';
 import Preloader from './components/layout/Preloader';
 import CustomCursor from './components/ui/CustomCursor';
 import { crtFlicker } from './lib/animations';
-import SundayOfferBanner from './components/ui/SundayOfferBanner';
 import CatalogPage, { type CatalogPath } from './pages/CatalogPage';
 import { hasSeenPreloaderToday, markPreloaderSeenToday } from './lib/preloaderStorage';
 
@@ -113,9 +112,6 @@ export default function App() {
         >
           <ScanlineOverlay />
           <a href="#main-content" className="skip-link">Skip to content</a>
-
-          {/* The offer occupies its own row above the hero instead of covering it. */}
-          <SundayOfferBanner />
 
           {/* Navigation appears independently when the hero scrolls out of view. */}
           <div style={{ position: path === '/' ? 'fixed' : 'sticky', top: 0, left: 0, right: 0, zIndex: 100 }}>

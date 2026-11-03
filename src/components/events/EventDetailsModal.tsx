@@ -251,29 +251,13 @@ export default function EventDetailsModal({ event, isOpen, onClose }: EventDetai
                 {/* ── BODY (scrollable) ── */}
                 <div className="flex-1 min-h-0 overflow-y-auto p-5 sm:p-7 space-y-7">
 
-                  {/* Sunday Special Offer Banner if active */}
-                  {event.sundayOffer && (
-                    <div className="p-4 bg-hack-yellow/15 border-2 border-hack-yellow relative overflow-hidden">
-                      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
-                        <div>
-                          <div className="flex items-center gap-2">
-                            <span className="font-mono text-[10px] font-black uppercase tracking-wider bg-hack-yellow text-hack-black px-1.5 py-0.5">
-                              FLASH OFFER
-                            </span>
-                            <span className="font-mono text-xs font-bold text-hack-yellow">
-                              SUNDAY SPECIAL OFFER ACTIVE
-                            </span>
-                          </div>
-                          <p className="text-sm text-neutral-200 mt-1.5 leading-relaxed">
-                            Lock in your team slot at <strong className="text-hack-yellow font-bold text-base">{event.sundayOffer.price}</strong>{' '}
-                            <span className="line-through text-white/50 text-xs">({event.sundayOffer.regularPrice})</span>! Offer valid strictly till <strong className="text-white underline">{event.sundayOffer.deadline}</strong>.
-                          </p>
-                        </div>
-                      </div>
+                  {/* Overview */}
+                  {event.winnersOpportunity && (
+                    <div className="border-2 border-hack-yellow bg-hack-yellow/10 p-4">
+                      <h3 className="font-display text-lg font-bold text-hack-yellow leading-snug">{event.winnersOpportunity}</h3>
+                      <p className="mt-2 text-sm text-neutral-200 leading-relaxed">Winners of {event.name} will have a direct interview opportunity for internships.</p>
                     </div>
                   )}
-
-                  {/* Overview */}
                   <div>
                     <SectionHeading number={nextSec()} label="Overview" />
                     <p className="text-sm sm:text-[15px] leading-relaxed text-neutral-300">
@@ -370,9 +354,7 @@ export default function EventDetailsModal({ event, isOpen, onClose }: EventDetai
                           { label: 'Team Size', value: event.teamSize, highlight: false },
                           {
                             label: 'Registration Fee',
-                            value: event.sundayOffer
-                              ? `${event.sundayOffer.price} (Sunday Special Offer till ${event.sundayOffer.deadline} · Regular ${event.sundayOffer.regularPrice})`
-                              : event.fee,
+                            value: event.fee,
                             highlight: true,
                           },
                           { label: 'Venue', value: event.schedule.venue, highlight: false },

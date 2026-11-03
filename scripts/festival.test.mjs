@@ -149,24 +149,13 @@ test('sponsor draft, mystery speakers, and shared navigation contain no invented
   for (const href of ['/', '/#about', '/events', '/#sponsors']) assert.ok(nav.includes(`href="${href}"`));
 });
 
-test('Sunday Special Offer applies to both HackOUTR hackathons until 01/11/26 11:59 PM', () => {
-  const software = competitions.find(e => e.id === 'hackoutr-software');
-  const hardware = competitions.find(e => e.id === 'hackoutr-hardware');
-
-  assert.ok(software && hardware);
-  for (const hackathon of [software, hardware]) {
-    assert.ok(hackathon.sundayOffer);
-    assert.equal(hackathon.sundayOffer.price, '₹399');
-    assert.equal(hackathon.sundayOffer.regularPrice, '₹499');
-    assert.equal(hackathon.sundayOffer.active, true);
-    assert.equal(hackathon.sundayOffer.deadlineIso, '2026-11-01T23:59:59+05:30');
-    assert.ok(hackathon.sundayOffer.deadline.includes('01/11/26 11:59 PM'));
-
-    const html = renderToStaticMarkup(React.createElement(EventCard, { event: hackathon, index: 0 }));
-    assert.match(html, /399/);
-    assert.match(html, /Sunday Special Offer/);
-    assert.doesNotMatch(html, /Early Bird|₹299|29\/10/);
-    assert.match(html, /499/);
+test('both HackOUTR hackathons show the regular fee without expired offers', () => {
+  for (const id of ['hackoutr-software', 'hackoutr-hardware']) {
+    const event = competitions.find(event => event.id === id);
+    assert.equal(event.fee, '₹499');
+    const html = renderToStaticMarkup(React.createElement(EventCard, { event, index: 0 }));
+    assert.match(html, /₹499/);
+    assert.doesNotMatch(html, /Sunday Special Offer|₹399|Ends Tonight/);
   }
 });
 
@@ -190,5 +179,25 @@ test('rulebook folders configured and rendered for Clash of CAD, Hanging Highway
     const html = renderToStaticMarkup(React.createElement(EventCard, { event, index: 0 }));
     assert.match(html, /Rulebook ↗/);
     assert.ok(html.includes(event.rulebookUrl));
+  }
+});
+
+test('CP Rush uses the updated rulebook and individual-only participation', () => {
+  const event = competitions.find(event => event.id === 'cp-rush');
+  assert.ok(event);
+  assert.equal(event.rulebookUrl, 'https://drive.google.com/file/d/1LcGO5p_WjNIBOctBBoYgEe3ut1mR8Z91/view?usp=drive_link');
+  assert.match(event.teamSize, /1 Participant/);
+  assert.ok(event.rules.includes('Individual participation only. Teams are not allowed.'));
+  const html = renderToStaticMarkup(React.createElement(EventCard, { event, index: 0 }));
+  assert.ok(html.includes(event.rulebookUrl));
+  assert.match(html, /No teams allowed/);
+});
+
+test('winners interview opportunity appears for both hackathons only', () => {
+  const eligible = competitions.filter(event => event.winnersOpportunity);
+  assert.deepEqual(eligible.map(event => event.id), ['hackoutr-software', 'hackoutr-hardware']);
+  for (const event of eligible) {
+    const html = renderToStaticMarkup(React.createElement(EventCard, { event, index: 0 }));
+    assert.match(html, /Direct Interview Internship Opportunity for Winners/);
   }
 });

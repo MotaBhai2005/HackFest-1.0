@@ -1,3 +1,5 @@
+import { festival } from './festival';
+
 export type FestivalDay = 1 | 2 | 3;
 export type EventVisual = 'code' | 'chip' | 'terminal' | 'paper' | 'shield' | 'cad' | 'auction' | 'race' | 'bridge' | 'boat' | 'blocks' | 'quest' | 'mystery' | 'plane' | 'bug' | 'forge' | 'synapse' | 'cyber';
 export type EventType = 'hackoutr' | 'hackathon-software' | 'hackathon-hardware' | 'flagship' | 'fun' | 'workshop';
@@ -6,14 +8,6 @@ export type CategoryFilter = 'all' | 'hackoutr' | 'hackathon-software' | 'hackat
 export interface EventCoordinator {
   name: string;
   phone?: string;
-}
-
-export interface SundayOffer {
-  price: string;
-  regularPrice: string;
-  deadline: string;
-  deadlineIso: string;
-  active: boolean;
 }
 
 export interface FestivalEvent {
@@ -27,7 +21,6 @@ export interface FestivalEvent {
   rules: string[];
   rulesConfirmed: boolean;
   rulebookUrl?: string | null;
-  sundayOffer?: SundayOffer | null;
   format: string | null;
   teamSize: string | null;
   fee: string | null;
@@ -40,6 +33,7 @@ export interface FestivalEvent {
   registrationUrl: string | null;
   problemStatementsUrl?: string;
   featured?: boolean;
+  winnersOpportunity?: string;
   sessions?: string[];
   duration?: string | null;
   prerequisites?: string | null;
@@ -52,7 +46,6 @@ const pendingDetails = {
   rules: [],
   rulesConfirmed: false,
   rulebookUrl: null,
-  sundayOffer: null,
   format: 'TBA',
   teamSize: 'TBA',
   fee: 'TBA',
@@ -65,6 +58,7 @@ export const competitions: FestivalEvent[] = [
   {
     ...pendingDetails,
     id: 'hackoutr-software',
+    winnersOpportunity: festival.winnersOpportunity,
     rulebookUrl: 'https://drive.google.com/file/d/1gowP2YUdik_s1XVw0WHTK2Vx0Si3caNG/view?usp=drive_link',
     name: 'HackOUTR Software Edition',
     eventType: 'hackoutr',
@@ -72,17 +66,10 @@ export const competitions: FestivalEvent[] = [
     visual: 'code',
     featured: true,
     description: 'The 36-Hour Software Hackathon is an intensive innovation marathon featuring diverse problem statements, challenging participants to transform real-world challenges into practical, impactful software solutions.',
-    overview: 'The 36-Hour Software Hackathon is an intensive innovation marathon featuring diverse problem statements, challenging participants to transform real-world challenges into practical, impactful software solutions. Software track of HackOUTR continuing from 04-Nov-2026 to 06-Nov-2026.\n\n⚡ SUNDAY SPECIAL OFFER: ₹399 (Save ₹100) strictly valid till 01/11/26 11:59 PM IST! Regular fee of ₹499 applies thereafter.',
+    overview: 'The 36-Hour Software Hackathon is an intensive innovation marathon featuring diverse problem statements, challenging participants to transform real-world challenges into practical, impactful software solutions. Software track of HackOUTR continuing from 04-Nov-2026 to 06-Nov-2026.',
     format: '36-Hour Hackathon',
     teamSize: '2–4 Members',
-    fee: '₹399 Sunday Special Offer',
-    sundayOffer: {
-      price: '₹399',
-      regularPrice: '₹499',
-      deadline: '01/11/26 11:59 PM IST',
-      deadlineIso: '2026-11-01T23:59:59+05:30',
-      active: true,
-    },
+    fee: '₹499',
     requirements: 'Laptop, extension cord (Internet provided on-site)',
     prerequisites: 'Laptop, extension cord',
     schedule: { days: [1, 2, 3], time: '2:00 PM Onwards', venue: 'OUTR' },
@@ -96,6 +83,7 @@ export const competitions: FestivalEvent[] = [
   {
     ...pendingDetails,
     id: 'hackoutr-hardware',
+    winnersOpportunity: festival.winnersOpportunity,
     rulebookUrl: 'https://drive.google.com/file/d/1f0QommXC7XuVtWvqU1zI3I6Y92O-ZeVV/view?usp=drivesdk',
     problemStatementsUrl: '/hardware-problem-statements.html',
     name: 'HackOUTR Hardware Edition',
@@ -104,17 +92,10 @@ export const competitions: FestivalEvent[] = [
     visual: 'chip',
     featured: true,
     description: 'Connect circuits, code, and physical prototyping to engineer real-world hardware solutions.',
-    overview: 'The hardware edition of HackOUTR — explore physical prototyping, circuits, and embedded systems through an intense multi-day challenge. Hardware problem statements, lab access, and testing benches.\n\n⚡ SUNDAY SPECIAL OFFER: ₹399 (Save ₹100) strictly valid till 01/11/26 11:59 PM IST! Regular fee of ₹499 applies thereafter.',
+    overview: 'The hardware edition of HackOUTR — explore physical prototyping, circuits, and embedded systems through an intense multi-day challenge. Hardware problem statements, lab access, and testing benches.',
     format: '36-Hour Hackathon',
     teamSize: '2–4 Members',
-    fee: '₹399 Sunday Special Offer',
-    sundayOffer: {
-      price: '₹399',
-      regularPrice: '₹499',
-      deadline: '01/11/26 11:59 PM IST',
-      deadlineIso: '2026-11-01T23:59:59+05:30',
-      active: true,
-    },
+    fee: '₹499',
     requirements: 'Bring components based on your chosen theme, laptop, extension cord (Internet provided on-site)',
     prerequisites: 'Components based on chosen theme, laptop, extension cord',
     schedule: { days: [1, 2, 3], time: '2:00 PM Onwards', venue: 'OUTR' },
@@ -128,15 +109,17 @@ export const competitions: FestivalEvent[] = [
   {
     ...pendingDetails,
     id: 'cp-rush',
-    rulebookUrl: 'https://drive.google.com/file/d/17q2CXxyiZVDjg9nfwSaipqhedfYwLWva/view?usp=drive_link',
+    rulebookUrl: 'https://drive.google.com/file/d/1LcGO5p_WjNIBOctBBoYgEe3ut1mR8Z91/view?usp=drive_link',
     name: 'Competitive Programming',
     eventType: 'flagship',
     category: 'Algorithms',
     visual: 'terminal',
     description: 'An intense logic showdown testing speed, efficiency, and problem-solving precision. Competitors tackle complex coding challenges within strict time limits, optimizing algorithms and data structures to dominate the leaderboard and crack the code.',
     overview: 'An intense logic showdown testing speed, efficiency, and problem-solving precision. Competitors tackle complex coding challenges within strict time limits, optimizing algorithms and data structures to dominate the leaderboard and crack the code.',
-    format: 'Speed Algorithmic Contest',
-    teamSize: '1–2 Participants',
+    format: 'Individual Speed Algorithmic Contest',
+    teamSize: '1 Participant · Individual only · No teams allowed',
+    rulesConfirmed: true,
+    rules: ['Individual participation only. Teams are not allowed.'],
     fee: '₹89',
     requirements: 'Laptop, extension cord (Internet provided on-site)',
     prerequisites: 'Laptop, extension cord',
