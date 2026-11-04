@@ -145,7 +145,7 @@ export const competitions: FestivalEvent[] = [
     format: 'Jeopardy-Style CTF (Web Exploitation, Linux, Forensics, OSINT, Hardware/IoT)',
     requirements: 'Laptop, extension cord (High-speed internet will be provided by organizers)',
     prerequisites: 'Laptop, extension cord',
-    schedule: { days: [1], time: 'TBA', venue: 'OUTR' },
+    schedule: { days: [1], time: '1:00 PM – 6:00 PM', venue: 'OUTR' },
     registrationUrl: 'https://forms.gle/JRdfq9PpNsazcaGe7',
     coordinators: [
       { name: 'Anuraag Mahapatra', phone: '6371639540' },
@@ -461,7 +461,7 @@ export const workshops: FestivalEvent[] = [
     duration: '1 Hour',
     prerequisites: 'None',
     requirements: 'None',
-    schedule: { days: [3], time: '1 Hour (Time TBA)', venue: 'OUTR' },
+    schedule: { days: [3], time: '4:00 PM – 5:00 PM', venue: 'OUTR' },
     registrationUrl: null,
     coordinators: [
       { name: 'Anuraag Mahapatra', phone: '6371639540' },
